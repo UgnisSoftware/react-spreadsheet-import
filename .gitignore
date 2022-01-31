@@ -1,0 +1,6 @@
+.snowpack
+build
+node_modules
+.build
+.idea
+web_modules

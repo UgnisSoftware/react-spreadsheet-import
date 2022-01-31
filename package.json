@@ -1,0 +1,103 @@
+{
+  "name": "react-spreadsheet-import",
+  "version": "0.0.1",
+  "description": "React spreadsheet import for xlsx and csv files with column matching and validation",
+  "main": "index.js",
+  "scripts": {
+    "start": "start-storybook -p 6006",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UgnisSoftware/react-spreadsheet-import.git"
+  },
+  "keywords": [
+    "React",
+    "spreadsheet",
+    "import",
+    "upload",
+    "csv",
+    "xlsx",
+    "validate",
+    "automatic",
+    "match"
+  ],
+  "author": "Ugnis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UgnisSoftware/react-spreadsheet-import/issues"
+  },
+  "homepage": "https://github.com/UgnisSoftware/react-spreadsheet-import#readme",
+  "dependencies": {
+    "@chakra-ui/react": "1.8.1",
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "11.6.0",
+    "framer-motion": "5.6.0",
+    "js-levenshtein": "1.1.6",
+    "lape": "6.4.8",
+    "react": "17.0.2",
+    "react-data-grid": "7.0.0-beta.8",
+    "react-dom": "17.0.2",
+    "react-dropzone": "11.5.1",
+    "xlsx": "0.17.5"
+  },
+  "devDependencies": {
+    "@babel/core": "7.16.12",
+    "@emotion/jest": "11.7.1",
+    "@jest/types": "27.4.2",
+    "@storybook/react": "6.4.14",
+    "@testing-library/jest-dom": "5.16.1",
+    "@testing-library/react": "12.1.2",
+    "@types/jest": "27.4.0",
+    "@types/js-levenshtein": "1.1.1",
+    "@types/react": "17.0.38",
+    "@types/react-dom": "17.0.11",
+    "@types/styled-system": "5.1.15",
+    "babel-loader": "8.2.3",
+    "jest": "27.4.7",
+    "prettier": "2.5.1",
+    "rollup": "2.66.1",
+    "rollup-plugin-typescript2": "0.31.1",
+    "ts-jest": "27.1.3",
+    "ttypescript": "1.5.13",
+    "typescript": "4.5.5"
+  },
+  "prettier": {
+    "endOfLine": "crlf",
+    "tabWidth": 2,
+    "trailingComma": "all",
+    "semi": false,
+    "printWidth": 120
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)?$": "ts-jest/dist"
+    },
+    "moduleNameMapper": {
+      "~/(.*)": "<rootDir>/src/$1"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-dom/extend-expect"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.json"
+      }
+    },
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  }
+}
