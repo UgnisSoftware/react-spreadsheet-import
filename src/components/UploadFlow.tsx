@@ -1,8 +1,7 @@
 import { Upload } from "./Upload"
 import { SelectHeader } from "./SelectHeader"
 import { MatchColumns } from "./MatchColumns"
-import React from "react"
-import { ignoreState, useLape } from "lape"
+import React, { useState } from "react"
 import { Progress } from "@chakra-ui/react"
 
 enum Type {
@@ -15,7 +14,7 @@ enum Type {
   submitMatchColumnsError,
 }
 
-type StateType =
+type State =
   | {
       type: Type.upload
     }
@@ -57,41 +56,35 @@ type StateType =
       error: string
     }
 
-type State = {
-  step: StateType
-}
-
 interface Props {
-  config: any
+  config?: any
 }
 
 export const UploadFlow = ({ config }: Props) => {
-  const state = useLape<State>({
-    step: { type: Type.upload },
-  })
+  const [state, setState] = useState<State>({ type: Type.upload })
 
-  switch (state.step.type) {
+  switch (state.type) {
     case Type.upload:
       return (
         <Upload
           onContinue={(data) => {
-            state.step = ignoreState({ type: Type.selectHeader, data })
+            setState({ type: Type.selectHeader, data })
           }}
         />
       )
     case Type.selectHeader:
       return (
         <SelectHeader
-          data={state.step.data}
+          data={state.data}
           onContinue={(headerValues: string[], data: string[][]) => {
-            state.step = ignoreState({
+            setState({
               type: Type.loadMatchColumns,
               headerValues,
               data,
             })
           }}
           onCancel={() => {
-            state.step = ignoreState({ type: Type.upload })
+            setState({ type: Type.upload })
           }}
         />
       )
@@ -100,21 +93,21 @@ export const UploadFlow = ({ config }: Props) => {
     case Type.submitMatchColumnsError:
       return (
         <MatchColumns
-          headerValues={state.step.headerValues}
+          headerValues={state.headerValues}
           onCancel={() => {
-            state.step = ignoreState({ type: Type.upload })
+            setState({ type: Type.upload })
           }}
-          values={state.step.values}
-          table={state.step.table}
-          loading={state.step.type === Type.submitMatchColumns}
-          error={state.step.type === Type.submitMatchColumnsError ? state.step.error : undefined}
+          values={state.values}
+          table={state.table}
+          loading={state.type === Type.submitMatchColumns}
+          error={state.type === Type.submitMatchColumnsError ? state.error : undefined}
           onContinue={(values) => {
-            if (state.step.type === Type.matchColumns || state.step.type === Type.submitMatchColumnsError) {
-              state.step = ignoreState({
+            if (state.type === Type.matchColumns || state.type === Type.submitMatchColumnsError) {
+              setState({
                 type: Type.submitMatchColumns,
-                data: state.step.data,
-                headerValues: state.step.headerValues,
-                table: state.step.table,
+                data: state.data,
+                headerValues: state.headerValues,
+                table: state.table,
                 values,
               })
             }

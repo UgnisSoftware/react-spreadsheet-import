@@ -6,17 +6,6 @@ module.exports = {
   stories: ["../src/**/stories/*.stories.tsx"],
   babel: async (options) => ({
     ...options,
-    presets: [
-      ...options.presets,
-      [
-        "@babel/preset-react",
-        {
-          importSource: "lape",
-          runtime: "automatic",
-        },
-        "preset-react-jsx-transform", // Can name this anything, just an arbitrary alias to avoid duplicate presets'
-      ],
-    ],
   }),
   webpackFinal: async (config) => {
     config.module.rules.push({

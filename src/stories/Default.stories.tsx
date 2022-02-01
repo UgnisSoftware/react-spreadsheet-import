@@ -1,21 +1,6 @@
-import { UploadFlow } from "../components/UploadFlow"
-
+import { ReactSpreadsheetImport } from "../components/ReactSpreadsheetImport"
 export default {
-  title: "Input",
-  parameters: {
-    component: UploadFlow,
-  },
-  args: {
-    label: "Label",
-  },
-  argTypes: {
-    disabled: {
-      table: { disable: false },
-      control: {
-        type: "boolean",
-      },
-    },
-  },
+  title: "React spreadsheet import",
 }
 
-export const Basic = () => <UploadFlow />
+export const Basic = () => <ReactSpreadsheetImport />
