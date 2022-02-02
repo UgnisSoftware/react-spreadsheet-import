@@ -1,6 +1,6 @@
 import { Box, Input, Switch, Table, Text, useToast, Progress } from "@chakra-ui/react"
 import React, { useMemo } from "react"
-import {useLape} from "lape";
+import { useLape } from "lape"
 
 interface Props {
   id: string
@@ -13,8 +13,8 @@ const EditableTable = ({ id }: Props) => {
   const toast = useToast()
 
   const table = {
-    name: 'Name',
-    columns: []
+    name: "Name",
+    columns: [],
   }
 
   const state = useLape<{
@@ -33,23 +33,16 @@ const EditableTable = ({ id }: Props) => {
     saveStatus: null,
   })
 
-
   const updateRow = () => {}
   const updateSwitch = () => {}
-  const columns = table?.columns.map((column) => ({
+  const columns = table?.columns.map((column: any) => ({
     key: column.uniqueIdentifier,
     name: column.name,
     resizable: true,
     editable: column.type !== "BOOLEAN",
     editor: ({ row }: any) => (
       <Box pl="0.5rem">
-        <Input
-          variant="unstyled"
-          autoFocus
-          size="small"
-          value={row[column.uniqueIdentifier]}
-          onChange={useMemo(() => updateRow(row, column.uniqueIdentifier), [])}
-        />
+        <Input variant="unstyled" autoFocus size="small" value={row[column.uniqueIdentifier]} onChange={updateRow} />
       </Box>
     ),
     editorOptions: {
@@ -58,7 +51,7 @@ const EditableTable = ({ id }: Props) => {
     formatter: ({ row }: any) =>
       column.type === "BOOLEAN" ? (
         <Box display="flex" alignItems="center" height="100%">
-          <Switch onChange={updateSwitch(row, column.uniqueIdentifier)} defaultChecked={row[column.uniqueIdentifier]} />
+          <Switch onChange={updateSwitch} />
         </Box>
       ) : (
         row[column.uniqueIdentifier]
@@ -122,7 +115,7 @@ const EditableTable = ({ id }: Props) => {
         {!state.data?.length ? (
           <Text>No data yet</Text>
         ) : (
-          <Table rows={state.data as any} columns={columns} rowKeyGetter={(row) => row.id} />
+          <Table rows={state.data as any} columns={columns} rowKeyGetter={(row: any) => row.id} />
         )}
       </Box>
     </>

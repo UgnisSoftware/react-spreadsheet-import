@@ -13,12 +13,9 @@ type MatchColumnsFieldsProps = {
 }
 
 export const MatchColumnsFields = ({ options }: MatchColumnsFieldsProps) => {
-  const form = useForm()
+  const form: any = {}
 
-  const deleteColumn = useCallback((header: string) => {
-    delete (form.values as any)[header]
-    form.validate()
-  }, [])
+  const deleteColumn = () => {}
 
   return (
     <Box
@@ -32,7 +29,7 @@ export const MatchColumnsFields = ({ options }: MatchColumnsFieldsProps) => {
       <Text pt="0.3rem">{GRID_COLUMN_TITLE_1}</Text>
       <Text pt="0.3rem">{GRID_COLUMN_TITLE_2}</Text>
       <Box />
-      {Object.keys(form.values).map((header) => {
+      {Object.keys(form?.values)?.map((header) => {
         return (
           <React.Fragment key={header}>
             <Box bg="primary.50" display="flex" alignItems="center" maxH="2.5rem">
@@ -50,7 +47,7 @@ export const MatchColumnsFields = ({ options }: MatchColumnsFieldsProps) => {
               }}
               name={header}
             />
-            <Text color="neutral.800" fontSize="1.1rem" ml="-1rem" maxH="2.5rem" onClick={() => deleteColumn(header)}>
+            <Text color="neutral.800" fontSize="1.1rem" ml="-1rem" maxH="2.5rem" onClick={() => deleteColumn()}>
               Delete
             </Text>
           </React.Fragment>
