@@ -18,10 +18,7 @@ export default {
         exclude: ["**/*.test.ts", "**/*.test.tsx", "**/tests", "**/stories"],
         compilerOptions: {
           declaration: true,
-          plugins: [
-            { transform: "typescript-transform-paths" },
-            { transform: "typescript-transform-paths", afterDeclarations: true },
-          ],
+          plugins: [{ transform: "typescript-transform-paths", afterDeclarations: true }],
         },
       },
     }),
