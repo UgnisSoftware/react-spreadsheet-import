@@ -42,7 +42,7 @@ export const Upload = ({ onContinue }: UploadProps) => {
   })
 
   return (
-    <Box minH="100vh" display="flex" alignItems="center" justifyContent="center" {...getRootProps()}>
+    <Box minH="fit-content" display="flex" alignItems="center" justifyContent="center" {...getRootProps()}>
       {/*Box prevents child from resizing and corrupting svg*/}
       <Box flex={0.6}>
         <Box width="100%" cursor="pointer">
