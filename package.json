@@ -1,6 +1,6 @@
 {
   "name": "react-spreadsheet-import",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React spreadsheet import for xlsx and csv files with column matching and validation",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
