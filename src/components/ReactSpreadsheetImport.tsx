@@ -13,29 +13,29 @@ import {
   useDisclosure,
 } from "@chakra-ui/react"
 
-export const ReactSpreadsheetImport = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+type ReactSpreadsheetImportProps = {
+  isOpen: boolean
+  onClose: () => void
+}
 
+export const ReactSpreadsheetImport = ({ isOpen, onClose }: ReactSpreadsheetImportProps) => {
   return (
-    <>
-      <Button onClick={onOpen}>Open Modal</Button>
-      <ChakraProvider cssVarsRoot="#chakra-modal-something">
-        <Modal isOpen={isOpen} onClose={onClose} id={"something"} size="full">
-          <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <UploadFlow />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost">Secondary Action</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </ChakraProvider>
-    </>
+    <ChakraProvider cssVarsRoot="#chakra-modal-rsi">
+      <Modal isOpen={isOpen} onClose={onClose} id={"rsi"} size="full">
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <UploadFlow />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Secondary Action</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </ChakraProvider>
   )
 }
