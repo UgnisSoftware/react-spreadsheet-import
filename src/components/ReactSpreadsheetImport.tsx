@@ -1,16 +1,13 @@
 import { UploadFlow } from "./UploadFlow"
 import {
   ChakraProvider,
-  Box,
   Modal,
   ModalCloseButton,
-  ModalOverlay,
   ModalBody,
   ModalHeader,
   ModalContent,
   ModalFooter,
   Button,
-  useDisclosure,
 } from "@chakra-ui/react"
 
 type ReactSpreadsheetImportProps = {
