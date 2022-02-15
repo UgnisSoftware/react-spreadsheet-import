@@ -1,28 +1,33 @@
-import { ChakraProvider, Modal, ModalContent, ModalOverlay, extendTheme } from "@chakra-ui/react"
+import { Modal, ModalContent, ModalOverlay, extendTheme } from "@chakra-ui/react"
 import { ModalCloseButton } from "./ModalCloseButton"
 import { Steps } from "./Steps"
 import { themeOverrides, colorSchemeOverrides } from "../theme"
+import { Providers } from "./Providers"
 
 const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
-type ReactSpreadsheetImportProps = {
-  isOpen: boolean
-  onClose: () => void
+export type Config = {
+  // Title of importer modal
+  title?: string
 }
 
-export const ReactSpreadsheetImport = ({ isOpen, onClose }: ReactSpreadsheetImportProps) => {
+export type ReactSpreadsheetImportProps = {
+  isOpen: boolean
+  onClose: () => void
+  config: Config
+}
+
+export const ReactSpreadsheetImport = (props: ReactSpreadsheetImportProps) => {
+  const { isOpen, onClose } = props
   return (
-    <ChakraProvider>
-      {/* cssVarsRoot used to override RSI theme but not the rest of chakra theme */}
-      <ChakraProvider cssVarsRoot="#chakra-modal-rsi" theme={theme}>
-        <Modal isOpen={isOpen} onClose={onClose} id="rsi" variant="rsi" closeOnEsc={false} closeOnOverlayClick={false}>
-          <ModalOverlay />
-          <ModalCloseButton onClose={onClose} />
-          <ModalContent>
-            <Steps />
-          </ModalContent>
-        </Modal>
-      </ChakraProvider>
-    </ChakraProvider>
+    <Providers theme={theme} rsiValues={props}>
+      <Modal isOpen={isOpen} onClose={onClose} id="rsi" variant="rsi" closeOnEsc={false} closeOnOverlayClick={false}>
+        <ModalOverlay />
+        <ModalCloseButton onClose={onClose} />
+        <ModalContent>
+          <Steps />
+        </ModalContent>
+      </Modal>
+    </Providers>
   )
 }

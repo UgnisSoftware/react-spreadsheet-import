@@ -9,7 +9,7 @@ export const Basic = () => {
   return (
     <>
       <Button onClick={onOpen}>Open modal</Button>
-      <ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} />
+      <ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} config={{ title: "Upload file" }} />
     </>
   )
 }
