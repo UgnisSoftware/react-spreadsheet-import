@@ -1,10 +1,25 @@
 import { StepsStyleConfig } from "chakra-ui-steps"
 import { darken, lighten, mode } from "@chakra-ui/theme-tools"
 import type { CSSObject } from "@chakra-ui/react"
+import { withDefaultColorScheme } from "@chakra-ui/react"
 
 type CSSObjectWithActiveStep = CSSObject & { _activeStep: CSSObject }
 
 export const themeOverrides = {
+  colors: {
+    rsi: {
+      50: "#E6E6FF",
+      100: "#4C63B6",
+      200: "#4C63B6",
+      300: "#8888FC",
+      400: "#7069FA",
+      500: "#5D55FA",
+      600: "#4D3DF7",
+      700: "#3525E6",
+      800: "#2D3A8C",
+      900: "#0C008C",
+    },
+  },
   shadows: {
     outline: 0,
   },
@@ -46,3 +61,7 @@ export const themeOverrides = {
     },
   },
 }
+
+export const colorSchemeOverrides = withDefaultColorScheme({
+  colorScheme: "rsi",
+})

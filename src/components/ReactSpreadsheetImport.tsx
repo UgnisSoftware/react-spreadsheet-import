@@ -1,9 +1,9 @@
 import { ChakraProvider, Modal, ModalContent, ModalOverlay, extendTheme } from "@chakra-ui/react"
 import { ModalCloseButton } from "./ModalCloseButton"
 import { Steps } from "./Steps"
-import { themeOverrides } from "../theme"
+import { themeOverrides, colorSchemeOverrides } from "../theme"
 
-const theme = extendTheme(themeOverrides)
+const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
 type ReactSpreadsheetImportProps = {
   isOpen: boolean
