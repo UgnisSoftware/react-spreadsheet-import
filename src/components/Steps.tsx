@@ -15,7 +15,7 @@ export const Steps = () => {
   })
 
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" flex={1}>
       <Box bg="gray.100" px="2rem" py="1.5rem">
         <Stepper activeStep={activeStep}>
           {steps.map(({ label }) => (
