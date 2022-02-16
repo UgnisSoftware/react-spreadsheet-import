@@ -27,6 +27,13 @@ const createGlobalStyleOverride = () => css`
     border: none;
   }
 
+  .rdg-checkbox {
+    --rdg-selection-color: none;
+    background-color: var(--rdg-header-background-color);
+    display: flex;
+    align-items: center;
+  }
+
   .rdg-cell:first-child {
     border-left: 1px solid var(--chakra-colors-gray-100);
   }
@@ -40,7 +47,7 @@ const createGlobalStyleOverride = () => css`
   }
 
   .rdg-row[aria-selected="true"]:hover {
-    background-color: var(--chakra-colors-blue-100);
+    background-color: var(--rdg-row-selected-background-color);
   }
 
   .rdg-cell[aria-selected="true"] {
@@ -57,13 +64,14 @@ const createGlobalStyleOverride = () => css`
     contain: size layout style paint;
     border-radius: 8px;
     border: none;
-    --color: var(--chakra-colors-gray-800);
+    --rdg-color: var(--chakra-colors-gray-800);
     --background-color: #fff;
-    --header-background-color: var(--chakra-colors-primary-50);
+    --rdg-header-background-color: var(--chakra-colors-gray-50);
     --rdg-row-hover-background-color: var(--chakra-colors-white);
     --rdg-selection-color: var(--chakra-colors-blue-400);
-    --row-selected-background-color: var(--chakra-colors-gray-50);
-    --font-size: 14px;
+    --rdg-row-selected-background-color: var(--chakra-colors-rsi-50);
+    --rdg-frozen-cell-box-shadow: none;
+    --rdg-font-size: 14px;
   }
 `
 const ROW_HEIGHT = 42
