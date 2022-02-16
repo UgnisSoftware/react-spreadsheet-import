@@ -1,123 +1,80 @@
-import { Box, Input, Switch, Table, Text, useToast, Progress } from "@chakra-ui/react"
-import React, { useMemo } from "react"
-import { useLape } from "lape"
+import DataGrid, { DataGridProps } from "react-data-grid"
+import { css, Global } from "@emotion/react"
+import { useMemo } from "react"
 
-interface Props {
-  id: string
+const createGlobalStyleOverride = () => css`
+  .rdg.fill-grid {
+    block-size: 100%;
+  }
+
+  .rdg-cell {
+    contain: size layout style paint;
+    border-right: 1px solid var(--chakra-colors-neutral-100);
+    border-bottom: 1px solid var(--chakra-colors-neutral-100);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rdg-static .rdg-cell {
+    border-right: none;
+    background-color: inherit;
+    --selection-color: none;
+  }
+
+  .rdg-header-row .rdg-cell {
+    --selection-color: none;
+    border: none;
+  }
+
+  .rdg-row:last-child .rdg-cell {
+    border-bottom: none;
+  }
+
+  .rdg-row[aria-selected="true"]:hover {
+    background-color: var(--chakra-colors-primary-100);
+  }
+
+  .rdg-cell[aria-selected="true"] {
+    box-shadow: inset 0 0 0 1px var(--selection-color);
+  }
+
+  .rdg-cell-error {
+    background-color: var(--chakra-colors-error-50);
+    box-shadow: inset 0 0 0 1px var(--chakra-colors-error-100);
+  }
+
+  .rdg {
+    contain: size layout style paint;
+    border-radius: 8px;
+    border: none;
+    --color: var(--chakra-colors-neutral-800);
+    --border-color: transparent;
+    --background-color: #fff;
+    --header-background-color: var(--chakra-colors-primary-50);
+    --row-hover-background-color: var(--chakra-colors-neutral-50);
+    --selection-color: var(--chakra-colors-accent-400);
+    --row-selected-background-color: var(--chakra-colors-primary-50);
+    --font-size: 14px;
+  }
+`
+const ROW_HEIGHT = 35
+
+interface Props<Data> extends DataGridProps<Data> {
+  rowHeight?: number
 }
 
-const SEARCH = "Search"
-const UPLOAD = "Upload"
-
-const EditableTable = ({ id }: Props) => {
-  const toast = useToast()
-
-  const table = {
-    name: "Name",
-    columns: [],
-  }
-
-  const state = useLape<{
-    tableName?: string
-    data?: any[]
-    loading: boolean
-    errorCount: number
-    filterErrors: boolean
-    saveStatus: "saving" | "saved" | "error" | null
-  }>({
-    tableName: undefined,
-    data: undefined,
-    loading: true,
-    errorCount: 0,
-    filterErrors: false,
-    saveStatus: null,
-  })
-
-  const updateRow = () => {}
-  const updateSwitch = () => {}
-  const columns = table?.columns.map((column: any) => ({
-    key: column.uniqueIdentifier,
-    name: column.name,
-    resizable: true,
-    editable: column.type !== "BOOLEAN",
-    editor: ({ row }: any) => (
-      <Box pl="0.5rem">
-        <Input variant="unstyled" autoFocus size="small" value={row[column.uniqueIdentifier]} onChange={updateRow} />
-      </Box>
-    ),
-    editorOptions: {
-      editOnClick: true,
-    },
-    formatter: ({ row }: any) =>
-      column.type === "BOOLEAN" ? (
-        <Box display="flex" alignItems="center" height="100%">
-          <Switch onChange={updateSwitch} />
-        </Box>
-      ) : (
-        row[column.uniqueIdentifier]
-      ),
-    cellClass: (row: { _errors: any[] | null; id: string }) =>
-      row._errors?.length && row._errors.find((err) => err.fieldName === column.uniqueIdentifier)
-        ? "rdg-cell-error"
-        : "",
-  }))
-
-  if (state.loading || !table || !columns) {
-    return <Progress isIndeterminate />
-  }
+export const EditableTable = <Data extends {}>({ rowHeight = ROW_HEIGHT, className, ...props }: Props<Data>) => {
+  const globalStyleOverride = useMemo(() => createGlobalStyleOverride(), [])
 
   return (
     <>
-      <Box minH="5.375rem" display="flex" alignItems="center" px="0.75rem">
-        <Box display="flex" alignItems="baseline">
-          <Text variant="h5" mr="1rem">
-            {table.name}
-          </Text>
-        </Box>
-      </Box>
-      {!!state.errorCount && (
-        <Box
-          bg="error.50"
-          mx={1}
-          mb={1}
-          px={1}
-          py={0.5}
-          borderRadius="8px"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {state.errorCount === 1 ? (
-            <Text>
-              There is{" "}
-              <Text fontWeight="bold" display="inline">
-                {state.errorCount}
-              </Text>{" "}
-              error in this table
-            </Text>
-          ) : (
-            <Text>
-              There are{" "}
-              <Text fontWeight="bold" display="inline">
-                {state.errorCount}
-              </Text>{" "}
-              errors in this table
-            </Text>
-          )}
-          <Box>
-            <Switch textPosition="left" onChange={() => (state.filterErrors = !state.filterErrors)}>
-              Show only rows with errors
-            </Switch>
-          </Box>
-        </Box>
-      )}
-      <Box display="flex" flex={1} px={1}>
-        {!state.data?.length ? (
-          <Text>No data yet</Text>
-        ) : (
-          <Table rows={state.data as any} columns={columns} rowKeyGetter={(row: any) => row.id} />
-        )}
-      </Box>
+      <Global styles={globalStyleOverride} />
+      <DataGrid
+        className={"rdg-light fill-grid " + className}
+        rowHeight={rowHeight}
+        {...props}
+      />
     </>
   )
 }
