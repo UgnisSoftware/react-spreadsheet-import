@@ -1,11 +1,15 @@
+import React, { useState } from "react"
+import { Progress } from "@chakra-ui/react"
+import type XLSX from "xlsx"
 import { Upload } from "./Upload"
 import { SelectHeader } from "./SelectHeader"
 import { MatchColumns } from "./MatchColumns"
-import React, { useState } from "react"
-import { Progress } from "@chakra-ui/react"
+import { SelectSheet } from "./SelectSheet"
+import { mapWorkbook } from "../utils/mapWorkbook"
 
 enum Type {
   upload,
+  selectSheet,
   selectHeader,
   loadMatchColumns,
   loadMatchColumnsError,
@@ -17,6 +21,10 @@ enum Type {
 type State =
   | {
       type: Type.upload
+    }
+  | {
+      type: Type.selectSheet
+      workbook: XLSX.WorkBook
     }
   | {
       type: Type.selectHeader
@@ -68,7 +76,19 @@ export const UploadFlow = ({ config }: Props) => {
       return (
         <Upload
           onContinue={(data) => {
-            setState({ type: Type.selectHeader, data })
+            setState({ type: Type.selectHeader, data: mapWorkbook(data) })
+          }}
+          onMultiSheetContinue={(workbook) => {
+            setState({ type: Type.selectSheet, workbook })
+          }}
+        />
+      )
+    case Type.selectSheet:
+      return (
+        <SelectSheet
+          sheetNames={state.workbook.SheetNames}
+          onContinue={(sheetName) => {
+            setState({ type: Type.selectHeader, data: mapWorkbook(state.workbook, sheetName) })
           }}
         />
       )

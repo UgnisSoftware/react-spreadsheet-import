@@ -1,3 +1,4 @@
+import type XLSX from "xlsx"
 import { Box, Heading, Text } from "@chakra-ui/react"
 import { DropZone } from "./DropZone"
 import { useRsi } from "../hooks/useRsi"
@@ -7,10 +8,11 @@ const MANIFEST_TITLE = "Data that we expect:"
 const MANIFEST_DESCRIPTION = "(You will have a chance to select and rename columns in next steps)"
 
 type UploadProps = {
-  onContinue: (data: string[][]) => void
+  onContinue: (data: XLSX.WorkBook) => void
+  onMultiSheetContinue: (data: XLSX.WorkBook) => void
 }
 
-export const Upload = ({ onContinue }: UploadProps) => {
+export const Upload = ({ onContinue, onMultiSheetContinue }: UploadProps) => {
   const {
     config: { title },
   } = useRsi()
@@ -25,7 +27,7 @@ export const Upload = ({ onContinue }: UploadProps) => {
       <Text fontSize="md" lineHeight={6} color="gray.500" mb="2rem">
         {MANIFEST_DESCRIPTION}
       </Text>
-      <DropZone onContinue={onContinue} />
+      <DropZone onContinue={onContinue} onMultiSheetContinue={onMultiSheetContinue} />
     </Box>
   )
 }

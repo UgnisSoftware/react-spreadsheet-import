@@ -64,4 +64,5 @@ export const themeOverrides = {
 
 export const colorSchemeOverrides = withDefaultColorScheme({
   colorScheme: "rsi",
+  components: ["Button"],
 })

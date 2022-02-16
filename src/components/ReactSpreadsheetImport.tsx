@@ -4,7 +4,7 @@ import { Steps } from "./Steps"
 import { themeOverrides, colorSchemeOverrides } from "../theme"
 import { Providers } from "./Providers"
 
-const theme = extendTheme(colorSchemeOverrides, themeOverrides)
+export const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
 export type Config = {
   // Title of importer modal
