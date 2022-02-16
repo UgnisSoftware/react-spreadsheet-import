@@ -10,10 +10,9 @@ const BUTTON_TITLE = "Select file"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
-  onMultiSheetContinue: (data: XLSX.WorkBook) => void
 }
 
-export const DropZone = ({ onContinue, onMultiSheetContinue }: DropZoneProps) => {
+export const DropZone = ({ onContinue }: DropZoneProps) => {
   const {
     colors: { rsi },
   } = useTheme()
@@ -35,11 +34,7 @@ export const DropZone = ({ onContinue, onMultiSheetContinue }: DropZoneProps) =>
     onDrop: async ([file]) => {
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
-      if (workbook.SheetNames.length === 1) {
-        onContinue(workbook)
-      } else {
-        onMultiSheetContinue(workbook)
-      }
+      onContinue(workbook)
     },
   })
   return (

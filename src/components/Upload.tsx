@@ -9,10 +9,9 @@ const MANIFEST_DESCRIPTION = "(You will have a chance to select and rename colum
 
 type UploadProps = {
   onContinue: (data: XLSX.WorkBook) => void
-  onMultiSheetContinue: (data: XLSX.WorkBook) => void
 }
 
-export const Upload = ({ onContinue, onMultiSheetContinue }: UploadProps) => {
+export const Upload = ({ onContinue }: UploadProps) => {
   const {
     config: { title },
   } = useRsi()
@@ -27,7 +26,7 @@ export const Upload = ({ onContinue, onMultiSheetContinue }: UploadProps) => {
       <Text fontSize="md" lineHeight={6} color="gray.500" mb="2rem">
         {MANIFEST_DESCRIPTION}
       </Text>
-      <DropZone onContinue={onContinue} onMultiSheetContinue={onMultiSheetContinue} />
+      <DropZone onContinue={onContinue} />
     </Box>
   )
 }

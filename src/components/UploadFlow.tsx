@@ -75,11 +75,12 @@ export const UploadFlow = ({ config }: Props) => {
     case Type.upload:
       return (
         <Upload
-          onContinue={(data) => {
-            setState({ type: Type.selectHeader, data: mapWorkbook(data) })
-          }}
-          onMultiSheetContinue={(workbook) => {
-            setState({ type: Type.selectSheet, workbook })
+          onContinue={(workbook) => {
+            if (workbook.SheetNames.length === 1) {
+              setState({ type: Type.selectHeader, data: mapWorkbook(workbook) })
+            } else {
+              setState({ type: Type.selectSheet, workbook })
+            }
           }}
         />
       )
