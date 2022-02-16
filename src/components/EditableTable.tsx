@@ -9,8 +9,8 @@ const createGlobalStyleOverride = () => css`
 
   .rdg-cell {
     contain: size layout style paint;
-    border-right: 1px solid var(--chakra-colors-neutral-100);
-    border-bottom: 1px solid var(--chakra-colors-neutral-100);
+    border-right: 1px solid var(--chakra-colors-gray-100);
+    border-bottom: 1px solid var(--chakra-colors-gray-100);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -19,46 +19,54 @@ const createGlobalStyleOverride = () => css`
   .rdg-static .rdg-cell {
     border-right: none;
     background-color: inherit;
-    --selection-color: none;
+    --rdg-selection-color: none;
   }
 
   .rdg-header-row .rdg-cell {
-    --selection-color: none;
+    --rdg-selection-color: none;
     border: none;
   }
 
-  .rdg-row:last-child .rdg-cell {
-    border-bottom: none;
+  .rdg-cell:first-child {
+    border-left: 1px solid var(--chakra-colors-gray-100);
+  }
+
+  .rdg-row:last-child .rdg-cell:first-child {
+    border-radius: 0 0 0 8px;
+  }
+
+  .rdg-row:last-child .rdg-cell:last-child {
+    border-radius: 0 0 8px 0;
   }
 
   .rdg-row[aria-selected="true"]:hover {
-    background-color: var(--chakra-colors-primary-100);
+    background-color: var(--chakra-colors-blue-100);
   }
 
   .rdg-cell[aria-selected="true"] {
-    box-shadow: inset 0 0 0 1px var(--selection-color);
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px var(--rdg-selection-color);
   }
 
   .rdg-cell-error {
-    background-color: var(--chakra-colors-error-50);
-    box-shadow: inset 0 0 0 1px var(--chakra-colors-error-100);
+    background-color: var(--chakra-colors-red-50);
+    box-shadow: inset 0 0 0 1px var(--chakra-colors-red-100);
   }
 
   .rdg {
     contain: size layout style paint;
     border-radius: 8px;
     border: none;
-    --color: var(--chakra-colors-neutral-800);
-    --border-color: transparent;
+    --color: var(--chakra-colors-gray-800);
     --background-color: #fff;
     --header-background-color: var(--chakra-colors-primary-50);
-    --row-hover-background-color: var(--chakra-colors-neutral-50);
-    --selection-color: var(--chakra-colors-accent-400);
-    --row-selected-background-color: var(--chakra-colors-primary-50);
+    --rdg-row-hover-background-color: var(--chakra-colors-white);
+    --rdg-selection-color: var(--chakra-colors-blue-400);
+    --row-selected-background-color: var(--chakra-colors-gray-50);
     --font-size: 14px;
   }
 `
-const ROW_HEIGHT = 35
+const ROW_HEIGHT = 42
 
 interface Props<Data> extends DataGridProps<Data> {
   rowHeight?: number
@@ -70,11 +78,7 @@ export const EditableTable = <Data extends {}>({ rowHeight = ROW_HEIGHT, classNa
   return (
     <>
       <Global styles={globalStyleOverride} />
-      <DataGrid
-        className={"rdg-light fill-grid " + className}
-        rowHeight={rowHeight}
-        {...props}
-      />
+      <DataGrid className={"rdg-light fill-grid " + className} rowHeight={rowHeight} {...props} />
     </>
   )
 }
