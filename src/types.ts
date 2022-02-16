@@ -1,11 +1,11 @@
-type Props = {
+export type Props = {
   config?: Config
   fields: Fields
   hooks?: Hooks
   onSubmit: (data: Result) => void
 }
 
-type Config = {
+export type Config = {
   // Title of importer modal
   title?: string
   // Specifies maximum number of rows for a single import
@@ -17,9 +17,9 @@ type Config = {
 }
 
 // Data model RSI uses for spreadsheet imports
-type Fields = Field[]
+export type Fields = Field[]
 
-type Field = {
+export type Field = {
   // UI-facing field label
   label: string
   // Field's unique identifier
@@ -33,48 +33,48 @@ type Field = {
   // Field entry component, default: Input
   fieldType: Checkbox | Select | Input
   // UI-facing values shown to user as field examples pre-upload phase
-  examples: string[]
+  examples?: string[]
 }
 
-type Checkbox = {
+export type Checkbox = {
   type: 'checkbox'
   // Alternate values to be treated as booleans, e.g. 'yes'-> true, 'no' -> false
-  booleanMatches: {[key: string]: boolean}[]
+  booleanMatches?: {[key: string]: boolean}[]
 }
 
-type Select = {
+export type Select = {
   type : 'select'
   // Options displayed in Select component
-  options: SelectOptions
+  options: SelectOptions[]
 }
 
-type SelectOptions = {
+export type SelectOptions = {
   // UI-facing option label
   label: string
   // Field entry matching criteria as well as select output
   value: string | number
 }
 
-type Input = {
+export type Input = {
   type: 'input'
 }
 
-type Validation =  BasicValidation | RegexValidation
+export type Validation =  BasicValidation | RegexValidation
 
-type BasicValidation = {
+export type BasicValidation = {
   rule: 'unique' | 'required' 	//... to be determined
   errorMessage?: string
 }
 
-type RegexValidation = {
+export type RegexValidation = {
   rule: 'regex'
   regexOptions?: RegexOption[]
   errorMessage: string
 }
 
-type RegexOption = 'i' | 'm' | 'u' | 's'
+export type RegexOption = 'i' | 'm' | 'u' | 's'
 
-type Hooks = {
+export type Hooks = {
   // Runs after column matching and on entry change, more performant
   rowHooks: RowHook[]
   // Runs after column matching and on entry change
@@ -83,26 +83,26 @@ type Hooks = {
   initalHooks: TableHook[]
 }
 
-type RowHook = ({...rowValues}: object) => Promise<Entry>
-type TableHook = (tableData: object[]) => Promise<Entry[]>
+export type RowHook = ({...rowValues}: object) => Promise<Entry>
+export type TableHook = (tableData: object[]) => Promise<Entry[]>
 
-type Entry = {
+export type Entry = {
   value: unknown
   info: Info[]
 }
 
-type Info = {
+export type Info = {
   message: string
   level: 'info' | 'warning' | 'error'
 }
 
-type Result = {
+export type Result = {
   validData: object[]
   invalidData: object[]
   all: []
 }
 
-type MaybeConfig = {
+export type MaybeConfig = {
   allowInvalidSubmit?: boolean
   displayEncoding?: boolean
   allowCustomFields?: boolean
