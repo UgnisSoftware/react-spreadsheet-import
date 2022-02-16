@@ -9,7 +9,7 @@ const ACTIVE_DROP_ZONE_TITLE = "Drop file here..."
 const BUTTON_TITLE = "Select file"
 
 type DropZoneProps = {
-  onContinue: (data: string[][]) => void
+  onContinue: (data: XLSX.WorkBook) => void
 }
 
 export const DropZone = ({ onContinue }: DropZoneProps) => {
@@ -34,12 +34,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
     onDrop: async ([file]) => {
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
-      const first_worksheet = workbook.Sheets[workbook.SheetNames[0]]
-      const data = XLSX.utils.sheet_to_json(first_worksheet, {
-        header: 1,
-        blankrows: false,
-      })
-      onContinue(data as string[][])
+      onContinue(workbook)
     },
   })
   return (
