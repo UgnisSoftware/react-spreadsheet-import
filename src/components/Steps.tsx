@@ -23,7 +23,7 @@ export const Steps = () => {
           ))}
         </Stepper>
       </Box>
-      <UploadFlow />
+      <UploadFlow nextStep={nextStep} />
     </Box>
   )
 }

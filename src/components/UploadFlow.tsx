@@ -65,10 +65,10 @@ type State =
     }
 
 interface Props {
-  config?: any
+  nextStep: () => void
 }
 
-export const UploadFlow = ({ config }: Props) => {
+export const UploadFlow = ({ nextStep }: Props) => {
   const [state, setState] = useState<State>({ type: Type.upload })
 
   switch (state.type) {
@@ -78,6 +78,7 @@ export const UploadFlow = ({ config }: Props) => {
           onContinue={(workbook) => {
             if (workbook.SheetNames.length === 1) {
               setState({ type: Type.selectHeader, data: mapWorkbook(workbook) })
+              nextStep()
             } else {
               setState({ type: Type.selectSheet, workbook })
             }
@@ -90,6 +91,7 @@ export const UploadFlow = ({ config }: Props) => {
           sheetNames={state.workbook.SheetNames}
           onContinue={(sheetName) => {
             setState({ type: Type.selectHeader, data: mapWorkbook(state.workbook, sheetName) })
+            nextStep()
           }}
         />
       )
