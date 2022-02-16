@@ -1,4 +1,4 @@
-import { Flex, Heading, Radio, RadioGroup, Stack, Button } from "@chakra-ui/react"
+import { Flex, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react"
 import { useState } from "react"
 import { ContinueButton } from "./ContinueButton"
 

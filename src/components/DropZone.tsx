@@ -1,12 +1,14 @@
 import { Box, Button, Text, useTheme, useToast } from "@chakra-ui/react"
-import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useDropzone } from "react-dropzone"
 import XLSX from "xlsx"
+import { useState } from "react"
+import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 
 const UPLOAD_TITLE = "Upload .xlsx, .xls or .csv file"
 const ERROR_TOAST_DESCRIPTION = "upload rejected"
 const ACTIVE_DROP_ZONE_TITLE = "Drop file here..."
 const BUTTON_TITLE = "Select file"
+const LOADING_TITLE = "Processing..."
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
@@ -17,12 +19,14 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
     colors: { rsi },
   } = useTheme()
   const toast = useToast()
+  const [loading, setLoading] = useState(false)
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     noClick: true,
     noKeyboard: true,
     maxFiles: 1,
     accept: ".xls, .csv, .xlsx",
     onDropRejected: (fileRejections) => {
+      setLoading(false)
       fileRejections.forEach((fileRejection) => {
         toast({
           status: "error",
@@ -32,18 +36,18 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       })
     },
     onDrop: async ([file]) => {
+      setLoading(true)
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
       onContinue(workbook)
     },
   })
+
   return (
     <Box
       {...getRootProps()}
       {...getDropZoneBorder(rsi["500"])}
       width="100%"
-      cursor="pointer"
-      onClick={open}
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -55,12 +59,18 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
         <Text size="lg" lineHeight={7} fontWeight="semibold">
           {ACTIVE_DROP_ZONE_TITLE}
         </Text>
+      ) : loading ? (
+        <Text size="lg" lineHeight={7} fontWeight="semibold">
+          {LOADING_TITLE}
+        </Text>
       ) : (
         <>
           <Text fontSize="lg" lineHeight={7} fontWeight="semibold">
             {UPLOAD_TITLE}
           </Text>
-          <Button mt="1rem">{BUTTON_TITLE}</Button>
+          <Button mt="1rem" onClick={open}>
+            {BUTTON_TITLE}
+          </Button>
         </>
       )}
     </Box>
