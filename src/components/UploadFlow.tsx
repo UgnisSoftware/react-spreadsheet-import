@@ -113,30 +113,6 @@ export const UploadFlow = ({ nextStep }: Props) => {
       )
     case Type.matchColumns:
     case Type.submitMatchColumns:
-    case Type.submitMatchColumnsError:
-      return (
-        <MatchColumns
-          headerValues={state.headerValues}
-          onCancel={() => {
-            setState({ type: Type.upload })
-          }}
-          values={state.values}
-          table={state.table}
-          loading={state.type === Type.submitMatchColumns}
-          error={state.type === Type.submitMatchColumnsError ? state.error : undefined}
-          onContinue={(values) => {
-            if (state.type === Type.matchColumns || state.type === Type.submitMatchColumnsError) {
-              setState({
-                type: Type.submitMatchColumns,
-                data: state.data,
-                headerValues: state.headerValues,
-                table: state.table,
-                values,
-              })
-            }
-          }}
-        />
-      )
     case Type.loadMatchColumns:
       return <Progress isIndeterminate />
     default:

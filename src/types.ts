@@ -1,8 +1,10 @@
-export type Props = {
+export type RsiProps = {
   config?: Config
   fields: Fields
   hooks?: Hooks
   onSubmit: (data: Result) => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 export type Config = {

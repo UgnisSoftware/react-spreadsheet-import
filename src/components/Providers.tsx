@@ -1,13 +1,13 @@
 import { ChakraProvider, CSSObject } from "@chakra-ui/react"
 import { createContext } from "react"
-import type { ReactSpreadsheetImportProps } from "./ReactSpreadsheetImport"
+import type { RsiProps } from "../types"
 
-export const RsiContext = createContext({} as ReactSpreadsheetImportProps)
+export const RsiContext = createContext({} as RsiProps)
 
 type ProvidersProps = {
   children: React.ReactNode
   theme: CSSObject
-  rsiValues: ReactSpreadsheetImportProps
+  rsiValues: RsiProps
 }
 
 export const Providers = ({ children, theme, rsiValues }: ProvidersProps) => (
