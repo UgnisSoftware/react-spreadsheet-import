@@ -51,25 +51,21 @@ const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 const TableComponent = connect(() => {
   const data = [
     {
-      id: "0",
       test: "Hello",
       second: "one",
       bool: true,
     },
     {
-      id: "1",
       test: "123123",
       second: "two",
       bool: true,
     },
     {
-      id: "2",
       test: "123123",
       second: null,
       bool: false,
     },
     {
-      id: "3",
       test: "111",
       second: "two",
       bool: true,
@@ -128,31 +124,26 @@ const TableComponent = connect(() => {
             const values = data.map((entry) => entry[field.key])
             values.forEach((value, index) => {
               if (values.indexOf(value) !== values.lastIndexOf(value)) {
-                const entry = data[index]
-                if (typeof entry?.id === "string") {
-                  errors[entry.id] = {
-                    ...errors[entry.id],
-                    [field.key]: {
-                      level: validation.level || "error",
-                      message: validation.errorMessage || "Field must be unique",
-                    },
-                  }
+                errors[index] = {
+                  ...errors[index],
+                  [field.key]: {
+                    level: validation.level || "error",
+                    message: validation.errorMessage || "Field must be unique",
+                  },
                 }
               }
             })
             break
           }
           case "required": {
-            data.forEach((entry) => {
-              if (entry[field.key] === null || entry[field.key] === undefined) {
-                if (typeof entry.id === "string") {
-                  errors[entry.id] = {
-                    ...errors[entry.id],
-                    [field.key]: {
-                      level: validation.level || "error",
-                      message: validation.errorMessage || "Field is required",
-                    },
-                  }
+            data.forEach((entry, index) => {
+              if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key] === "") {
+                errors[index] = {
+                  ...errors[index],
+                  [field.key]: {
+                    level: validation.level || "error",
+                    message: validation.errorMessage || "Field is required",
+                  },
                 }
               }
             })
@@ -160,18 +151,16 @@ const TableComponent = connect(() => {
           }
           case "regex": {
             const regex = new RegExp(validation.value, validation.flags)
-            data.forEach((entry) => {
+            data.forEach((entry, index) => {
               if (!entry[field.key]?.toString()?.match(regex)) {
-                if (typeof entry.id === "string") {
-                  errors[entry.id] = {
-                    ...errors[entry.id],
-                    [field.key]: {
-                      level: validation.level || "error",
-                      message:
-                        validation.errorMessage ||
-                        `Field did not match the regex /${validation.value}/${validation.flags} `,
-                    },
-                  }
+                errors[index] = {
+                  ...errors[index],
+                  [field.key]: {
+                    level: validation.level || "error",
+                    message:
+                      validation.errorMessage ||
+                      `Field did not match the regex /${validation.value}/${validation.flags} `,
+                  },
                 }
               }
             })
@@ -265,8 +254,9 @@ const TableComponent = connect(() => {
         ) : (
           row[column.key]
         ),
-      cellClass: (row: { _errors: any[] | null; id: string }) => {
-        switch (state.errors[row.id]?.[column.key]?.level) {
+      cellClass: (row: any) => {
+        const index = state.data.indexOf(row)
+        switch (state.errors[index]?.[column.key]?.level) {
           case "error":
             return "rdg-cell-error"
           case "warning":
@@ -282,7 +272,7 @@ const TableComponent = connect(() => {
 
   return (
     <EditableTable
-      rowKeyGetter={(row) => row.id}
+      rowKeyGetter={(row) => state.data.indexOf(row)}
       rows={state.data}
       onRowsChange={updateRow}
       columns={columns}
