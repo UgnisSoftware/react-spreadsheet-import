@@ -1,4 +1,4 @@
-export const serializeData = (data: string[][], valueMap: string[]) =>
+export const mapData = (data: string[][], valueMap: string[]) =>
   data.map((row) =>
     row.reduce<{ [k: string]: string }>((obj, value, index) => {
       if (valueMap[index]) {

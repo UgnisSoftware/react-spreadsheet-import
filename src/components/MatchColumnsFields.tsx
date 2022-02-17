@@ -39,9 +39,6 @@ export const MatchColumnsFields = ({ options }: MatchColumnsFieldsProps) => {
             </Box>
             {/*todo remove label and type casting when Select is fixed*/}
             <Select
-              options={options}
-              valueKey={"uniqueIdentifier" as any}
-              label={""}
               onChange={async () => {
                 form.validate().catch(() => {})
               }}
