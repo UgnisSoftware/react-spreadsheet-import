@@ -29,7 +29,7 @@ export const MatchColumns = ({ headerRow }: MatchColumnsProps) => {
         </Box>
         <FadingWrapper gridColumn={`1/${headerRow.length + 1}`} gridRow="2/3" />
         {headerRow.map((header, index) => (
-          <Box gridRow="2/3" gridColumn={`${index + 1}/${index + 2}`}>
+          <Box gridRow="2/3" gridColumn={`${index + 1}/${index + 2}`} key={header}>
             {header}
           </Box>
         ))}
@@ -40,7 +40,7 @@ export const MatchColumns = ({ headerRow }: MatchColumnsProps) => {
         </Box>
         <FadingWrapper gridColumn={`1/${headerRow.length + 1}`} gridRow="4/5" />
         {headerRow.map((header, index) => (
-          <Box gridRow="4/5" gridColumn={`${index + 1}/${index + 2}`}>
+          <Box gridRow="4/5" gridColumn={`${index + 1}/${index + 2}`} key={header}>
             {header}
           </Box>
         ))}
