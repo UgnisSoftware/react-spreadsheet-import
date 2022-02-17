@@ -1,7 +1,7 @@
 import { Box, Button, Text, useTheme, useToast } from "@chakra-ui/react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useDropzone } from "react-dropzone"
-import XLSX from "xlsx"
+import * as XLSX from "xlsx"
 
 const UPLOAD_TITLE = "Upload .xlsx, .xls or .csv file"
 const ERROR_TOAST_DESCRIPTION = "upload rejected"
