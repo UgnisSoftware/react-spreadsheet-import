@@ -39,13 +39,13 @@ export type Field = {
 }
 
 export type Checkbox = {
-  type: 'checkbox'
+  type: "checkbox"
   // Alternate values to be treated as booleans, e.g. 'yes'-> true, 'no' -> false
-  booleanMatches?: {[key: string]: boolean}[]
+  booleanMatches?: { [key: string]: boolean }[]
 }
 
 export type Select = {
-  type : 'select'
+  type: "select"
   // Options displayed in Select component
   options: SelectOptions[]
 }
@@ -58,23 +58,24 @@ export type SelectOptions = {
 }
 
 export type Input = {
-  type: 'input'
+  type: "input"
 }
 
-export type Validation =  BasicValidation | RegexValidation
+export type Validation = BasicValidation | RegexValidation
 
 export type BasicValidation = {
-  rule: 'unique' | 'required' 	//... to be determined
+  rule: "unique" | "required" //... to be determined
   errorMessage?: string
+  level?: ErrorLevel
 }
 
 export type RegexValidation = {
-  rule: 'regex'
-  regexOptions?: RegexOption[]
+  rule: "regex"
+  value: string
+  flags?: string
   errorMessage: string
+  level?: ErrorLevel
 }
-
-export type RegexOption = 'i' | 'm' | 'u' | 's'
 
 export type Hooks = {
   // Runs after column matching and on entry change, more performant
@@ -85,7 +86,7 @@ export type Hooks = {
   initalHooks: TableHook[]
 }
 
-export type RowHook = ({...rowValues}: object) => Promise<Entry>
+export type RowHook = ({ ...rowValues }: object) => Promise<Entry>
 export type TableHook = (tableData: object[]) => Promise<Entry[]>
 
 export type Entry = {
@@ -93,9 +94,11 @@ export type Entry = {
   info: Info[]
 }
 
+export type ErrorLevel = "info" | "warning" | "error"
+
 export type Info = {
   message: string
-  level: 'info' | 'warning' | 'error'
+  level: ErrorLevel
 }
 
 export type Result = {

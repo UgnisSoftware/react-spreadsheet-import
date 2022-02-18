@@ -22,11 +22,6 @@ const createGlobalStyleOverride = () => css`
     --rdg-selection-color: none;
   }
 
-  .rdg-header-row .rdg-cell {
-    --rdg-selection-color: none;
-    border: none;
-  }
-
   .rdg-checkbox {
     --rdg-selection-color: none;
     background-color: var(--rdg-header-background-color);
@@ -51,13 +46,20 @@ const createGlobalStyleOverride = () => css`
   }
 
   .rdg-cell[aria-selected="true"] {
-    border-radius: 2px;
     box-shadow: inset 0 0 0 1px var(--rdg-selection-color);
   }
 
   .rdg-cell-error {
     background-color: var(--chakra-colors-red-50);
     box-shadow: inset 0 0 0 1px var(--chakra-colors-red-100);
+  }
+  .rdg-cell-warning {
+    background-color: var(--chakra-colors-orange-50);
+    box-shadow: 0 1px 0 0 var(--chakra-colors-orange-100);
+  }
+  .rdg-cell-info {
+    background-color: var(--chakra-colors-blue-50);
+    box-shadow: inset 0 0 0 1px var(--chakra-colors-blue-100);
   }
 
   .rdg {
@@ -74,7 +76,7 @@ const createGlobalStyleOverride = () => css`
     --rdg-font-size: 14px;
   }
 `
-const ROW_HEIGHT = 42
+const ROW_HEIGHT = 35
 
 interface Props<Data> extends DataGridProps<Data> {
   rowHeight?: number

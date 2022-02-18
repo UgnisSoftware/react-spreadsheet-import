@@ -1,6 +1,6 @@
 import { Box, Button, Text, useTheme, useToast } from "@chakra-ui/react"
 import { useDropzone } from "react-dropzone"
-import XLSX from "xlsx"
+import * as XLSX from "xlsx"
 import { useState } from "react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 
