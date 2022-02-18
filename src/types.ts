@@ -1,39 +1,40 @@
-export type RsiProps = {
-  config?: Config
-  fields: Fields
-  hooks?: Hooks
-  onSubmit: (data: Result) => void
-  isOpen: boolean
-  onClose: () => void
+type MapKeyTupleToProps<T, P extends [keyof T] | Array<keyof T>> = {
+  [K in keyof P]: P[K] extends keyof T ? T[P[K]] : never
 }
 
-export type Config = {
-  // Title of importer modal
-  title?: string
-  // Specifies maximum number of rows for a single import
-  maxRecords?: number
-  // Automatically map imported headers to specified fields if possible
-  autoMapHeaders?: boolean
-  // Theme cofiguration passed to underlying Chakra-UI
+export type RsiProps<T = any> = {
+  isOpen: boolean
+  onClose: () => void
+  // Theme configuration passed to underlying Chakra-UI
   customTheme?: object
+  // Field description for requested data
+  fields: Fields<T>
+  // Runs after column matching and on entry change, more performant
+  rowHook?: RowHook<T>
+  // Runs after column matching and on entry change
+  tableHook?: TableHook<T>
+  // Runs once before validation step, used for data mutations
+  initialHook?: InitHook<T>
+  // Function called after user finishes the flow
+  onSubmit: (data: Result<T>) => void
 }
 
 // Data model RSI uses for spreadsheet imports
-export type Fields = Field[]
+export type Fields<T> = Field<T>[]
 
-export type Field = {
+export type Field<T> = {
   // UI-facing field label
   label: string
   // Field's unique identifier
-  key: string
+  key: Extract<keyof T, string>
   // UI-facing additional information displayed via tooltip and ? icon
   description?: string
   // Alternate header titles used for fields' auto-matching, e.g. "fname" -> "firstName"
-  matches?: string[]
+  alternateNames?: string[]
   // Validations used for field entries
   validations?: Validation[]
   // Field entry component, default: Input
-  fieldType: Checkbox | Select | Input
+  fieldType: Checkbox | Select | Input | NumberInput
   // UI-facing values shown to user as field examples pre-upload phase
   examples?: string[]
 }
@@ -61,6 +62,10 @@ export type Input = {
   type: "input"
 }
 
+export type NumberInput = {
+  type: "numberInput"
+}
+
 export type Validation = BasicValidation | RegexValidation
 
 export type BasicValidation = {
@@ -77,22 +82,12 @@ export type RegexValidation = {
   level?: ErrorLevel
 }
 
-export type Hooks = {
-  // Runs after column matching and on entry change, more performant
-  rowHooks: RowHook[]
-  // Runs after column matching and on entry change
-  tableHooks: TableHook[]
-  // Runs once after data import, used for data mutations
-  initalHooks: TableHook[]
-}
-
-export type RowHook = ({ ...rowValues }: object) => Promise<Entry>
-export type TableHook = (tableData: object[]) => Promise<Entry[]>
-
-export type Entry = {
-  value: unknown
-  info: Info[]
-}
+export type RowHook<T> = (row: T, table: T[], addError: (fieldKey: keyof T, error: Info) => void) => Promise<T>
+export type TableHook<T> = (
+  table: T[],
+  addError: (fieldKey: keyof T, rowIndex: number, error: Info) => void,
+) => Promise<T[]>
+export type InitHook<T> = (table: T[]) => Promise<T[]>
 
 export type ErrorLevel = "info" | "warning" | "error"
 
@@ -101,9 +96,9 @@ export type Info = {
   level: ErrorLevel
 }
 
-export type Result = {
-  validData: object[]
-  invalidData: object[]
+export type Result<T> = {
+  validData: T[]
+  invalidData: T[]
   all: []
 }
 
