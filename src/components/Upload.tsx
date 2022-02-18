@@ -12,11 +12,11 @@ type UploadProps = {
 }
 
 export const Upload = ({ onContinue }: UploadProps) => {
-  const { config } = useRsi()
+  const { title } = useRsi()
   return (
     <Box minH="fit-content" display="flex" flex={1} p="2rem" flexDirection="column">
       <Heading size="lg" color="gray.700" mb="2rem">
-        {config?.title || DEFAULT_TITLE}
+        {title || DEFAULT_TITLE}
       </Heading>
       <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" color="gray.700">
         {MANIFEST_TITLE}

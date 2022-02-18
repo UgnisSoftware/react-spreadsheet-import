@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from "react"
-import {Box, Button, Checkbox, Text} from "@chakra-ui/react"
+import React, { useCallback, useMemo, useState } from "react"
+import { Box, Button, Checkbox, Text } from "@chakra-ui/react"
 import Table, { useRowSelection } from "react-data-grid"
-import {ignoreState, useLape} from "lape";
 
 const SELECT_HEADER_TITLE = "Select header row"
 const CANCEL_BUTTON_TITLE = "Cancel"
@@ -36,9 +35,8 @@ type SelectHeaderProps = {
 }
 
 export const SelectHeader = ({ data, onCancel, onContinue }: SelectHeaderProps) => {
-  const state = useLape<{ selectedRow: ReadonlySet<any>; error?: string }>({
-    selectedRow: ignoreState(new Set()),
-  })
+  const [selectedRows, setSelectedRows] = useState<ReadonlySet<any>>(new Set())
+  const [error, setError] = useState<string | undefined>()
 
   const rowLength = useMemo(() => Math.max(...data.map((row) => row.length)), [data])
   const columns = useMemo(
@@ -61,9 +59,9 @@ export const SelectHeader = ({ data, onCancel, onContinue }: SelectHeaderProps) 
 
   const rowKeyGetter = useCallback((row) => row, [])
   const handleContinue = useCallback(() => {
-    const [selectedRow] = state.selectedRow
+    const [selectedRow] = selectedRows
     if (!selectedRow) {
-      state.error = NO_SELECTION_ERROR
+      setError(NO_SELECTION_ERROR)
       return
     }
     // We consider data above header to be redundant
@@ -85,9 +83,9 @@ export const SelectHeader = ({ data, onCancel, onContinue }: SelectHeaderProps) 
           <Button onClick={handleContinue}>{CONFIRM_BUTTON_TITLE}</Button>
         </Box>
       </Box>
-      {state.error && (
+      {error && (
         <Text color="error.500" px="0.75rem" pb="0.75rem">
-          {state.error}
+          {error}
         </Text>
       )}
       <Box display="flex" flex={1} px={1} pb="2rem">
@@ -96,16 +94,16 @@ export const SelectHeader = ({ data, onCancel, onContinue }: SelectHeaderProps) 
           rows={data as any}
           columns={columns}
           headerRowHeight={0}
-          selectedRows={state.selectedRow}
+          selectedRows={selectedRows}
           onSelectedRowsChange={(rows) => {
-            state.error = undefined
+            setError(undefined)
             const size = rows.size
             if (size === 1) {
-              state.selectedRow = ignoreState(rows)
+              setSelectedRows(rows)
             } else {
               const [_, newItem] = rows
               // react-data-grid only accepts Sets
-              state.selectedRow = ignoreState(new Set([newItem]))
+              setSelectedRows(new Set([newItem]))
             }
           }}
           className="rdg-static"
