@@ -1,10 +1,10 @@
 import type { Field, RsiProps } from "../types"
 
-const fields: Field[] = [
+const fields: Field<any>[] = [
   {
     label: "Name",
     key: "name",
-    matches: ["first name"],
+    alternateNames: ["first name"],
     fieldType: {
       type: "input",
     },
@@ -13,7 +13,7 @@ const fields: Field[] = [
   {
     label: "Surname",
     key: "name",
-    matches: ["second name"],
+    alternateNames: ["second name"],
     fieldType: {
       type: "input",
     },
@@ -22,7 +22,7 @@ const fields: Field[] = [
   {
     label: "Age",
     key: "age",
-    matches: ["oldness"],
+    alternateNames: ["oldness"],
     fieldType: {
       type: "input",
     },
@@ -35,5 +35,4 @@ export const mockRsiValues: RsiProps = {
   onSubmit: () => {},
   isOpen: true,
   onClose: () => {},
-  config: {},
 }

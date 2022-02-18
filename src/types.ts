@@ -3,7 +3,15 @@ type MapKeyTupleToProps<T, P extends [keyof T] | Array<keyof T>> = {
 }
 
 export type RsiProps<T = any> = {
+  // Title of importer modal
+  title?: string
+  // Specifies maximum number of rows for a single import
+  maxRecords?: number
+  // Automatically map imported headers to specified fields if possible
+  autoMapHeaders?: boolean
+  // is open by default
   isOpen: boolean
+  // callback when RSI is closed before final submit
   onClose: () => void
   // Theme configuration passed to underlying Chakra-UI
   customTheme?: object
