@@ -4,7 +4,7 @@ const fields: Field<any>[] = [
   {
     label: "Name",
     key: "name",
-    alternateNames: ["first name"],
+    alternateMatches: ["first name"],
     fieldType: {
       type: "input",
     },
@@ -13,7 +13,7 @@ const fields: Field<any>[] = [
   {
     label: "Surname",
     key: "name",
-    alternateNames: ["second name"],
+    alternateMatches: ["second name"],
     fieldType: {
       type: "input",
     },
@@ -22,7 +22,7 @@ const fields: Field<any>[] = [
   {
     label: "Age",
     key: "age",
-    alternateNames: ["oldness"],
+    alternateMatches: ["oldness"],
     fieldType: {
       type: "input",
     },

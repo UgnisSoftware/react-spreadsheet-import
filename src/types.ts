@@ -37,8 +37,8 @@ export type Field<T> = {
   key: Extract<keyof T, string>
   // UI-facing additional information displayed via tooltip and ? icon
   description?: string
-  // Alternate header titles used for fields' auto-matching, e.g. "fname" -> "firstName"
-  alternateNames?: string[]
+  // Alternate labels used for fields' auto-matching, e.g. "fname" -> "firstName"
+  alternateMatches?: string[]
   // Validations used for field entries
   validations?: Validation[]
   // Field entry component, default: Input
