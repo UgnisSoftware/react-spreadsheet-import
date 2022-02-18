@@ -3,21 +3,11 @@ import { ModalCloseButton } from "./ModalCloseButton"
 import { Steps } from "./Steps"
 import { themeOverrides, colorSchemeOverrides } from "../theme"
 import { Providers } from "./Providers"
+import type { RsiProps } from "../types"
 
 export const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
-export type Config = {
-  // Title of importer modal
-  title?: string
-}
-
-export type ReactSpreadsheetImportProps = {
-  isOpen: boolean
-  onClose: () => void
-  config: Config
-}
-
-export const ReactSpreadsheetImport = (props: ReactSpreadsheetImportProps) => {
+export const ReactSpreadsheetImport = (props: RsiProps) => {
   const { isOpen, onClose } = props
   return (
     <Providers theme={theme} rsiValues={props}>

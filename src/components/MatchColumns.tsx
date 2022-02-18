@@ -1,80 +1,50 @@
-import React, { useMemo } from "react"
-import { MatchColumnsFields } from "./MatchColumnsFields"
-import { generateOptions } from "../utils/generateOptions"
-import { Box, Text, Button } from "@chakra-ui/react"
+import React from "react"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { FadingWrapper } from "./FadingWrapper"
 
-const MATCH_COLUMNS_TITLE = "Validate if columns were matched correctly"
-const CANCEL_BUTTON_TITLE = "Cancel"
-const CONFIRM_BUTTON_TITLE = "Confirm and continue"
-const REQUIRED_ERROR_TEXT = "Required"
-const DUPLICATE_COLUMN_TEXT = "Duplicate column"
+const MATCH_COLUMNS_TITLE = "Validate column matching"
+const USER_TABLE_TITLE = "Your table"
+const TEMPLATE_TITLE = "Will become"
 
 type MatchColumnsProps = {
-  onCancel: () => void
-  headerValues: string[]
-  table: any
-  onContinue: (matchedColumns: object) => void
-  error?: string
-  values: object
-  loading: boolean
+  headerRow: string[]
 }
-export const MatchColumns = ({
-  onCancel,
-  headerValues,
-  table,
-  onContinue,
-  error,
-  values,
-  loading,
-}: MatchColumnsProps) => {
-  const options = useMemo(() => generateOptions(table), [table])
-  // const generatedSchema = useMemo(
-  //   () =>
-  //     yup.object(
-  //       Object.fromEntries(
-  //         headerValues.map((headerValue) => [
-  //           headerValue,
-  //           yup
-  //             .string()
-  //             .required(REQUIRED_ERROR_TEXT)
-  //             .test(
-  //               "duplicate",
-  //               DUPLICATE_COLUMN_TEXT,
-  //               (value: string | undefined, context: { [key: string]: any }): any => {
-  //                 const isUnique =
-  //                   Object.values(context.parent).filter((parentValue) => value && parentValue === value).length <= 1
-  //                 return isUnique
-  //               },
-  //             ),
-  //         ]),
-  //       ),
-  //     ),
-  //   [headerValues],
-  // )
 
-  //<Form onSubmit={onContinue} initialValues={values} validation={generatedSchema}>
-
+export const MatchColumns = ({ headerRow }: MatchColumnsProps) => {
   return (
-    <>
-      <Box minH="5.375rem" display="flex" alignItems="center" px="0.75rem">
-        <Text variant="h5" mr="1rem">
-          {MATCH_COLUMNS_TITLE}
-        </Text>
-        <Box display="flex" flex={1} justifyContent="flex-end">
-          <Button variant="outline" mr="1rem" onClick={onCancel}>
-            {CANCEL_BUTTON_TITLE}
-          </Button>
-          <Button type="submit" isLoading={loading}>
-            {CONFIRM_BUTTON_TITLE}
-          </Button>
+    <Flex flex={1} flexDir="column" minH={"100vh"}>
+      <Heading size="lg" mb={8}>
+        {MATCH_COLUMNS_TITLE}
+      </Heading>
+      <Flex
+        flex={1}
+        display="grid"
+        gridTemplateRows="auto 1fr auto 1fr"
+        gridTemplateColumns={`repeat(${headerRow.length}, minmax(20rem, 1fr))`}
+      >
+        <Box gridColumn={`1/${headerRow.length + 1}`}>
+          <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4}>
+            {USER_TABLE_TITLE}
+          </Text>
         </Box>
-      </Box>
-      {error && (
-        <Text color="red.500" pl={1} pb={1}>
-          {error}
-        </Text>
-      )}
-      <MatchColumnsFields headerValues={headerValues} options={options} />
-    </>
+        <FadingWrapper gridColumn={`1/${headerRow.length + 1}`} gridRow="2/3" />
+        {headerRow.map((header, index) => (
+          <Box gridRow="2/3" gridColumn={`${index + 1}/${index + 2}`} key={header}>
+            {header}
+          </Box>
+        ))}
+        <Box gridColumn={`1/${headerRow.length + 1}`}>
+          <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4} mt={8}>
+            {TEMPLATE_TITLE}
+          </Text>
+        </Box>
+        <FadingWrapper gridColumn={`1/${headerRow.length + 1}`} gridRow="4/5" />
+        {headerRow.map((header, index) => (
+          <Box gridRow="4/5" gridColumn={`${index + 1}/${index + 2}`} key={header}>
+            {header}
+          </Box>
+        ))}
+      </Flex>
+    </Flex>
   )
 }
