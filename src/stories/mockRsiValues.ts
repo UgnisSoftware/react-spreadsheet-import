@@ -113,3 +113,10 @@ export const editableTableFields: Fields<any> = [
     fieldType: { type: "checkbox" },
   },
 ]
+
+export const headerSelectionTableFields = [
+  ["text", "num", "select", "bool"],
+  ["Hello", "123", "one", "true"],
+  ["Hello", "123", "one", "true"],
+  ["Hello", "123", "one", "true"],
+]
