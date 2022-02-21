@@ -15,7 +15,7 @@ export const UserTableColumn = ({ header, entries }: UserTableColumnProps) => {
         <CloseButton size="sm" bg="gray.100" />
       </Flex>
       {entries.map((entry) => (
-        <Text fontSize="sm" lineHeight={5} fontWeight="medium" px={6} py={4}>
+        <Text fontSize="sm" lineHeight={5} fontWeight="medium" px={6} py={4} key={entry}>
           {entry}
         </Text>
       ))}

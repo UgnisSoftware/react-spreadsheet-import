@@ -24,6 +24,22 @@ export const themeOverrides = {
     outline: 0,
   },
   components: {
+    MatchIcon: {
+      baseStyle: (props: any) => {
+        return {
+          ...StepsStyleConfig.baseStyle(props).stepIconContainer,
+          borderWidth: "2px",
+          bg: "white",
+          borderColor: "yellow.500",
+          color: "white",
+          transitionDuration: 'ultra-fast',
+        }
+      },
+      defaultProps: {
+        size: "md",
+        colorScheme: "green",
+      },
+    },
     Steps: {
       ...StepsStyleConfig,
       baseStyle: (props: any) => {

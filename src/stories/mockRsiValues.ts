@@ -12,7 +12,7 @@ const fields: Field<any>[] = [
   },
   {
     label: "Surname",
-    key: "name",
+    key: "surname",
     alternateMatches: ["second name"],
     fieldType: {
       type: "input",

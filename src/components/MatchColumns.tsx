@@ -1,7 +1,10 @@
-import React from "react"
+import React, { useCallback, useState } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import { FadingWrapper } from "./FadingWrapper"
 import { UserTableColumn } from "./UserTableColumn"
+import { useRsi } from "../hooks/useRsi"
+import { TemplateColumn } from "./TemplateColumn"
+import type { Field } from "../types"
 
 const MATCH_COLUMNS_TITLE = "Validate column matching"
 const USER_TABLE_TITLE = "Your table"
@@ -12,9 +15,49 @@ type MatchColumnsProps = {
   headerIndex: number
 }
 
+export enum ColumnType {
+  empty,
+  ignored,
+  matched,
+  enumMatched,
+}
+
+export type Column =
+  | { type: ColumnType.empty; index: number; header: string }
+  | { type: ColumnType.ignored; index: number; header: string }
+  | { type: ColumnType.matched; index: number; header: string; value: string }
+  | { type: ColumnType.enumMatched; index: number; header: string; value: string }
+
+type Columns = Column[]
+
+const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => {
+  switch (field?.fieldType.type) {
+    case "select":
+      return { ...oldColumn, type: ColumnType.enumMatched, value: field.key }
+    case "checkbox":
+    case "input":
+      return { ...oldColumn, type: ColumnType.matched, value: field.key }
+    default:
+      return { index: oldColumn.index, header: oldColumn.header, type: ColumnType.empty }
+  }
+}
+
 export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
-  const header = data[headerIndex]
+  const header = data[headerIndex].map((el) => el.toString())
   const dataExample = data.slice(headerIndex + 1, 3)
+  const [columns, setColumns] = useState<Columns>(
+    header.map((headerValues, index) => ({ type: ColumnType.empty, index, header: headerValues })),
+  )
+  const { fields } = useRsi()
+
+  const onChange = useCallback(
+    (value, columnIndex) => {
+      const field = fields.find((field) => field.key === value)
+
+      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(field, column) : column)))
+    },
+    [columns],
+  )
 
   return (
     <Flex flex={1} flexDir="column" minH={"100vh"} px={4}>
@@ -44,9 +87,9 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
           </Text>
         </Box>
         <FadingWrapper gridColumn={`1/${header.length + 3}`} gridRow="4/5" />
-        {header.map((header, index) => (
-          <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={header} py={3}>
-            {header}
+        {columns.map((column, index) => (
+          <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py={3} pl={2} pr={3}>
+            <TemplateColumn column={column} onChange={onChange} />
           </Box>
         ))}
       </Flex>
