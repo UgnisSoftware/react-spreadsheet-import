@@ -9,7 +9,7 @@ const createGlobalStyleOverride = () => css`
 
   .rdg-cell {
     contain: size layout style paint;
-    border-right: 1px solid var(--chakra-colors-gray-100);
+    border-right: none;
     border-bottom: 1px solid var(--chakra-colors-gray-100);
     white-space: nowrap;
     overflow: hidden;
@@ -17,20 +17,25 @@ const createGlobalStyleOverride = () => css`
   }
 
   .rdg-static .rdg-cell {
-    border-right: none;
-    background-color: inherit;
     --rdg-selection-color: none;
+  }
+
+  .rdg-radio {
+    display: flex;
+    align-items: center;
   }
 
   .rdg-checkbox {
     --rdg-selection-color: none;
-    background-color: var(--rdg-header-background-color);
     display: flex;
     align-items: center;
   }
 
   .rdg-cell:first-child {
     border-left: 1px solid var(--chakra-colors-gray-100);
+  }
+  .rdg-cell:last-child {
+    border-right: 1px solid var(--chakra-colors-gray-100);
   }
 
   .rdg-row:last-child .rdg-cell:first-child {

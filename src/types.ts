@@ -42,7 +42,7 @@ export type Field<T> = {
   // Validations used for field entries
   validations?: Validation[]
   // Field entry component, default: Input
-  fieldType: Checkbox | Select | Input | NumberInput
+  fieldType: Checkbox | Select | Input
   // UI-facing values shown to user as field examples pre-upload phase
   examples?: string[]
 }
@@ -70,10 +70,6 @@ export type Input = {
   type: "input"
 }
 
-export type NumberInput = {
-  type: "numberInput"
-}
-
 export type Validation = BasicValidation | RegexValidation
 
 export type BasicValidation = {
@@ -90,12 +86,9 @@ export type RegexValidation = {
   level?: ErrorLevel
 }
 
-export type RowHook<T> = (row: T, table: T[], addError: (fieldKey: keyof T, error: Info) => void) => Promise<T>
-export type TableHook<T> = (
-  table: T[],
-  addError: (fieldKey: keyof T, rowIndex: number, error: Info) => void,
-) => Promise<T[]>
-export type InitHook<T> = (table: T[]) => Promise<T[]>
+export type RowHook<T> = (row: T, addError: (fieldKey: keyof T, error: Info) => void, table: T[]) => T
+export type TableHook<T> = (table: T[], addError: (rowIndex: number, fieldKey: keyof T, error: Info) => void) => T[]
+export type InitHook<T> = (table: T[]) => T[]
 
 export type ErrorLevel = "info" | "warning" | "error"
 
