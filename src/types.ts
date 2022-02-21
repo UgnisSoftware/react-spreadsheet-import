@@ -42,7 +42,7 @@ export type Field<T> = {
   // Validations used for field entries
   validations?: Validation[]
   // Field entry component, default: Input
-  fieldType: Checkbox | Select | Input | NumberInput
+  fieldType: Checkbox | Select | Input
   // UI-facing values shown to user as field examples pre-upload phase
   examples?: string[]
 }
@@ -68,10 +68,6 @@ export type SelectOptions = {
 
 export type Input = {
   type: "input"
-}
-
-export type NumberInput = {
-  type: "numberInput"
 }
 
 export type Validation = BasicValidation | RegexValidation

@@ -49,38 +49,49 @@ const SelectColumn: Column<any, any> = {
 
 const initialData = [
   {
-    test: "Hello",
-    second: "one",
+    text: "Hello",
+    num: "123123",
+    select: "one",
     bool: true,
   },
   {
-    test: "123123",
-    second: "two",
+    text: "Hello",
+    num: "12312zsas3",
+    select: "two",
     bool: true,
   },
   {
-    test: "123123",
-    second: null,
+    text: "Whooa",
+    num: "123123",
+    select: null,
     bool: false,
   },
   {
-    test: "111",
-    second: "two",
+    text: "Goodbye",
+    num: "111",
+    select: "two",
     bool: true,
   },
 ]
 
 const fields: Fields<any> = [
   {
-    key: "test",
-    label: "Tests",
+    key: "text",
+    label: "Texts",
     fieldType: { type: "input" },
     validations: [
       {
         rule: "unique",
-        errorMessage: "Test must be unique",
+        errorMessage: "Text must be unique",
         level: "info",
       },
+    ],
+  },
+  {
+    key: "num",
+    label: "Number",
+    fieldType: { type: "input" },
+    validations: [
       {
         rule: "regex",
         value: "^\\d+$",
@@ -90,8 +101,8 @@ const fields: Fields<any> = [
     ],
   },
   {
-    key: "second",
-    label: "Second",
+    key: "select",
+    label: "Select",
     fieldType: {
       type: "select",
       options: [
@@ -102,7 +113,7 @@ const fields: Fields<any> = [
     validations: [
       {
         rule: "required",
-        errorMessage: "Second is required",
+        errorMessage: "Select is required",
       },
     ],
   },
@@ -334,26 +345,7 @@ const TableComponent = <T extends {}>({
 export const Table = () => (
   <ChakraProvider theme={theme}>
     <div style={{ blockSize: "calc(100vh - 32px)" }}>
-      <TableComponent
-        fields={fields}
-        initialData={initialData}
-        rowHook={(row, addError) => {
-          if (row.second !== "one") {
-            addError("second", {
-              level: "error",
-              message: "Whaaaat",
-            })
-          }
-          return {...row, test: '123123'}
-        }}
-        tableHook={(rows, addError) => {
-          addError(2, "bool", {
-            level: "error",
-            message: "Error you in particular",
-          })
-          return rows
-        }}
-      />
+      <TableComponent fields={fields} initialData={initialData} />
     </div>
   </ChakraProvider>
 )
