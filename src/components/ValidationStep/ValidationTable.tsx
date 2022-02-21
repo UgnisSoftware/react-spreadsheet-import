@@ -37,9 +37,7 @@ export const ValidationTable = <T extends Data>({
       onRowsChange={updateRow}
       columns={columns}
       selectedRows={selectedRows}
-      onSelectedRowsChange={(rows) => {
-        setSelectedRows(rows)
-      }}
+      onSelectedRowsChange={setSelectedRows}
     />
   )
 }
