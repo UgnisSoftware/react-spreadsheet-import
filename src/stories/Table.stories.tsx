@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { colorSchemeOverrides, themeOverrides } from "../theme"
 import { editableTableFields, editableTableInitialData } from "./mockRsiValues"
-import { ValidationTable } from "../components/ValidationTable"
+import { ValidationTable } from "../components/ValidationStep/ValidationTable"
 export default {
   title: "Validation table",
 }
