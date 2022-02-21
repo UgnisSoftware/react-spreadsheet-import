@@ -1,5 +1,5 @@
 import { Column, FormatterProps, useRowSelection } from "react-data-grid"
-import { Box, Checkbox, Input, Select, Switch } from "@chakra-ui/react"
+import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
 import type { Field, Fields } from "../../types"
 import type { ChangeEvent } from "react"
 import type { Data, Meta } from "./types"
@@ -80,28 +80,44 @@ export const generateColumns = <T,>(fields: Fields<T>) => [
       editorOptions: {
         editOnClick: true,
       },
-      formatter: ({ row, onRowChange }) =>
-        column.fieldType.type === "checkbox" ? (
-          <Box
-            display="flex"
-            alignItems="center"
-            height="100%"
-            onClick={(event) => {
-              event.stopPropagation()
-            }}
-          >
-            <Switch
-              isChecked={row[column.key] as boolean}
-              onChange={() => {
-                onRowChange({ ...row, [column.key]: !row[column.key] })
+      formatter: ({ row, onRowChange }) => {
+        const component =
+          column.fieldType.type === "checkbox" ? (
+            <Box
+              display="flex"
+              alignItems="center"
+              height="100%"
+              onClick={(event) => {
+                event.stopPropagation()
               }}
-            />
-          </Box>
-        ) : column.fieldType.type === "select" ? (
-          <div>{column.fieldType.options.find((option) => option.value === row[column.key])?.label || null}</div>
-        ) : (
-          <div>{row[column.key]}</div>
-        ),
+            >
+              <Switch
+                isChecked={row[column.key] as boolean}
+                onChange={() => {
+                  onRowChange({ ...row, [column.key]: !row[column.key] })
+                }}
+              />
+            </Box>
+          ) : column.fieldType.type === "select" ? (
+            <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+              {column.fieldType.options.find((option) => option.value === row[column.key])?.label || null}
+            </Box>
+          ) : (
+            <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+              {row[column.key]}
+            </Box>
+          )
+
+        if (row.__errors?.[column.key]) {
+          return (
+            <Tooltip placement="top" hasArrow label={row.__errors?.[column.key]?.message}>
+              {component}
+            </Tooltip>
+          )
+        }
+
+        return component
+      },
       cellClass: (row: Meta) => {
         switch (row.__errors?.[column.key]?.level) {
           case "error":
