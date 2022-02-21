@@ -3,14 +3,13 @@ import { EditableTable } from "../EditableTable"
 import { generateSelectionColumns } from "./columns"
 
 interface Props {
-  initialData: string[][]
+  data: string[][]
 }
 
-export const SelectHeaderTable = ({ initialData }: Props) => {
-  const [data] = useState<string[][]>(initialData)
+export const SelectHeaderTable = ({ data }: Props) => {
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
 
-  const columns = useMemo(() => generateSelectionColumns(data), [])
+  const columns = useMemo(() => generateSelectionColumns(data), [data])
 
   return (
     <EditableTable
