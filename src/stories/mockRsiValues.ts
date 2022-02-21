@@ -51,7 +51,7 @@ export const editableTableInitialData = [
     bool: true,
   },
   {
-    text: "Whooa",
+    text: "Whooaasdasdawdawdawdiouasdiuasdisdhasd",
     num: "123123",
     select: undefined,
     bool: false,
@@ -85,7 +85,7 @@ export const editableTableFields: Fields<any> = [
       {
         rule: "regex",
         value: "^\\d+$",
-        errorMessage: "Test must be number",
+        errorMessage: "Test must be a number",
         level: "warning",
       },
     ],
