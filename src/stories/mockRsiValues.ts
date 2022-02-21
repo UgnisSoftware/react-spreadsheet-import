@@ -1,4 +1,4 @@
-import type { Field, RsiProps } from "../types"
+import type { Fields, Field, RsiProps } from "../types"
 
 const fields: Field<any>[] = [
   {
@@ -36,3 +36,80 @@ export const mockRsiValues: RsiProps = {
   isOpen: true,
   onClose: () => {},
 }
+
+export const editableTableInitialData = [
+  {
+    text: "Hello",
+    num: "123123",
+    select: "one",
+    bool: true,
+  },
+  {
+    text: "Hello",
+    num: "12312zsas3",
+    select: "two",
+    bool: true,
+  },
+  {
+    text: "Whooa",
+    num: "123123",
+    select: undefined,
+    bool: false,
+  },
+  {
+    text: "Goodbye",
+    num: "111",
+    select: "two",
+    bool: true,
+  },
+]
+
+export const editableTableFields: Fields<any> = [
+  {
+    key: "text",
+    label: "Texts",
+    fieldType: { type: "input" },
+    validations: [
+      {
+        rule: "unique",
+        errorMessage: "Text must be unique",
+        level: "info",
+      },
+    ],
+  },
+  {
+    key: "num",
+    label: "Number",
+    fieldType: { type: "input" },
+    validations: [
+      {
+        rule: "regex",
+        value: "^\\d+$",
+        errorMessage: "Test must be number",
+        level: "warning",
+      },
+    ],
+  },
+  {
+    key: "select",
+    label: "Select",
+    fieldType: {
+      type: "select",
+      options: [
+        { label: "One", value: "one" },
+        { label: "Two", value: "two" },
+      ],
+    },
+    validations: [
+      {
+        rule: "required",
+        errorMessage: "Select is required",
+      },
+    ],
+  },
+  {
+    key: "bool",
+    label: "Bool",
+    fieldType: { type: "checkbox" },
+  },
+]
