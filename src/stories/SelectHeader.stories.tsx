@@ -11,7 +11,7 @@ const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 export const Table = () => (
   <ChakraProvider theme={theme}>
     <div style={{ blockSize: "calc(100vh - 32px)" }}>
-      <SelectHeaderTable initialData={headerSelectionTableFields} />
+      <SelectHeaderTable data={headerSelectionTableFields} />
     </div>
   </ChakraProvider>
 )
