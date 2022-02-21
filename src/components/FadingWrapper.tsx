@@ -8,11 +8,19 @@ type FadingWrapperProps = {
 
 export const FadingWrapper = ({ gridColumn, gridRow }: FadingWrapperProps) => (
   <>
-    <Box gridColumn={gridColumn} gridRow={gridRow} borderRadius="1.2rem" border="1px solid" borderColor="gray.200" />
     <Box
       gridColumn={gridColumn}
       gridRow={gridRow}
-      bg="linear-gradient(rgba(255, 255, 255, 0), 90%, rgba(255, 255, 255, 1))"
+      borderRadius="1.2rem"
+      border="1px solid"
+      borderColor="gray.200"
+      pointerEvents="none"
+    />
+    <Box
+      gridColumn={gridColumn}
+      gridRow={gridRow}
+      pointerEvents="none"
+      bg="linear-gradient(rgba(255, 255, 255, 0), 80%, rgba(255, 255, 255, 1))"
     />
   </>
 )
