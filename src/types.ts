@@ -90,12 +90,9 @@ export type RegexValidation = {
   level?: ErrorLevel
 }
 
-export type RowHook<T> = (row: T, table: T[], addError: (fieldKey: keyof T, error: Info) => void) => Promise<T>
-export type TableHook<T> = (
-  table: T[],
-  addError: (fieldKey: keyof T, rowIndex: number, error: Info) => void,
-) => Promise<T[]>
-export type InitHook<T> = (table: T[]) => Promise<T[]>
+export type RowHook<T> = (row: T, addError: (fieldKey: keyof T, error: Info) => void, table: T[]) => T
+export type TableHook<T> = (table: T[], addError: (rowIndex: number, fieldKey: keyof T, error: Info) => void) => T[]
+export type InitHook<T> = (table: T[]) => T[]
 
 export type ErrorLevel = "info" | "warning" | "error"
 

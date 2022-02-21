@@ -2,7 +2,7 @@ import { Box, ChakraProvider, Checkbox, extendTheme, Input, Select, Switch } fro
 import { EditableTable } from "../components/EditableTable"
 import type { ChangeEvent } from "react"
 import { colorSchemeOverrides, themeOverrides } from "../theme"
-import type { Field, Fields, Info } from "../types"
+import type { Field, Fields, Info, InitHook, RowHook, TableHook } from "../types"
 import type { Column, FormatterProps } from "react-data-grid"
 import { useRowSelection } from "react-data-grid"
 import { useMemo, useState } from "react"
@@ -10,7 +10,9 @@ export default {
   title: "Validation table",
 }
 
-type Errors = { [id: string]: { [key: string]: Info } }
+type Meta = { __index: number; __errors?: Error | null }
+type Error = { [key: string]: Info }
+type Errors = { [id: string]: Error }
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -111,8 +113,29 @@ const fields: Fields<any> = [
   },
 ]
 
-const runValidation = <T extends Record<string, string | number | boolean>>(data: T[], fields: Fields<T>): Errors => {
+const addErrorsAndRunHooks = <T extends Record<string, string | number | boolean | Error>>(
+  data: (T & Meta)[],
+  fields: Fields<T>,
+  rowHook?: RowHook<T>,
+  tableHook?: TableHook<T>,
+): (T & Meta)[] => {
   let errors: Errors = {}
+
+  const addHookError = <T,>(rowIndex: number, fieldKey: keyof T, error: Info) => {
+    errors[rowIndex] = {
+      ...errors[rowIndex],
+      [fieldKey]: error,
+    }
+  }
+
+  if (tableHook) {
+    data = addIndexes(tableHook(data, addHookError))
+  }
+
+  if (rowHook) {
+    data = addIndexes(data.map((value, index) => rowHook(value, (...props) => addHookError(index, ...props), data)))
+  }
+
   fields.forEach((field) => {
     field.validations?.forEach((validation) => {
       switch (validation.rule) {
@@ -165,27 +188,52 @@ const runValidation = <T extends Record<string, string | number | boolean>>(data
       }
     })
   })
-  return errors
+
+  return data.map((value, index) => {
+    if (errors[index]) {
+      return { ...value, __errors: errors[index] }
+    }
+    if (!errors[index] && value?.__errors) {
+      return { ...value, __errors: null }
+    }
+    return value
+  })
 }
 
-const addIndexes = <T extends object>(arr: T[]) => arr.map((val, index) => ({ ...val, __index: index }))
+const addIndexes = <T,>(arr: T[]): (T & { __index: number })[] =>
+  arr.map((value, index) => {
+    if ("__index" in value) {
+      return value as T & { __index: number }
+    }
+    return { ...value, __index: index }
+  })
 
 const theme = extendTheme(colorSchemeOverrides, themeOverrides)
+
+const defaultInitialHook = <T,>(rows: T): T => rows
 
 interface Props<T> {
   fields: Fields<T>
   initialData: T[]
+  rowHook?: RowHook<T>
+  tableHook?: TableHook<T>
+  initialHook?: InitHook<T>
 }
 
-const TableComponent = <T extends {}>({ fields, initialData }: Props<T>) => {
-  const [data, setData] = useState<(T & { __index: number })[]>(addIndexes(initialData))
-  const [errors, setErrors] = useState<Errors>(runValidation(data, fields))
+const TableComponent = <T extends {}>({
+  fields,
+  initialData,
+  rowHook,
+  tableHook,
+  initialHook = defaultInitialHook,
+}: Props<T>) => {
+  const [data, setData] = useState<(T & Meta)[]>(
+    addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook),
+  )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
 
   const updateRow = (rows: typeof data) => {
-    setData(rows)
-    const a = runValidation(rows, fields)
-    setErrors(a)
+    setData(addErrorsAndRunHooks(rows, fields, rowHook, tableHook))
   }
   const columns = useMemo(
     () => [
@@ -253,7 +301,7 @@ const TableComponent = <T extends {}>({ fields, initialData }: Props<T>) => {
             row[column.key]
           ),
         cellClass: (row: typeof data[number]) => {
-          switch (errors[row.__index]?.[column.key]?.level) {
+          switch (row.__errors?.[column.key]?.level) {
             case "error":
               return "rdg-cell-error"
             case "warning":
@@ -286,7 +334,26 @@ const TableComponent = <T extends {}>({ fields, initialData }: Props<T>) => {
 export const Table = () => (
   <ChakraProvider theme={theme}>
     <div style={{ blockSize: "calc(100vh - 32px)" }}>
-      <TableComponent fields={fields} initialData={initialData} />
+      <TableComponent
+        fields={fields}
+        initialData={initialData}
+        rowHook={(row, addError) => {
+          if (row.second !== "one") {
+            addError("second", {
+              level: "error",
+              message: "Whaaaat",
+            })
+          }
+          return {...row, test: '123123'}
+        }}
+        tableHook={(rows, addError) => {
+          addError(2, "bool", {
+            level: "error",
+            message: "Error you in particular",
+          })
+          return rows
+        }}
+      />
     </div>
   </ChakraProvider>
 )
