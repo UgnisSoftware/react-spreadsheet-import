@@ -32,7 +32,6 @@ export const SelectColumn: Column<any, any> = {
   frozen: true,
   cellClass: "rdg-radio",
   formatter: SelectFormatter,
-  headerRenderer: () => null
 }
 
 export const generateSelectionColumns = (data: string[][]) => [
@@ -41,7 +40,6 @@ export const generateSelectionColumns = (data: string[][]) => [
     (value, index): Column<any, any> => ({
       key: index.toString(),
       name: "",
-      headerRenderer: () => null
     }),
   ),
 ]
