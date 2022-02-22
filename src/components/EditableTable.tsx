@@ -7,6 +7,19 @@ const createGlobalStyleOverride = () => css`
     block-size: 100%;
   }
 
+  .rdg-header-row .rdg-cell {
+    font-size: var(--chakra-fontSizes-xs);
+    line-height: var(--chakra-lineHeights-10);
+    font-weight: var(--chakra-fontWeights-bold);
+    letter-spacing: var(--chakra-letterSpacings-wider);
+    color: var(--chakra-colors-gray-700);
+    text-transform: uppercase;
+  }
+
+  .rdg-static .rdg-header-row {
+    display: none;
+  }
+
   .rdg-cell {
     contain: size layout style paint;
     border-right: none;
@@ -36,6 +49,14 @@ const createGlobalStyleOverride = () => css`
   }
   .rdg-cell:last-child {
     border-right: 1px solid var(--chakra-colors-gray-100);
+  }
+
+  .rdg-header-row .rdg-cell:first-child {
+    border-radius: 8px 0 0 0;
+  }
+
+  .rdg-header-row .rdg-cell:last-child {
+    border-radius: 0 8px 0 0;
   }
 
   .rdg-row:last-child .rdg-cell:first-child {
@@ -71,9 +92,10 @@ const createGlobalStyleOverride = () => css`
     contain: size layout style paint;
     border-radius: 8px;
     border: none;
+    border-top: 1px solid var(--chakra-colors-gray-100);
     --rdg-color: var(--chakra-colors-gray-800);
     --background-color: #fff;
-    --rdg-header-background-color: var(--chakra-colors-gray-50);
+    --rdg-header-background-color: var(--chakra-colors-white);
     --rdg-row-hover-background-color: var(--chakra-colors-white);
     --rdg-selection-color: var(--chakra-colors-blue-400);
     --rdg-row-selected-background-color: var(--chakra-colors-rsi-50);
@@ -85,6 +107,7 @@ const ROW_HEIGHT = 35
 
 interface Props<Data> extends DataGridProps<Data> {
   rowHeight?: number
+  hiddenHeader?: boolean
 }
 
 export const EditableTable = <Data extends {}>({ rowHeight = ROW_HEIGHT, className, ...props }: Props<Data>) => {
