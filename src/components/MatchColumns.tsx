@@ -42,6 +42,8 @@ const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => 
   }
 }
 
+const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index, type: ColumnType.ignored })
+
 export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
   const header = data[headerIndex].map((el) => el.toString())
   const dataExample = data.slice(headerIndex + 1, 3)
@@ -56,7 +58,21 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
 
       setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(field, column) : column)))
     },
-    [columns],
+    [columns, setColumns],
+  )
+
+  const onIgnore = useCallback(
+    (columnIndex) => {
+      setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoredColumn(column) : column)))
+    },
+    [columns, setColumns],
+  )
+
+  const onRevertIgnore = useCallback(
+    (columnIndex) => {
+      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(undefined, column) : column)))
+    },
+    [columns, setColumns],
   )
 
   return (
@@ -75,9 +91,14 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
             {USER_TABLE_TITLE}
           </Text>
         </Box>
-        {header.map((header, index) => (
-          <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={header}>
-            <UserTableColumn header={header} entries={dataExample.map((row) => row[index])} />
+        {columns.map((column, index) => (
+          <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header}>
+            <UserTableColumn
+              column={column}
+              onIgnore={onIgnore}
+              onRevertIgnore={onRevertIgnore}
+              entries={dataExample.map((row) => row[column.index])}
+            />
           </Box>
         ))}
         <FadingWrapper gridColumn={`1/${header.length + 3}`} gridRow="2/3" />
@@ -88,7 +109,7 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
         </Box>
         <FadingWrapper gridColumn={`1/${header.length + 3}`} gridRow="4/5" />
         {columns.map((column, index) => (
-          <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py={3} pl={2} pr={3}>
+          <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py="1.125rem" pl={2} pr={3}>
             <TemplateColumn column={column} onChange={onChange} />
           </Box>
         ))}
