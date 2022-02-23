@@ -11,7 +11,15 @@ export const ReactSpreadsheetImport = (props: RsiProps) => {
   const { isOpen, onClose } = props
   return (
     <Providers theme={theme} rsiValues={props}>
-      <Modal isOpen={isOpen} onClose={onClose} id="rsi" variant="rsi" closeOnEsc={false} closeOnOverlayClick={false}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        id="rsi"
+        variant="rsi"
+        closeOnEsc={false}
+        closeOnOverlayClick={false}
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalCloseButton onClose={onClose} />
         <ModalContent>

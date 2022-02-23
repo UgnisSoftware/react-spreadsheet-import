@@ -1,17 +1,17 @@
-import { ChakraProvider, extendTheme } from "@chakra-ui/react"
+import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { colorSchemeOverrides, themeOverrides } from "../theme"
 import { headerSelectionTableFields } from "./mockRsiValues"
-import { SelectHeaderTable } from "../components/SelectHeaderStep/SelectHeaderTable"
+import { SelectHeader } from "../components/SelectHeaderStep/SelectHeader"
 export default {
-  title: "Select header table",
+  title: "Select header",
 }
 
 const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
 export const Table = () => (
   <ChakraProvider theme={theme}>
-    <div style={{ blockSize: "calc(100vh - 32px)" }}>
-      <SelectHeaderTable data={headerSelectionTableFields} />
-    </div>
+    <Box display="flex" flexDirection="column" flex={1}>
+      <SelectHeader data={headerSelectionTableFields} onContinue={() => {}} onCancel={() => {}} />
+    </Box>
   </ChakraProvider>
 )
