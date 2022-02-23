@@ -1,5 +1,5 @@
 import { Column, FormatterProps, useRowSelection } from "react-data-grid"
-import { Checkbox, Radio } from "@chakra-ui/react"
+import { Radio } from "@chakra-ui/react"
 
 const SELECT_COLUMN_KEY = "select-row"
 

@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { EditableTable } from "../EditableTable"
 import { generateSelectionColumns } from "./columns"
 
 interface Props {
   data: string[][]
+  selectedRows: ReadonlySet<number>
+  setSelectedRows: (rows: ReadonlySet<number>) => void
 }
 
-export const SelectHeaderTable = ({ data }: Props) => {
-  const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
+export const SelectHeaderTable = ({ data, selectedRows, setSelectedRows }: Props) => {
 
   const columns = useMemo(() => generateSelectionColumns(data), [data])
 
@@ -20,8 +21,8 @@ export const SelectHeaderTable = ({ data }: Props) => {
       onSelectedRowsChange={(newRows) => {
         // allow selecting only one row
         newRows.forEach((value) => {
-          if (!selectedRows.has(value)) {
-            setSelectedRows(new Set([value]))
+          if (!selectedRows.has(value as number)) {
+            setSelectedRows(new Set([value as number]))
             return
           }
         })

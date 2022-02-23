@@ -14,7 +14,7 @@ export const ReactSpreadsheetImport = (props: RsiProps) => {
       <Modal isOpen={isOpen} onClose={onClose} id="rsi" variant="rsi" closeOnEsc={false} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalCloseButton onClose={onClose} />
-        <ModalContent>
+        <ModalContent height={"-webkit-fill-available"}>
           <Steps />
         </ModalContent>
       </Modal>
