@@ -19,7 +19,7 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
-    <AlertDialog isOpen={isOpen} onClose={onClose} leastDestructiveRef={cancelRef}>
+    <AlertDialog isOpen={isOpen} onClose={onClose} leastDestructiveRef={cancelRef} isCentered>
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -28,7 +28,7 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
 
           <AlertDialogBody>Are you sure? Your current information will not be saved.</AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose} variant="secondary" >
+            <Button ref={cancelRef} onClick={onClose} variant="secondary">
               Cancel
             </Button>
             <Button colorScheme="red" onClick={onConfirm} ml={3}>
