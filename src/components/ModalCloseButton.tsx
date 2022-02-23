@@ -1,6 +1,6 @@
 import { IconButton } from "@chakra-ui/react"
 import { CgClose } from "react-icons/cg"
-import { ConfirmCloseModal } from "./Modals/ConfirmCloseModal"
+import { ConfirmCloseModal } from "./Alerts/ConfirmCloseModal"
 import { useState } from "react"
 
 type ModalCloseButtonProps = {
