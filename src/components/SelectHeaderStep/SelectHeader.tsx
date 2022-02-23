@@ -24,7 +24,7 @@ export const SelectHeader = ({ data, onContinue }: SelectHeaderProps) => {
 
   return (
     <>
-      <Box display="flex" p="2rem" pb={0} flexDirection="column" overflow="scroll" height="100%">
+      <Box display="flex" p="2rem" pb={0} flexDirection="column" overflow="auto" height="100%">
         <Heading size="lg" color="gray.700" mb="2rem">
           {SELECT_HEADER_TITLE}
         </Heading>
