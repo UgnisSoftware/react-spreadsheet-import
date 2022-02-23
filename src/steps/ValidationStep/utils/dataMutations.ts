@@ -1,5 +1,5 @@
-import type { Fields, Info, RowHook, TableHook } from "../../types"
-import type { Data, Meta, Errors } from "./types"
+import type { Fields, Info, RowHook, TableHook } from "../../../types"
+import type { Data, Meta, Errors } from "../types"
 
 export const addErrorsAndRunHooks = <T extends Data>(
   data: (T & Meta)[],

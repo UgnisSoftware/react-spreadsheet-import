@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { Progress } from "@chakra-ui/react"
 import type XLSX from "xlsx"
-import { Upload } from "./Upload"
-import { SelectHeader } from "./SelectHeaderStep/SelectHeader"
-import { SelectSheet } from "./SelectSheet"
+import { UploadStep } from "./UploadStep/UploadStep"
+import { SelectHeaderStep } from "./SelectHeaderStep/SelectHeaderStep"
+import { SelectSheetStep } from "./SelectSheetStep/SelectSheetStep"
 import { mapWorkbook } from "../utils/mapWorkbook"
 
 enum Type {
@@ -73,7 +73,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
   switch (state.type) {
     case Type.upload:
       return (
-        <Upload
+        <UploadStep
           onContinue={(workbook) => {
             if (workbook.SheetNames.length === 1) {
               setState({ type: Type.selectHeader, data: mapWorkbook(workbook) })
@@ -86,7 +86,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
       )
     case Type.selectSheet:
       return (
-        <SelectSheet
+        <SelectSheetStep
           sheetNames={state.workbook.SheetNames}
           onContinue={(sheetName) => {
             setState({ type: Type.selectHeader, data: mapWorkbook(state.workbook, sheetName) })
@@ -96,7 +96,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
       )
     case Type.selectHeader:
       return (
-        <SelectHeader
+        <SelectHeaderStep
           data={state.data}
           onContinue={(headerValues: string[], data: string[][]) => {
             setState({

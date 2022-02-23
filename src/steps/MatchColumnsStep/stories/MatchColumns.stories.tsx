@@ -1,7 +1,7 @@
-import { theme } from "../components/ReactSpreadsheetImport"
-import { MatchColumns } from "../components/MatchColumns"
-import { Providers } from "../components/Providers"
-import { mockRsiValues } from "./mockRsiValues"
+import { theme } from "../../../ReactSpreadsheetImport"
+import { MatchColumnsStep } from "../MatchColumnsStep"
+import { Providers } from "../../../components/Providers"
+import { mockRsiValues } from "../../../stories/mockRsiValues"
 
 export default {
   title: "MatchColumns",
@@ -24,6 +24,6 @@ const mockHeaderIndex = 0
 
 export const Basic = () => (
   <Providers theme={theme} rsiValues={mockRsiValues}>
-    <MatchColumns headerIndex={mockHeaderIndex} data={mockData} />
+    <MatchColumnsStep headerIndex={mockHeaderIndex} data={mockData} />
   </Providers>
 )

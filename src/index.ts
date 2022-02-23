@@ -1,1 +1,1 @@
-export { ReactSpreadsheetImport } from "./components/ReactSpreadsheetImport"
+export { ReactSpreadsheetImport } from "./ReactSpreadsheetImport"

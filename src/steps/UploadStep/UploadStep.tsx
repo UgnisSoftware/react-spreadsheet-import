@@ -1,7 +1,7 @@
 import type XLSX from "xlsx"
 import { Box, Heading, Text } from "@chakra-ui/react"
-import { DropZone } from "./DropZone"
-import { useRsi } from "../hooks/useRsi"
+import { DropZone } from "./components/DropZone"
+import { useRsi } from "../../hooks/useRsi"
 
 const DEFAULT_TITLE = "Upload Sheet"
 const MANIFEST_TITLE = "Data that we expect:"
@@ -11,7 +11,7 @@ type UploadProps = {
   onContinue: (data: XLSX.WorkBook) => void
 }
 
-export const Upload = ({ onContinue }: UploadProps) => {
+export const UploadStep = ({ onContinue }: UploadProps) => {
   const { title } = useRsi()
   return (
     <Box minH="fit-content" display="flex" flex={1} p="2rem" flexDirection="column">

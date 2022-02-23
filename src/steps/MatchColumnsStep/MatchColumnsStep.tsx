@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react"
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
-import { FadingWrapper } from "./FadingWrapper"
-import { UserTableColumn } from "./UserTableColumn"
-import { useRsi } from "../hooks/useRsi"
-import { TemplateColumn } from "./TemplateColumn"
-import type { Field } from "../types"
+import { FadingWrapper } from "../../components/FadingWrapper"
+import { UserTableColumn } from "./components/UserTableColumn"
+import { useRsi } from "../../hooks/useRsi"
+import { TemplateColumn } from "./components/TemplateColumn"
+import type { Field } from "../../types"
 
 const MATCH_COLUMNS_TITLE = "Validate column matching"
 const USER_TABLE_TITLE = "Your table"
@@ -44,7 +44,7 @@ const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => 
 
 const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index, type: ColumnType.ignored })
 
-export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
+export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
   const header = data[headerIndex].map((el) => el.toString())
   const dataExample = data.slice(headerIndex + 1, 3)
   const [columns, setColumns] = useState<Columns>(

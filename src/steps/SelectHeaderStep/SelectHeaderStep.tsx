@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react"
 import { Box, Heading } from "@chakra-ui/react"
-import { SelectHeaderTable } from "./SelectHeaderTable"
-import { ContinueButton } from "../ContinueButton"
+import { SelectHeaderTable } from "./components/SelectHeaderTable"
+import { ContinueButton } from "../../components/ContinueButton"
 
 const SELECT_HEADER_TITLE = "Select header row"
 const NO_SELECTION_ERROR = "Header row not selected"
@@ -12,7 +12,7 @@ type SelectHeaderProps = {
   onContinue: (headerValues: string[], data: string[][]) => void
 }
 
-export const SelectHeader = ({ data, onContinue }: SelectHeaderProps) => {
+export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set([0]))
 
   const handleContinue = useCallback(() => {

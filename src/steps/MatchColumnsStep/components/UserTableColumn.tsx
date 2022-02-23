@@ -1,7 +1,7 @@
 import { Box, Flex, IconButton, Text } from "@chakra-ui/react"
 import { CgClose, CgUndo } from "react-icons/cg"
-import type { Column } from "./MatchColumns"
-import { ColumnType } from "./MatchColumns"
+import type { Column } from "../MatchColumnsStep"
+import { ColumnType } from "../MatchColumnsStep"
 
 type UserTableColumnProps = {
   column: Column

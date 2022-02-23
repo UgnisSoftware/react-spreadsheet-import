@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { EditableTable } from "../EditableTable"
+import { Table } from "../../../components/Table"
 import { generateSelectionColumns } from "./columns"
 
 interface Props {
@@ -13,7 +13,7 @@ export const SelectHeaderTable = ({ data, selectedRows, setSelectedRows }: Props
   const columns = useMemo(() => generateSelectionColumns(data), [data])
 
   return (
-    <EditableTable
+    <Table
       rowKeyGetter={(row) => data.indexOf(row)}
       rows={data}
       columns={columns}
