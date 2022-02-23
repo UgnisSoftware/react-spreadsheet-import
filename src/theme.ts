@@ -43,7 +43,7 @@ export const themeOverrides = {
     Steps: {
       ...StepsStyleConfig,
       baseStyle: (props: any) => {
-        const inactiveColor = mode("white", "gray.700")(props)
+        const inactiveColor = mode("white", "white")(props)
         return {
           ...StepsStyleConfig.baseStyle(props),
           connector: {
