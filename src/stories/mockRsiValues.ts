@@ -8,7 +8,7 @@ const fields: Field<any>[] = [
     fieldType: {
       type: "input",
     },
-    examples: ["Teddy", "John", "Stephanie"],
+    example: "Stephanie",
   },
   {
     label: "Surname",
@@ -17,7 +17,7 @@ const fields: Field<any>[] = [
     fieldType: {
       type: "input",
     },
-    examples: ["McDonald", "Smith", "Chomsky"],
+    example: "McDonald",
   },
   {
     label: "Age",
@@ -26,7 +26,7 @@ const fields: Field<any>[] = [
     fieldType: {
       type: "input",
     },
-    examples: ["23", "77", "99"],
+    example: "23",
   },
 ]
 
