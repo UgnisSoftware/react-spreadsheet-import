@@ -1,7 +1,7 @@
 import { Flex, Select, Text } from "@chakra-ui/react"
-import { useRsi } from "../hooks/useRsi"
-import type { Column } from "./MatchColumns"
-import { ColumnType } from "./MatchColumns"
+import { useRsi } from "../../../hooks/useRsi"
+import type { Column } from "../MatchColumnsStep"
+import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
 
 const SELECT_PLACEHOLDER = "Select column..."

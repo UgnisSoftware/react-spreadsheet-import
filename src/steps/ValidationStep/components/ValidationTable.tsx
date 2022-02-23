@@ -1,9 +1,9 @@
-import type { Fields, InitHook, RowHook, TableHook } from "../../types"
-import type { Data, Meta } from "./types"
+import type { Fields, InitHook, RowHook, TableHook } from "../../../types"
+import type { Data, Meta } from "../types"
 import { useMemo, useState } from "react"
-import { EditableTable } from "../EditableTable"
+import { Table } from "../../../components/Table"
 import { generateColumns } from "./columns"
-import { addErrorsAndRunHooks, addIndexes } from "./dataMutations"
+import { addErrorsAndRunHooks, addIndexes } from "../utils/dataMutations"
 
 interface Props<T> {
   fields: Fields<T>
@@ -31,7 +31,7 @@ export const ValidationTable = <T extends Data>({
   const columns = useMemo(() => generateColumns(fields), [])
 
   return (
-    <EditableTable
+    <Table
       rowKeyGetter={(row) => row.__index}
       rows={data}
       onRowsChange={updateRow}

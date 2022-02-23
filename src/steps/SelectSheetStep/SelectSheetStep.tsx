@@ -1,6 +1,6 @@
 import { Flex, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react"
 import { useState } from "react"
-import { ContinueButton } from "./ContinueButton"
+import { ContinueButton } from "../../components/ContinueButton"
 
 const TITLE = "Select the sheet to use"
 
@@ -9,7 +9,7 @@ type SelectSheetProps = {
   onContinue: (sheetName: string) => void
 }
 
-export const SelectSheet = ({ sheetNames, onContinue }: SelectSheetProps) => {
+export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) => {
   const [value, setValue] = useState(sheetNames[0])
   return (
     <Flex flex={1} flexDirection="column">

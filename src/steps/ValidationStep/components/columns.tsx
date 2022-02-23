@@ -1,8 +1,8 @@
 import { Column, FormatterProps, useRowSelection } from "react-data-grid"
 import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
-import type { Field, Fields } from "../../types"
+import type { Field, Fields } from "../../../types"
 import type { ChangeEvent } from "react"
-import type { Data, Meta } from "./types"
+import type { Data, Meta } from "../types"
 
 const SELECT_COLUMN_KEY = "select-row"
 
