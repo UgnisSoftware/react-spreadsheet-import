@@ -15,6 +15,10 @@ interface Props {
   onConfirm: () => void
 }
 
+const EXIT_HEADER_TITLE = "Exit import flow"
+const CANCEL_BUTTON = "Cancel"
+const EXIT_BUTTON = "Exit flow"
+
 export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
@@ -23,16 +27,15 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Exit import flow
+            {EXIT_HEADER_TITLE}
           </AlertDialogHeader>
-
           <AlertDialogBody>Are you sure? Your current information will not be saved.</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">
-              Cancel
+              {CANCEL_BUTTON}
             </Button>
             <Button colorScheme="red" onClick={onConfirm} ml={3}>
-              Exit flow
+              {EXIT_BUTTON}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
