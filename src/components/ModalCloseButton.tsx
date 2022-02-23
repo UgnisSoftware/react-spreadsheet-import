@@ -1,6 +1,6 @@
 import { IconButton } from "@chakra-ui/react"
 import { CgClose } from "react-icons/cg"
-import { ConfirmCloseModal } from "./Alerts/ConfirmCloseModal"
+import { ConfirmCloseAlert } from "./Alerts/ConfirmCloseAlert"
 import { useState } from "react"
 
 type ModalCloseButtonProps = {
@@ -11,7 +11,7 @@ export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
   const [showModal, setShowModal] = useState(false)
   return (
     <>
-      <ConfirmCloseModal
+      <ConfirmCloseAlert
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={() => {

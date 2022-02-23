@@ -15,7 +15,7 @@ interface Props {
   onConfirm: () => void
 }
 
-export const ConfirmCloseModal = ({ isOpen, onClose, onConfirm }: Props) => {
+export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
