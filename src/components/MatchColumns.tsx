@@ -5,6 +5,7 @@ import { UserTableColumn } from "./UserTableColumn"
 import { useRsi } from "../hooks/useRsi"
 import { TemplateColumn } from "./TemplateColumn"
 import type { Field } from "../types"
+import uniqBy from "lodash/uniqBy"
 
 const MATCH_COLUMNS_TITLE = "Validate column matching"
 const USER_TABLE_TITLE = "Your table"
@@ -19,24 +20,54 @@ export enum ColumnType {
   empty,
   ignored,
   matched,
-  enumMatched,
+  matchedSelect,
+  matchedSelectOptions,
+}
+
+type MatchedOptions = {
+  entry: string | number
+  value: string
 }
 
 export type Column =
   | { type: ColumnType.empty; index: number; header: string }
   | { type: ColumnType.ignored; index: number; header: string }
   | { type: ColumnType.matched; index: number; header: string; value: string }
-  | { type: ColumnType.enumMatched; index: number; header: string; value: string }
+  | {
+      type: ColumnType.matchedSelect
+      index: number
+      header: string
+      value: string
+      matchedOptions: Partial<MatchedOptions>[]
+    }
+  | {
+      type: ColumnType.matchedSelectOptions
+      index: number
+      header: string
+      value: string
+      matchedOptions: MatchedOptions[]
+    }
 
 type Columns = Column[]
 
-const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => {
+const uniqueEntries = (data: MatchColumnsProps["data"], index: number): Partial<MatchedOptions>[] =>
+  uniqBy(
+    data.map((row) => ({ entry: row[index] })),
+    "entry",
+  )
+
+const setColumn = (oldColumn: Column, field?: Field<any>, data?: MatchColumnsProps["data"]): Column => {
   switch (field?.fieldType.type) {
     case "select":
-      return { ...oldColumn, type: ColumnType.enumMatched, value: field.key }
+      return {
+        ...oldColumn,
+        type: ColumnType.matchedSelect,
+        value: field.key,
+        matchedOptions: uniqueEntries(data || [], oldColumn.index),
+      }
     case "checkbox":
     case "input":
-      return { ...oldColumn, type: ColumnType.matched, value: field.key }
+      return { index: oldColumn.index, type: ColumnType.matched, value: field.key, header: oldColumn.header }
     default:
       return { index: oldColumn.index, header: oldColumn.header, type: ColumnType.empty }
   }
@@ -46,7 +77,8 @@ const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index
 
 export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
   const header = data[headerIndex].map((el) => el.toString())
-  const dataExample = data.slice(headerIndex + 1, 3)
+  const trimmedData = data.slice(headerIndex + 1)
+  const dataExample = trimmedData.slice(0, 2)
   const [columns, setColumns] = useState<Columns>(
     header.map((headerValues, index) => ({ type: ColumnType.empty, index, header: headerValues })),
   )
@@ -56,7 +88,9 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
     (value, columnIndex) => {
       const field = fields.find((field) => field.key === value)
 
-      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(field, column) : column)))
+      setColumns(
+        columns.map((column, index) => (columnIndex === index ? setColumn(column, field, trimmedData) : column)),
+      )
     },
     [columns, setColumns],
   )
@@ -70,7 +104,7 @@ export const MatchColumns = ({ data, headerIndex }: MatchColumnsProps) => {
 
   const onRevertIgnore = useCallback(
     (columnIndex) => {
-      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(undefined, column) : column)))
+      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(column) : column)))
     },
     [columns, setColumns],
   )

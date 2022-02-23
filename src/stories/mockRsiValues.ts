@@ -28,6 +28,33 @@ const fields: Field<any>[] = [
     },
     examples: ["23", "77", "99"],
   },
+  {
+    label: "Position",
+    key: "position",
+    alternateMatches: ["job"],
+    fieldType: {
+      type: "select",
+      options: [
+        {
+          label: "Software Engineer",
+          value: "software_engineer",
+        },
+        {
+          label: "QA Specialist",
+          value: "qa_specialist",
+        },
+        {
+          label: "Product owner",
+          value: "product_owner",
+        },
+        {
+          label: "Designer",
+          value: "designer",
+        },
+      ],
+    },
+    examples: ["23", "77", "99"],
+  },
 ]
 
 export const mockRsiValues: RsiProps = {
