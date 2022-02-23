@@ -13,15 +13,10 @@ type SelectHeaderProps = {
 }
 
 export const SelectHeader = ({ data, onContinue }: SelectHeaderProps) => {
-  const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set())
-  const [error, setError] = useState<string | undefined>()
+  const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set([0]))
 
   const handleContinue = useCallback(() => {
     const [selectedRowIndex] = selectedRows
-    if (!selectedRowIndex) {
-      setError(NO_SELECTION_ERROR)
-      return
-    }
     // We consider data above header to be redundant
     const trimmedData = data.slice(selectedRowIndex + 1)
     onContinue(data[selectedRowIndex], trimmedData)
@@ -29,7 +24,7 @@ export const SelectHeader = ({ data, onContinue }: SelectHeaderProps) => {
 
   return (
     <>
-      <Box display="flex" p="2rem" flexDirection="column" overflow="scroll" height={"-webkit-fill-available"}>
+      <Box display="flex" p="2rem" pb={0} flexDirection="column" overflow="scroll" height="100%">
         <Heading size="lg" color="gray.700" mb="2rem">
           {SELECT_HEADER_TITLE}
         </Heading>

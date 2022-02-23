@@ -29,6 +29,10 @@ const createGlobalStyleOverride = () => css`
     text-overflow: ellipsis;
   }
 
+  .rdg-static {
+    cursor: pointer;
+  }
+
   .rdg-static .rdg-cell {
     --rdg-selection-color: none;
   }
