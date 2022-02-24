@@ -9,7 +9,8 @@ import { setSubColumn } from "./utils/setSubColumn"
 
 export type MatchColumnsProps = {
   data: (string | number)[][]
-  headerIndex: number
+  headerValues: string[]
+  onContinue: (data: any[]) => void
 }
 
 export enum ColumnType {
@@ -47,12 +48,11 @@ export type Column = EmptyColumn | IgnoredColumn | MatchedColumn | MatchedSelect
 
 export type Columns = Column[]
 
-export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
-  const header = data[headerIndex].map((el) => el.toString())
-  const trimmedData = data.slice(headerIndex + 1)
-  const dataExample = trimmedData.slice(0, 2)
+export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumnsProps) => {
+  const header = headerValues
+  const dataExample = data.slice(0, 2)
   const [columns, setColumns] = useState<Columns>(
-    header.map((headerValues, index) => ({ type: ColumnType.empty, index, header: headerValues })),
+    header.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
   const { fields } = useRsi()
 
@@ -60,7 +60,7 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
     (value, columnIndex) => {
       const field = fields.find((field) => field.key === value)
       setColumns(
-        columns.map((column, index) => (columnIndex === index ? setColumn(column, field, trimmedData) : column)),
+        columns.map((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)),
       )
     },
     [columns, setColumns],

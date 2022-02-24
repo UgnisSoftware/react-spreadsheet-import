@@ -86,15 +86,12 @@ const createGlobalStyleOverride = () => css`
 
   .rdg-cell-error {
     background-color: var(--chakra-colors-red-50);
-    box-shadow: inset 0 0 0 1px var(--chakra-colors-red-100);
   }
   .rdg-cell-warning {
     background-color: var(--chakra-colors-orange-50);
-    box-shadow: 0 1px 0 0 var(--chakra-colors-orange-100);
   }
   .rdg-cell-info {
     background-color: var(--chakra-colors-blue-50);
-    box-shadow: inset 0 0 0 1px var(--chakra-colors-blue-100);
   }
 
   .rdg {
