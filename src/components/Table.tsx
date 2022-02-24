@@ -32,7 +32,12 @@ const createGlobalStyleOverride = () => css`
   .rdg-static {
     cursor: pointer;
   }
-
+  
+  .rdg-example .rdg-cell {
+    --rdg-selection-color: none;
+    border-bottom: none;
+  }
+  
   .rdg-static .rdg-cell {
     --rdg-selection-color: none;
   }

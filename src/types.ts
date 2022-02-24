@@ -44,7 +44,7 @@ export type Field<T> = {
   // Field entry component, default: Input
   fieldType: Checkbox | Select | Input
   // UI-facing values shown to user as field examples pre-upload phase
-  examples?: string[]
+  example?: string
 }
 
 export type Checkbox = {
