@@ -17,6 +17,7 @@ import type { Fields } from "../../../types"
 
 const SELECT_PLACEHOLDER = "Select column..."
 const IGNORED_COLUMN_TEXT = "Column ignored"
+const SUB_SELECT_PLACEHOLDER = "Select..."
 
 const getAccordionTitle = (fields: Fields<any>, column: Column) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
@@ -25,10 +26,11 @@ const getAccordionTitle = (fields: Fields<any>, column: Column) => {
 
 type TemplateColumnProps = {
   onChange: (val: string, index: number) => void
+  onSubChange: (val: string, index: number, option: string | number) => void
   column: Column
 }
 
-export const TemplateColumn = ({ column, onChange }: TemplateColumnProps) => {
+export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumnProps) => {
   const { fields } = useRsi()
   const isIgnored = column.type === ColumnType.ignored
   const isChecked = column.type === ColumnType.matched || column.type === ColumnType.matchedSelectOptions
@@ -74,7 +76,11 @@ export const TemplateColumn = ({ column, onChange }: TemplateColumnProps) => {
                         <Text pt="0.375rem" pb={2} fontSize="md" lineHeight={6} fontWeight="medium" color="gray.700">
                           {option.entry}
                         </Text>
-                        <Select pb="0.375rem">
+                        <Select
+                          pb="0.375rem"
+                          placeholder={SUB_SELECT_PLACEHOLDER}
+                          onChange={(event) => onSubChange(event.target.value, column.index, option.entry!)}
+                        >
                           {fields.map(({ label, key }) => (
                             <option value={key} key={key}>
                               {label}

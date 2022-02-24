@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from "react"
-import { Box, Flex, Heading, Text } from "@chakra-ui/react"
-import { FadingWrapper } from "../../components/FadingWrapper"
 import { UserTableColumn } from "./components/UserTableColumn"
 import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
-import type { Field } from "../../types"
-import uniqBy from "lodash/uniqBy"
 import { ColumnGrid } from "./components/ColumnGrid"
+import { setColumn } from "./utils/setColumn"
+import { setIgnoreColumn } from "./utils/setIgnoreColumn"
+import { setSubColumn } from "./utils/setSubColumn"
 
-type MatchColumnsProps = {
+export type MatchColumnsProps = {
   data: (string | number)[][]
   headerIndex: number
 }
@@ -21,56 +20,32 @@ export enum ColumnType {
   matchedSelectOptions,
 }
 
-type MatchedOptions = {
+export type MatchedOptions = {
   entry: string | number
   value: string
 }
 
-export type Column =
-  | { type: ColumnType.empty; index: number; header: string }
-  | { type: ColumnType.ignored; index: number; header: string }
-  | { type: ColumnType.matched; index: number; header: string; value: string }
-  | {
-      type: ColumnType.matchedSelect
-      index: number
-      header: string
-      value: string
-      matchedOptions: Partial<MatchedOptions>[]
-    }
-  | {
-      type: ColumnType.matchedSelectOptions
-      index: number
-      header: string
-      value: string
-      matchedOptions: MatchedOptions[]
-    }
-
-export type Columns = Column[]
-
-const uniqueEntries = (data: MatchColumnsProps["data"], index: number): Partial<MatchedOptions>[] =>
-  uniqBy(
-    data.map((row) => ({ entry: row[index] })),
-    "entry",
-  )
-
-const setColumn = (oldColumn: Column, field?: Field<any>, data?: MatchColumnsProps["data"]): Column => {
-  switch (field?.fieldType.type) {
-    case "select":
-      return {
-        ...oldColumn,
-        type: ColumnType.matchedSelect,
-        value: field.key,
-        matchedOptions: uniqueEntries(data || [], oldColumn.index),
-      }
-    case "checkbox":
-    case "input":
-      return { index: oldColumn.index, type: ColumnType.matched, value: field.key, header: oldColumn.header }
-    default:
-      return { index: oldColumn.index, header: oldColumn.header, type: ColumnType.empty }
-  }
+type EmptyColumn = { type: ColumnType.empty; index: number; header: string }
+type IgnoredColumn = { type: ColumnType.ignored; index: number; header: string }
+type MatchedColumn = { type: ColumnType.matched; index: number; header: string; value: string }
+export type MatchedSelectColumn = {
+  type: ColumnType.matchedSelect
+  index: number
+  header: string
+  value: string
+  matchedOptions: Partial<MatchedOptions>[]
+}
+export type MatchedSelectOptionsColumn = {
+  type: ColumnType.matchedSelectOptions
+  index: number
+  header: string
+  value: string
+  matchedOptions: MatchedOptions[]
 }
 
-const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index, type: ColumnType.ignored })
+export type Column = EmptyColumn | IgnoredColumn | MatchedColumn | MatchedSelectColumn | MatchedSelectOptionsColumn
+
+export type Columns = Column[]
 
 export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
   const header = data[headerIndex].map((el) => el.toString())
@@ -84,7 +59,6 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
   const onChange = useCallback(
     (value, columnIndex) => {
       const field = fields.find((field) => field.key === value)
-
       setColumns(
         columns.map((column, index) => (columnIndex === index ? setColumn(column, field, trimmedData) : column)),
       )
@@ -94,7 +68,7 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
 
   const onIgnore = useCallback(
     (columnIndex) => {
-      setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoredColumn(column) : column)))
+      setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoreColumn(column) : column)))
     },
     [columns, setColumns],
   )
@@ -106,9 +80,21 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
     [columns, setColumns],
   )
 
+  const onSubChange = useCallback(
+    (value, columnIndex, entry) => {
+      setColumns(
+        columns.map((column, index) =>
+          columnIndex === index && "matchedOptions" in column ? setSubColumn(column, entry, value) : column,
+        ),
+      )
+    },
+    [columns, setColumns],
+  )
+
   return (
     <ColumnGrid
       columns={columns}
+      onContinue={() => {}}
       userColumn={(column) => (
         <UserTableColumn
           column={column}
@@ -117,7 +103,7 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
           entries={dataExample.map((row) => row[column.index])}
         />
       )}
-      templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} />}
+      templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
     />
   )
 }
