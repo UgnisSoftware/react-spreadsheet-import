@@ -53,7 +53,7 @@ const fields: Field<any>[] = [
         },
       ],
     },
-    examples: ["23", "77", "99"],
+    example: "23",
   },
 ]
 
