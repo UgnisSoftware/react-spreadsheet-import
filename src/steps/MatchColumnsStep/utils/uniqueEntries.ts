@@ -5,4 +5,4 @@ export const uniqueEntries = (data: MatchColumnsProps["data"], index: number): P
   uniqBy(
     data.map((row) => ({ entry: row[index] })),
     "entry",
-  )
+  ).filter(({ entry }) => !!entry)
