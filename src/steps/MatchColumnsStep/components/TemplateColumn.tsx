@@ -59,8 +59,8 @@ export const TemplateColumn = ({ column, onChange }: TemplateColumnProps) => {
           {isSelect && (
             <Flex width="100%">
               <Accordion allowMultiple width="100%">
-                <AccordionItem border="none">
-                  <AccordionButton _hover={{ bg: "transparent" }} _focus={{ boxShadow: "none" }} px={0}>
+                <AccordionItem border="none" py={1}>
+                  <AccordionButton _hover={{ bg: "transparent" }} _focus={{ boxShadow: "none" }} px={0} py={4}>
                     <AccordionIcon />
                     <Box textAlign="left">
                       <Text color="blue.600" fontSize="sm" lineHeight={5} pl={1}>
@@ -70,9 +70,11 @@ export const TemplateColumn = ({ column, onChange }: TemplateColumnProps) => {
                   </AccordionButton>
                   <AccordionPanel pb={4} display="flex" flexDir="column">
                     {column.matchedOptions.map((option) => (
-                      <Box>
-                        <Text>{option.entry}</Text>
-                        <Select>
+                      <Box pl={2}>
+                        <Text pt="0.375rem" pb={2} fontSize="md" lineHeight={6} fontWeight="medium" color="gray.700">
+                          {option.entry}
+                        </Text>
+                        <Select pb="0.375rem">
                           {fields.map(({ label, key }) => (
                             <option value={key} key={key}>
                               {label}
