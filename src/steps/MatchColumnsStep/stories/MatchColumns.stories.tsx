@@ -24,12 +24,10 @@ const mockData = [
   [10, "Jere", "Shier", "jshier8@comcast.net", "Agender", "10.143.62.161"],
 ]
 
-const mockHeaderIndex = 0
-
 export const Basic = () => (
   <Providers theme={theme} rsiValues={mockRsiValues}>
     <Box display="flex" flexDirection="column" flex={1} height="100vh" id="chakra-modal-rsi">
-      <MatchColumnsStep headerIndex={mockHeaderIndex} data={mockData} onContinue={() => {}} />
+      <MatchColumnsStep headerValues={mockData[0] as string[]} data={mockData.slice(1)} onContinue={() => {}} />
     </Box>
   </Providers>
 )

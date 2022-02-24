@@ -49,10 +49,9 @@ export type Column = EmptyColumn | IgnoredColumn | MatchedColumn | MatchedSelect
 export type Columns = Column[]
 
 export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumnsProps) => {
-  const header = headerValues
   const dataExample = data.slice(0, 2)
   const [columns, setColumns] = useState<Columns>(
-    header.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
+    headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
   const { fields } = useRsi()
 
@@ -94,7 +93,7 @@ export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumn
   return (
     <ColumnGrid
       columns={columns}
-      onContinue={() => {}}
+      onContinue={onContinue}
       userColumn={(column) => (
         <UserTableColumn
           column={column}
