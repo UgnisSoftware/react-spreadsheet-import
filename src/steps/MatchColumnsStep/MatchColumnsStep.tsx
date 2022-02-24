@@ -13,6 +13,7 @@ const TEMPLATE_TITLE = "Will become"
 type MatchColumnsProps = {
   data: (string | number)[][]
   headerIndex: number
+  onContinue: (data: any[]) => void
 }
 
 export enum ColumnType {
@@ -44,7 +45,7 @@ const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => 
 
 const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index, type: ColumnType.ignored })
 
-export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
+export const MatchColumnsStep = ({ data, headerIndex, onContinue }: MatchColumnsProps) => {
   const header = data[headerIndex].map((el) => el.toString())
   const dataExample = data.slice(headerIndex + 1, 3)
   const [columns, setColumns] = useState<Columns>(

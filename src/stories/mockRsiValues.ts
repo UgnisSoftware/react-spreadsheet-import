@@ -18,6 +18,13 @@ const fields: Field<any>[] = [
       type: "input",
     },
     example: "McDonald",
+    validations: [
+      {
+        rule: "unique",
+        errorMessage: "Last name must be unique",
+        level: "info",
+      },
+    ],
   },
   {
     label: "Age",
@@ -27,6 +34,42 @@ const fields: Field<any>[] = [
       type: "input",
     },
     example: "23",
+    validations: [
+      {
+        rule: "regex",
+        value: "^\\d+$",
+        errorMessage: "Age must be a number",
+        level: "warning",
+      },
+    ],
+  },
+  {
+    label: "Team",
+    key: "team",
+    alternateMatches: ["oldness"],
+    fieldType: {
+      type: "select",
+      options: [
+        { label: "Team One", value: "one" },
+        { label: "Team Two", value: "two" },
+      ],
+    },
+    example: "Team one",
+    validations: [
+      {
+        rule: "required",
+        errorMessage: "Team is required",
+      },
+    ],
+  },
+  {
+    label: "Is manager",
+    key: "is_manager",
+    alternateMatches: ["manages"],
+    fieldType: {
+      type: "checkbox",
+    },
+    example: "true",
   },
 ]
 
@@ -39,78 +82,32 @@ export const mockRsiValues: RsiProps = {
 
 export const editableTableInitialData = [
   {
-    text: "Hello",
-    num: "123123",
-    select: "one",
-    bool: true,
+    name: "Hello",
+    surname: "Hello",
+    age: "123123",
+    team: "one",
+    is_manager: true,
   },
   {
-    text: "Hello",
-    num: "12312zsas3",
-    select: "two",
-    bool: true,
+    name: "Hello",
+    surname: "Hello",
+    age: "12312zsas3",
+    team: "two",
+    is_manager: true,
   },
   {
-    text: "Whooaasdasdawdawdawdiouasdiuasdisdhasd",
-    num: "123123",
-    select: undefined,
-    bool: false,
+    name: "Whooaasdasdawdawdawdiouasdiuasdisdhasd",
+    surname: "Hello",
+    age: "123123",
+    team: undefined,
+    is_manager: false,
   },
   {
-    text: "Goodbye",
-    num: "111",
-    select: "two",
-    bool: true,
-  },
-]
-
-export const editableTableFields: Fields<any> = [
-  {
-    key: "text",
-    label: "Texts",
-    fieldType: { type: "input" },
-    validations: [
-      {
-        rule: "unique",
-        errorMessage: "Text must be unique",
-        level: "info",
-      },
-    ],
-  },
-  {
-    key: "num",
-    label: "Number",
-    fieldType: { type: "input" },
-    validations: [
-      {
-        rule: "regex",
-        value: "^\\d+$",
-        errorMessage: "Test must be a number",
-        level: "warning",
-      },
-    ],
-  },
-  {
-    key: "select",
-    label: "Select",
-    fieldType: {
-      type: "select",
-      options: [
-        { label: "One", value: "one" },
-        { label: "Two", value: "two" },
-      ],
-    },
-    validations: [
-      {
-        rule: "required",
-        errorMessage: "Select is required",
-      },
-    ],
-  },
-  {
-    key: "bool",
-    label: "Bool",
-    fieldType: { type: "checkbox" },
+    name: "Goodbye",
+    surname: "Goodbye",
+    age: "111",
+    team: "two",
+    is_manager: true,
   },
 ]
 

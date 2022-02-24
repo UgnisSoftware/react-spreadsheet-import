@@ -5,16 +5,15 @@ import { UploadStep } from "./UploadStep/UploadStep"
 import { SelectHeaderStep } from "./SelectHeaderStep/SelectHeaderStep"
 import { SelectSheetStep } from "./SelectSheetStep/SelectSheetStep"
 import { mapWorkbook } from "../utils/mapWorkbook"
+import { ValidationStep } from "./ValidationStep/ValidationStep"
+import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
 
 enum Type {
   upload,
   selectSheet,
   selectHeader,
-  loadMatchColumns,
-  loadMatchColumnsError,
   matchColumns,
-  submitMatchColumns,
-  submitMatchColumnsError,
+  validateData,
 }
 
 type State =
@@ -30,37 +29,13 @@ type State =
       data: string[][]
     }
   | {
-      type: Type.loadMatchColumns
-      data: string[][]
-      headerValues: string[]
-    }
-  | {
-      type: Type.loadMatchColumnsError
-      data: string[][]
-      headerValues: string[]
-      error: string
-    }
-  | {
       type: Type.matchColumns
       data: string[][]
       headerValues: string[]
-      table: object[]
-      values: object
     }
   | {
-      type: Type.submitMatchColumns
-      data: string[][]
-      headerValues: string[]
-      table: object[]
-      values: object
-    }
-  | {
-      type: Type.submitMatchColumnsError
-      data: string[][]
-      headerValues: string[]
-      table: object[]
-      values: object
-      error: string
+      type: Type.validateData
+      data: any[]
     }
 
 interface Props {
@@ -98,23 +73,33 @@ export const UploadFlow = ({ nextStep }: Props) => {
       return (
         <SelectHeaderStep
           data={state.data}
-          onContinue={(headerValues: string[], data: string[][]) => {
+          onContinue={(headerValues, data) => {
             setState({
-              type: Type.loadMatchColumns,
+              type: Type.matchColumns,
               headerValues,
               data,
             })
-          }}
-          onCancel={() => {
-            setState({ type: Type.upload })
+            nextStep()
           }}
         />
       )
     case Type.matchColumns:
-    case Type.submitMatchColumns:
-    case Type.loadMatchColumns:
-      return <Progress isIndeterminate />
+      return (
+        <MatchColumnsStep
+          data={state.data}
+          headerIndex={0}
+          onContinue={(data) => {
+            setState({
+              type: Type.validateData,
+              data,
+            })
+            nextStep()
+          }}
+        />
+      )
+    case Type.validateData:
+      return <ValidationStep initialData={state.data} onSubmit={() => {}} />
     default:
-      return null
+      return <Progress isIndeterminate />
   }
 }
