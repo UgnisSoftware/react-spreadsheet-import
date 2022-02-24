@@ -4,11 +4,9 @@ import { SelectHeaderTable } from "./components/SelectHeaderTable"
 import { ContinueButton } from "../../components/ContinueButton"
 
 const SELECT_HEADER_TITLE = "Select header row"
-const NO_SELECTION_ERROR = "Header row not selected"
 
 type SelectHeaderProps = {
   data: string[][]
-  onCancel: () => void
   onContinue: (headerValues: string[], data: string[][]) => void
 }
 
@@ -24,7 +22,7 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
 
   return (
     <>
-      <Box display="flex" p="2rem" pb={0} flexDirection="column" overflow="auto" height="100%">
+      <Box display="flex" p="2rem" pb={0} flexDirection="column" flex={1} overflow="auto" height="100%">
         <Heading size="lg" color="gray.700" mb="2rem">
           {SELECT_HEADER_TITLE}
         </Heading>

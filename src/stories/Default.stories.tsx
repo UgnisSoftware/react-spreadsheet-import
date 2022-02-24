@@ -1,6 +1,6 @@
-import { ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
+import { ReactSpreadsheetImport } from "../ReactSpreadsheetImport"
 import { Button, useDisclosure } from "@chakra-ui/react"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
+import { mockRsiValues } from "./mockRsiValues"
 
 export default {
   title: "React spreadsheet import",

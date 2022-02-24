@@ -14,7 +14,7 @@ const animationConfig = {
   animate: { scale: 1, opacity: 1 },
 }
 type MatchIconProps = {
-  matched: boolean
+  isChecked: boolean
 }
 
 export const MatchIcon = (props: MatchIconProps) => {
@@ -26,13 +26,13 @@ export const MatchIcon = (props: MatchIconProps) => {
       minH={6}
       w={6}
       h={6}
-      data-highlighted={dataAttr(props.matched)}
-      ml={"0.875rem"}
+      data-highlighted={dataAttr(props.isChecked)}
+      ml="0.875rem"
       mr={3}
     >
-      {props.matched && (
+      {props.isChecked && (
         <MotionFlex {...animationConfig}>
-          <CgCheck size={"1.5rem"}/>
+          <CgCheck size="1.5rem"/>
         </MotionFlex>
       )}
     </chakra.div>
