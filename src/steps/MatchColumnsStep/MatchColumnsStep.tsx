@@ -6,10 +6,7 @@ import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
 import type { Field } from "../../types"
 import uniqBy from "lodash/uniqBy"
-
-const MATCH_COLUMNS_TITLE = "Validate column matching"
-const USER_TABLE_TITLE = "Your table"
-const TEMPLATE_TITLE = "Will become"
+import { ColumnGrid } from "./components/ColumnGrid"
 
 type MatchColumnsProps = {
   data: (string | number)[][]
@@ -48,7 +45,7 @@ export type Column =
       matchedOptions: MatchedOptions[]
     }
 
-type Columns = Column[]
+export type Columns = Column[]
 
 const uniqueEntries = (data: MatchColumnsProps["data"], index: number): Partial<MatchedOptions>[] =>
   uniqBy(
@@ -110,44 +107,17 @@ export const MatchColumnsStep = ({ data, headerIndex }: MatchColumnsProps) => {
   )
 
   return (
-    <Flex flex={1} flexDir="column" minH={"100vh"} px={4}>
-      <Heading size="lg" mb={8}>
-        {MATCH_COLUMNS_TITLE}
-      </Heading>
-      <Flex
-        flex={1}
-        display="grid"
-        gridTemplateRows="auto auto auto 1fr"
-        gridTemplateColumns={`0.75rem repeat(${header.length}, minmax(20rem, auto)) 0.75rem`}
-      >
-        <Box gridColumn={`1/${header.length + 3}`}>
-          <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4}>
-            {USER_TABLE_TITLE}
-          </Text>
-        </Box>
-        {columns.map((column, index) => (
-          <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header}>
-            <UserTableColumn
-              column={column}
-              onIgnore={onIgnore}
-              onRevertIgnore={onRevertIgnore}
-              entries={dataExample.map((row) => row[column.index])}
-            />
-          </Box>
-        ))}
-        <FadingWrapper gridColumn={`1/${header.length + 3}`} gridRow="2/3" />
-        <Box gridColumn={`1/${header.length + 1}`}>
-          <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4} mt={7}>
-            {TEMPLATE_TITLE}
-          </Text>
-        </Box>
-        <FadingWrapper gridColumn={`1/${header.length + 3}`} gridRow="4/5" />
-        {columns.map((column, index) => (
-          <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py="1.125rem" pl={2} pr={3}>
-            <TemplateColumn column={column} onChange={onChange} />
-          </Box>
-        ))}
-      </Flex>
-    </Flex>
+    <ColumnGrid
+      columns={columns}
+      userColumn={(column) => (
+        <UserTableColumn
+          column={column}
+          onIgnore={onIgnore}
+          onRevertIgnore={onRevertIgnore}
+          entries={dataExample.map((row) => row[column.index])}
+        />
+      )}
+      templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} />}
+    />
   )
 }
