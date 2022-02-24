@@ -87,7 +87,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
       return (
         <MatchColumnsStep
           data={state.data}
-          headerIndex={0}
+          headerValues={state.headerValues}
           onContinue={(data) => {
             setState({
               type: Type.validateData,

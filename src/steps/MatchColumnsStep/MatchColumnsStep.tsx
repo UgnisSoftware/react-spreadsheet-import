@@ -12,7 +12,7 @@ const TEMPLATE_TITLE = "Will become"
 
 type MatchColumnsProps = {
   data: (string | number)[][]
-  headerIndex: number
+  headerValues: string[]
   onContinue: (data: any[]) => void
 }
 
@@ -45,11 +45,11 @@ const setColumn = (field: Field<any> | undefined, oldColumn: Column): Column => 
 
 const setIgnoredColumn = ({ header, index }: Column): Column => ({ header, index, type: ColumnType.ignored })
 
-export const MatchColumnsStep = ({ data, headerIndex, onContinue }: MatchColumnsProps) => {
-  const header = data[headerIndex].map((el) => el.toString())
-  const dataExample = data.slice(headerIndex + 1, 3)
+export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumnsProps) => {
+  const header = headerValues
+  const dataExample = data.slice(0, 2)
   const [columns, setColumns] = useState<Columns>(
-    header.map((headerValues, index) => ({ type: ColumnType.empty, index, header: headerValues })),
+    header.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
   const { fields } = useRsi()
 
