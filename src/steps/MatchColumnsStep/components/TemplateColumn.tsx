@@ -14,6 +14,7 @@ import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
 import type { Fields } from "../../../types"
+import { getFieldOptions } from "../utils/getFieldOptions"
 
 const SELECT_PLACEHOLDER = "Select column..."
 const IGNORED_COLUMN_TEXT = "Column ignored"
@@ -81,8 +82,8 @@ export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumn
                           placeholder={SUB_SELECT_PLACEHOLDER}
                           onChange={(event) => onSubChange(event.target.value, column.index, option.entry!)}
                         >
-                          {fields.map(({ label, key }) => (
-                            <option value={key} key={key}>
+                          {getFieldOptions(fields, column.value).map(({ label, value }) => (
+                            <option value={value} key={value}>
                               {label}
                             </option>
                           ))}
