@@ -11,6 +11,8 @@ const VALIDATION_HEADER_TITLE = "Review data"
 const BUTTON_TITLE = "Confirm"
 const NO_ROWS_MESSAGE = "No data found"
 const NO_ROWS_MESSAGE_WHEN_FILTERED = "No data containing errors"
+const DISCARD_BUTTON_TITLE = "Discard selected rows"
+const FILTER_SWITCH_TITLE = "Show only rows with errors"
 
 type Props<T> = {
   initialData: T[]
@@ -55,10 +57,10 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
           </Heading>
           <Box display="flex" gap="16px" alignItems="center">
             <Button variant="outline" size="sm" onClick={deleteSelectedRows}>
-              Discard selected rows
+              {DISCARD_BUTTON_TITLE}
             </Button>
             <Switch isChecked={filterByErrors} onChange={() => setFilterByErrors(!filterByErrors)}>
-              Show only rows with errors
+              {FILTER_SWITCH_TITLE}
             </Switch>
           </Box>
         </Box>
