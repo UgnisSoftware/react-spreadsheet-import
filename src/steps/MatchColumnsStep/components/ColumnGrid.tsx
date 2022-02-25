@@ -12,7 +12,7 @@ type ColumnGridProps = {
   columns: Columns
   userColumn: (column: Column) => React.ReactNode
   templateColumn: (column: Column) => React.ReactNode
-  onContinue: (colums: Columns) => void
+  onContinue: (val: Record<string, string>[]) => void
 }
 
 export const ColumnGrid = ({ columns, userColumn, templateColumn, onContinue }: ColumnGridProps) => {
@@ -52,7 +52,7 @@ export const ColumnGrid = ({ columns, userColumn, templateColumn, onContinue }: 
           ))}
         </Flex>
       </Flex>
-      <ContinueButton onContinue={() => onContinue(columns)} />
+      <ContinueButton onContinue={onContinue} />
     </>
   )
 }

@@ -6,6 +6,7 @@ import { ColumnGrid } from "./components/ColumnGrid"
 import { setColumn } from "./utils/setColumn"
 import { setIgnoreColumn } from "./utils/setIgnoreColumn"
 import { setSubColumn } from "./utils/setSubColumn"
+import { normalizeTableData } from "./utils/normalizeTableData"
 
 export type MatchColumnsProps = {
   data: (string | number)[][]
@@ -58,9 +59,7 @@ export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumn
   const onChange = useCallback(
     (value, columnIndex) => {
       const field = fields.find((field) => field.key === value)
-      setColumns(
-        columns.map((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)),
-      )
+      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)))
     },
     [columns, setColumns],
   )
@@ -93,7 +92,7 @@ export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumn
   return (
     <ColumnGrid
       columns={columns}
-      onContinue={onContinue}
+      onContinue={() => onContinue(normalizeTableData(columns, data))}
       userColumn={(column) => (
         <UserTableColumn
           column={column}
