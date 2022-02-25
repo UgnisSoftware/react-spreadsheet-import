@@ -3,7 +3,7 @@ import { Button, Flex } from "@chakra-ui/react"
 const BUTTON_TITLE = "Next step"
 
 type ContinueButtonProps = {
-  onContinue: (val: unknown) => void
+  onContinue: (val: any) => void
   title?: string
 }
 
