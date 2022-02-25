@@ -1,4 +1,4 @@
-import type {Info} from "../../types";
+import type { Info } from "../../types"
 
 export type Data = { [key: string]: string | boolean | number | undefined }
 export type Meta = { __index: number; __errors?: Error | null }

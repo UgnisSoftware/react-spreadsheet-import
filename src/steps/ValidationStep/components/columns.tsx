@@ -81,32 +81,42 @@ export const generateColumns = <T,>(fields: Fields<T>) => [
         editOnClick: true,
       },
       formatter: ({ row, onRowChange }) => {
-        const component =
-          column.fieldType.type === "checkbox" ? (
-            <Box
-              display="flex"
-              alignItems="center"
-              height="100%"
-              onClick={(event) => {
-                event.stopPropagation()
-              }}
-            >
-              <Switch
-                isChecked={row[column.key] as boolean}
-                onChange={() => {
-                  onRowChange({ ...row, [column.key]: !row[column.key] })
+        let component
+
+        switch (column.fieldType.type) {
+          case "checkbox":
+            component = (
+              <Box
+                display="flex"
+                alignItems="center"
+                height="100%"
+                onClick={(event) => {
+                  event.stopPropagation()
                 }}
-              />
-            </Box>
-          ) : column.fieldType.type === "select" ? (
-            <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-              {column.fieldType.options.find((option) => option.value === row[column.key])?.label || null}
-            </Box>
-          ) : (
-            <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-              {row[column.key]}
-            </Box>
-          )
+              >
+                <Switch
+                  isChecked={row[column.key] as boolean}
+                  onChange={() => {
+                    onRowChange({ ...row, [column.key]: !row[column.key] })
+                  }}
+                />
+              </Box>
+            )
+            break
+          case "select":
+            component = (
+              <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+                {column.fieldType.options.find((option) => option.value === row[column.key])?.label || null}
+              </Box>
+            )
+            break
+          default:
+            component = (
+              <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+                {row[column.key]}
+              </Box>
+            )
+        }
 
         if (row.__errors?.[column.key]) {
           return (
