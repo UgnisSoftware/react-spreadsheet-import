@@ -1,5 +1,4 @@
-import { Box, extendTheme } from "@chakra-ui/react"
-import { colorSchemeOverrides, themeOverrides } from "../../../theme"
+import { Box } from "@chakra-ui/react"
 import { editableTableInitialData, mockRsiValues } from "../../../stories/mockRsiValues"
 import { ValidationStep } from "../ValidationStep"
 import { Providers } from "../../../components/Providers"

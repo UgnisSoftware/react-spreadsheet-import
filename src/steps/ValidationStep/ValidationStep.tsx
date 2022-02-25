@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import { Box, Button, Heading, Switch } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
@@ -23,15 +23,10 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
   const { fields, rowHook, tableHook, initialHook = (table) => table } = useRsi()
 
   const [data, setData] = useState<(T & Meta)[]>(
-    addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook),
+    useMemo(() => addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook), []),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
-
-  const updateRow = (rows: typeof data) => {
-    setData(addErrorsAndRunHooks(rows, fields, rowHook, tableHook))
-  }
-  const columns = useMemo(() => generateColumns(fields), [])
 
   const deleteSelectedRows = () => {
     if (selectedRows.size) {
@@ -41,12 +36,23 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
     }
   }
 
+  const updateRow = useCallback(
+    (rows: typeof data) => {
+      setData(addErrorsAndRunHooks(rows, fields, rowHook, tableHook))
+    },
+    [setData, addErrorsAndRunHooks, rowHook, tableHook],
+  )
+
+  const columns = useMemo(() => generateColumns(fields), [fields, generateColumns])
+
   const tableData = useMemo(() => {
     if (filterByErrors) {
       return data.filter((value) => value?.__errors)
     }
     return data
   }, [data, filterByErrors])
+
+  const rowKeyGetter = useCallback((row: T & Meta) => row.__index, [])
 
   return (
     <>
@@ -65,7 +71,7 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
           </Box>
         </Box>
         <Table
-          rowKeyGetter={(row) => row.__index}
+          rowKeyGetter={rowKeyGetter}
           rows={tableData}
           onRowsChange={updateRow}
           columns={columns}
