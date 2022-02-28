@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react"
 import { editableTableInitialData, mockRsiValues } from "../../../stories/mockRsiValues"
 import { ValidationStep } from "../ValidationStep"
 import { Providers } from "../../../components/Providers"
 import { theme } from "../../../ReactSpreadsheetImport"
+import { ModalWrapper } from "../../../components/ModalWrapper"
 
 export default {
   title: "Validation Step",
@@ -13,8 +13,8 @@ export default {
 
 export const Basic = () => (
   <Providers theme={theme} rsiValues={mockRsiValues}>
-    <Box display="flex" flexDirection="column" flex={1} height="100vh" id="chakra-modal-rsi">
+    <ModalWrapper isOpen={true} onClose={() => {}}>
       <ValidationStep initialData={editableTableInitialData} onSubmit={() => {}} />
-    </Box>
+    </ModalWrapper>
   </Providers>
 )
