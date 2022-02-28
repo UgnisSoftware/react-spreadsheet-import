@@ -25,7 +25,7 @@ const fields: Field<any>[] = [
         level: "info",
       },
     ],
-    description: 'Family / Last name',
+    description: "Family / Last name",
   },
   {
     label: "Age",
@@ -76,7 +76,9 @@ const fields: Field<any>[] = [
 
 export const mockRsiValues: RsiProps = {
   fields: fields,
-  onSubmit: () => {},
+  onSubmit: (data) => {
+    console.log(data)
+  },
   isOpen: true,
   onClose: () => {},
 }
