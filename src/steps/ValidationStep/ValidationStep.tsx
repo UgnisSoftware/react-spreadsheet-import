@@ -63,7 +63,7 @@ export const ValidationStep = <T,>({ initialData }: Props<T>) => {
       return true
     })
     const invalidData = all.filter((value) => !validData.includes(value))
-    onSubmit({ validData: validData, invalidData: invalidData, all: all })
+    onSubmit({ validData, invalidData, all })
   }
 
   return (
