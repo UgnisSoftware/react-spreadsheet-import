@@ -1,5 +1,5 @@
 import { UploadFlow } from "./UploadFlow"
-import { Box } from "@chakra-ui/react"
+import { ModalHeader } from "@chakra-ui/react"
 import { useSteps, Step, Steps as Stepper } from "chakra-ui-steps"
 import { CgCheck } from "react-icons/cg"
 
@@ -18,15 +18,15 @@ export const Steps = () => {
   })
 
   return (
-    <Box display="flex" flexDirection="column" flex={1} overflow="auto">
-      <Box bg="gray.100" px="2rem" py="1.5rem">
+    <>
+      <ModalHeader>
         <Stepper activeStep={activeStep} checkIcon={CheckIcon}>
           {steps.map(({ label }) => (
             <Step label={label} key={label} />
           ))}
         </Stepper>
-      </Box>
+      </ModalHeader>
       <UploadFlow nextStep={nextStep} />
-    </Box>
+    </>
   )
 }

@@ -1,5 +1,5 @@
 import type XLSX from "xlsx"
-import { Box, Heading, Text } from "@chakra-ui/react"
+import { Box, Heading, ModalBody, Text } from "@chakra-ui/react"
 import { DropZone } from "./components/DropZone"
 import { useRsi } from "../../hooks/useRsi"
 import { ExampleTable } from "./components/ExampleTable"
@@ -17,7 +17,7 @@ type UploadProps = {
 export const UploadStep = ({ onContinue }: UploadProps) => {
   const { title, fields } = useRsi()
   return (
-    <Box minH="fit-content" display="flex" flex={1} p="2rem" flexDirection="column">
+    <ModalBody>
       <Heading size="lg" color="gray.700" mb="2rem">
         {title || DEFAULT_TITLE}
       </Heading>
@@ -32,6 +32,6 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
         <FadingOverlay />
       </Box>
       <DropZone onContinue={onContinue} />
-    </Box>
+    </ModalBody>
   )
 }

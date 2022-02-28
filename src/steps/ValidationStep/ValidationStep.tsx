@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Box, Button, Heading, Switch } from "@chakra-ui/react"
+import { Box, Button, Heading, ModalBody, Switch } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
@@ -56,7 +56,7 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
 
   return (
     <>
-      <Box display="flex" p="2rem" pb={0} flexDirection="column" flex={1} overflow="auto" height="100%">
+      <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem">
           <Heading size="lg" color="gray.700">
             {VALIDATION_HEADER_TITLE}
@@ -85,7 +85,7 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
             ),
           }}
         />
-      </Box>
+      </ModalBody>
       <ContinueButton
         onContinue={() => {
           const d = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as T[]

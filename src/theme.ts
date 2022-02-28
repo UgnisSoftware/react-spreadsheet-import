@@ -32,7 +32,7 @@ export const themeOverrides = {
           bg: "white",
           borderColor: "yellow.500",
           color: "white",
-          transitionDuration: 'ultra-fast',
+          transitionDuration: "ultra-fast",
         }
       },
       defaultProps: {
@@ -65,7 +65,27 @@ export const themeOverrides = {
     Modal: {
       variants: {
         rsi: {
+          header: {
+            bg: "gray.100",
+            px: "2rem",
+            py: "1.5rem",
+          },
+          body: {
+            display: "flex",
+            paddingX: "2rem",
+            paddingY: "2rem",
+            flexDirection: "column",
+            flex: 1,
+            overflow: "auto",
+            height: "100%",
+          },
+          footer: {
+            bg: "gray.100",
+            py: "1.5rem",
+            justifyContent: "center",
+          },
           dialog: {
+            outline: "unset",
             minH: "calc(100vh - 4rem)",
             maxW: "calc(100vw - 4rem)",
             my: "2rem",
