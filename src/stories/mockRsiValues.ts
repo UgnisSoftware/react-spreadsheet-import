@@ -25,6 +25,7 @@ const fields: Field<any>[] = [
         level: "info",
       },
     ],
+    description: 'Family / Last name',
   },
   {
     label: "Age",
