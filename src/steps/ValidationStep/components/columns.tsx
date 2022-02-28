@@ -72,7 +72,7 @@ export const generateColumns = <T,>(fields: Fields<T>) => [
               placeholder=" "
             >
               {column.fieldType.options.map((option) => (
-                <option value={option.value}>{option.label}</option>
+                <option value={option.value} key={option.value}>{option.label}</option>
               ))}
             </Select>
           </Box>

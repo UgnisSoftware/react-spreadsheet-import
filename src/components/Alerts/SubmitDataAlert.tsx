@@ -8,6 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react"
 import { useRef } from "react"
+import { useRsi } from "../../hooks/useRsi"
 
 interface Props {
   isOpen: boolean
@@ -15,12 +16,15 @@ interface Props {
   onConfirm: () => void
 }
 
-const EXIT_HEADER_TITLE = "Exit import flow"
-const EXIT_BODY_TEXT = "Are you sure? Your current information will not be saved."
+const SUBMIT_HEADER_TITLE = "Errors detected"
+const SUBMIT_BODY_TEXT =
+  "There are still some rows that contain errors. Rows with errors will be ignored when submitting."
+const SUBMIT_FORBIDDEN_BODY_TEXT = "There are still some rows containing errors."
 const CANCEL_BUTTON = "Cancel"
-const EXIT_BUTTON = "Exit flow"
+const FINISH_BUTTON = "Submit"
 
-export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
+export const SubmitDataAlert = ({ isOpen, onClose, onConfirm }: Props) => {
+  const { allowInvalidSubmit } = useRsi()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
@@ -28,16 +32,18 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {EXIT_HEADER_TITLE}
+            {SUBMIT_HEADER_TITLE}
           </AlertDialogHeader>
-          <AlertDialogBody>{EXIT_BODY_TEXT}</AlertDialogBody>
+          <AlertDialogBody>{allowInvalidSubmit ? SUBMIT_BODY_TEXT : SUBMIT_FORBIDDEN_BODY_TEXT}</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">
               {CANCEL_BUTTON}
             </Button>
-            <Button colorScheme="red" onClick={onConfirm} ml={3}>
-              {EXIT_BUTTON}
-            </Button>
+            {allowInvalidSubmit && (
+              <Button onClick={onConfirm} ml={3}>
+                {FINISH_BUTTON}
+              </Button>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialogOverlay>

@@ -1,4 +1,3 @@
-import { colorSchemeOverrides, themeOverrides } from "../../../theme"
 import { headerSelectionTableFields, mockRsiValues } from "../../../stories/mockRsiValues"
 import { SelectHeaderStep } from "../SelectHeaderStep"
 import { Providers } from "../../../components/Providers"
