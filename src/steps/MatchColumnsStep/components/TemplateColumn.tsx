@@ -14,14 +14,13 @@ import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
 import { getFieldOptions } from "../utils/getFieldOptions"
-import type { DeepReadonly } from "ts-essentials"
 import type { Fields } from "../../../types"
 
 const SELECT_PLACEHOLDER = "Select column..."
 const IGNORED_COLUMN_TEXT = "Column ignored"
 const SUB_SELECT_PLACEHOLDER = "Select..."
 
-const getAccordionTitle = <T extends string>(fields: DeepReadonly<Fields<T>>, column: Column<T>) => {
+const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
   return `Match ${fieldLabel} (${"matchedOptions" in column && column.matchedOptions.length} Unmatched)`
 }

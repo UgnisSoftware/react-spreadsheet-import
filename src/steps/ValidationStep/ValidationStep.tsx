@@ -54,7 +54,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     return data
   }, [data, filterByErrors])
 
-  const rowKeyGetter = useCallback((row: T & Meta) => row.__index, [])
+  const rowKeyGetter = useCallback((row: Data<T> & Meta) => row.__index, [])
 
   const submitData = () => {
     const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as Data<T>[]

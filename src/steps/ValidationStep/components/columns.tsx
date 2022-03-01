@@ -1,48 +1,42 @@
-import { Column, FormatterProps, useRowSelection } from "react-data-grid"
+import { Column, useRowSelection } from "react-data-grid"
 import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
-import type { Field, Fields } from "../../../types"
+import type { Data, Fields } from "../../../types"
 import type { ChangeEvent } from "react"
 import type { Meta } from "../types"
 import { CgInfo } from "react-icons/cg"
-import type { DeepReadonly } from "ts-essentials"
 
 const SELECT_COLUMN_KEY = "select-row"
 
-function SelectFormatter(props: FormatterProps<unknown>) {
-  const [isRowSelected, onRowSelectionChange] = useRowSelection()
-
-  return (
-    <Checkbox
-      bg="white"
-      aria-label="Select"
-      isChecked={isRowSelected}
-      onChange={(event) => {
-        onRowSelectionChange({
-          row: props.row,
-          checked: Boolean(event.target.checked),
-          isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,
-        })
-      }}
-    />
-  )
-}
-
-export const SelectColumn: Column<any, any> = {
-  key: SELECT_COLUMN_KEY,
-  name: "",
-  width: 35,
-  maxWidth: 35,
-  resizable: false,
-  sortable: false,
-  frozen: true,
-  cellClass: "rdg-checkbox",
-  formatter: SelectFormatter,
-}
-
-export const generateColumns = <T extends string>(fields: DeepReadonly<Fields<T>>) => [
-  SelectColumn,
+export const generateColumns = <T extends string>(fields: Fields<T>): Column<Data<T> & Meta>[] => [
+  {
+    key: SELECT_COLUMN_KEY,
+    name: "",
+    width: 35,
+    maxWidth: 35,
+    resizable: false,
+    sortable: false,
+    frozen: true,
+    cellClass: "rdg-checkbox",
+    formatter: (props) => {
+      const [isRowSelected, onRowSelectionChange] = useRowSelection()
+      return (
+        <Checkbox
+          bg="white"
+          aria-label="Select"
+          isChecked={isRowSelected}
+          onChange={(event) => {
+            onRowSelectionChange({
+              row: props.row,
+              checked: Boolean(event.target.checked),
+              isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,
+            })
+          }}
+        />
+      )
+    },
+  },
   ...fields.map(
-    (column): Column<T & Meta> => ({
+    (column): Column<Data<T> & Meta> => ({
       key: column.key,
       name: column.label,
       resizable: true,
@@ -113,7 +107,7 @@ export const generateColumns = <T extends string>(fields: DeepReadonly<Fields<T>
                 <Switch
                   isChecked={row[column.key] as boolean}
                   onChange={() => {
-                    onRowChange({ ...row, [column.key]: !row[column.key] })
+                    onRowChange({ ...row, [column.key]: !row[column.key as T] })
                   }}
                 />
               </Box>
@@ -122,14 +116,14 @@ export const generateColumns = <T extends string>(fields: DeepReadonly<Fields<T>
           case "select":
             component = (
               <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-                {column.fieldType.options.find((option) => option.value === row[column.key])?.label || null}
+                {column.fieldType.options.find((option) => option.value === row[column.key as T])?.label || null}
               </Box>
             )
             break
           default:
             component = (
               <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
-                {row[column.key]}
+                {row[column.key as T]}
               </Box>
             )
         }

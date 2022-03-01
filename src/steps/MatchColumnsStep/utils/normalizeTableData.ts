@@ -1,8 +1,8 @@
 import type { Columns } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
-import type { Data } from "../../ValidationStep/types"
+import type { Data } from "../../../types"
 
-export const normalizeTableData = (columns: Columns, data: (string | number)[][]) =>
+export const normalizeTableData = <T extends string>(columns: Columns<T>, data: (string | number)[][]) =>
   data.map((row) =>
     row.reduce((acc, curr, index) => {
       const column = columns[index]
@@ -24,5 +24,5 @@ export const normalizeTableData = (columns: Columns, data: (string | number)[][]
         default:
           return acc
       }
-    }, {} as Data),
+    }, {} as Data<T>),
   )

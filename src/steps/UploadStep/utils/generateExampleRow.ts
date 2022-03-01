@@ -8,7 +8,7 @@ const titleMap: Record<Field<any>["fieldType"]["type"], string> = {
 
 export const generateExampleRow = <T extends string>(fields: Fields<T>) => [
   fields.reduce((acc, field) => {
-    acc[field.key] = field.example || titleMap[field.fieldType.type]
+    acc[field.key as T] = field.example || titleMap[field.fieldType.type]
     return acc
   }, {} as Record<T, string>),
 ]

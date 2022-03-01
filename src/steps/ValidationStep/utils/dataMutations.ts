@@ -1,10 +1,9 @@
 import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
 import type { Meta, Errors } from "../types"
-import type { DeepReadonly } from "ts-essentials"
 
 export const addErrorsAndRunHooks = <T extends string>(
   data: (Data<T> & Meta)[],
-  fields: DeepReadonly<Fields<T>>,
+  fields: Fields<T>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
 ): (Data<T> & Meta)[] => {
@@ -29,7 +28,7 @@ export const addErrorsAndRunHooks = <T extends string>(
     field.validations?.forEach((validation) => {
       switch (validation.rule) {
         case "unique": {
-          const values = data.map((entry) => entry[field.key])
+          const values = data.map((entry) => entry[field.key as T])
           values.forEach((value, index) => {
             if (values.indexOf(value) !== values.lastIndexOf(value)) {
               errors[index] = {
@@ -45,7 +44,7 @@ export const addErrorsAndRunHooks = <T extends string>(
         }
         case "required": {
           data.forEach((entry, index) => {
-            if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key] === "") {
+            if (entry[field.key as T] === null || entry[field.key as T] === undefined || entry[field.key as T] === "") {
               errors[index] = {
                 ...errors[index],
                 [field.key]: {

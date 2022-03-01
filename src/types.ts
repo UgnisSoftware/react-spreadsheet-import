@@ -17,7 +17,7 @@ export type RsiProps<T extends string> = {
   // Theme configuration passed to underlying Chakra-UI
   customTheme?: object
   // Field description for requested data
-  fields: DeepReadonly<Fields<T>>
+  fields: Fields<T>
   // Runs after column matching and on entry change, more performant
   rowHook?: RowHook<T>
   // Runs after column matching and on entry change
@@ -31,9 +31,9 @@ export type RsiProps<T extends string> = {
 export type Data<T extends string> = { [key in T]: string | boolean | number | undefined }
 
 // Data model RSI uses for spreadsheet imports
-export type Fields<T> = Field<T>[]
+export type Fields<T extends string> = DeepReadonly<Field<T>[]>
 
-export type Field<T> = {
+export type Field<T extends string> = {
   // UI-facing field label
   label: string
   // Field's unique identifier
