@@ -1,15 +1,16 @@
-import type { Fields, Info, RowHook, TableHook } from "../../../types"
-import type { Data, Meta, Errors } from "../types"
+import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
+import type { Meta, Errors } from "../types"
+import type { DeepReadonly } from "ts-essentials"
 
-export const addErrorsAndRunHooks = <T extends Data>(
-  data: (T & Meta)[],
-  fields: Fields<T>,
+export const addErrorsAndRunHooks = <T extends string>(
+  data: (Data<T> & Meta)[],
+  fields: DeepReadonly<Fields<T>>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
-): (T & Meta)[] => {
+): (Data<T> & Meta)[] => {
   let errors: Errors = {}
 
-  const addHookError = <T>(rowIndex: number, fieldKey: keyof T, error: Info) => {
+  const addHookError = (rowIndex: number, fieldKey: T, error: Info) => {
     errors[rowIndex] = {
       ...errors[rowIndex],
       [fieldKey]: error,
@@ -44,7 +45,7 @@ export const addErrorsAndRunHooks = <T extends Data>(
         }
         case "required": {
           data.forEach((entry, index) => {
-            if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key as string] === "") {
+            if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key] === "") {
               errors[index] = {
                 ...errors[index],
                 [field.key]: {
@@ -88,10 +89,10 @@ export const addErrorsAndRunHooks = <T extends Data>(
   })
 }
 
-export const addIndexes = <T>(arr: T[]): (T & { __index: number })[] =>
+export const addIndexes = <T extends string>(arr: Data<T>[]): (Data<T> & { __index: number })[] =>
   arr.map((value, index) => {
     if ("__index" in value) {
-      return value as T & { __index: number }
+      return value as Data<T> & { __index: number }
     }
     return { ...value, __index: index }
   })

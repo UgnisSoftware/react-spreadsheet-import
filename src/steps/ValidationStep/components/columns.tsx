@@ -2,8 +2,9 @@ import { Column, FormatterProps, useRowSelection } from "react-data-grid"
 import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
 import type { Field, Fields } from "../../../types"
 import type { ChangeEvent } from "react"
-import type { Data, Meta } from "../types"
+import type { Meta } from "../types"
 import { CgInfo } from "react-icons/cg"
+import type { DeepReadonly } from "ts-essentials"
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -38,10 +39,10 @@ export const SelectColumn: Column<any, any> = {
   formatter: SelectFormatter,
 }
 
-export const generateColumns = <T extends Data>(fields: Fields<T>) => [
+export const generateColumns = <T extends string>(fields: DeepReadonly<Fields<T>>) => [
   SelectColumn,
   ...fields.map(
-    (column: Field<T>): Column<T & Meta> => ({
+    (column): Column<T & Meta> => ({
       key: column.key,
       name: column.label,
       resizable: true,
