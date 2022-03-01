@@ -98,7 +98,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
         />
       )
     case Type.validateData:
-      return <ValidationStep initialData={state.data} onSubmit={() => {}} />
+      return <ValidationStep initialData={state.data} />
     default:
       return <Progress isIndeterminate />
   }

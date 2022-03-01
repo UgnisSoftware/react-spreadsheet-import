@@ -16,11 +16,10 @@ const FILTER_SWITCH_TITLE = "Show only rows with errors"
 
 type Props<T> = {
   initialData: T[]
-  onSubmit: (data: T[]) => void
 }
 
-export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
-  const { fields, rowHook, tableHook, initialHook = (table) => table } = useRsi()
+export const ValidationStep = <T,>({ initialData }: Props<T>) => {
+  const { fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi()
 
   const [data, setData] = useState<(T & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook), []),
@@ -54,6 +53,19 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
 
   const rowKeyGetter = useCallback((row: T & Meta) => row.__index, [])
 
+  const onContinue = () => {
+    const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as T[]
+    const validData = all.filter((value, index) => {
+      const originalValue = data[index]
+      if (originalValue?.__errors) {
+        return !Object.values(originalValue.__errors)?.filter((err) => err.level === "error").length
+      }
+      return true
+    })
+    const invalidData = all.filter((value) => !validData.includes(value))
+    onSubmit({ validData, invalidData, all })
+  }
+
   return (
     <>
       <ModalBody pb={0}>
@@ -86,13 +98,7 @@ export const ValidationStep = <T,>({ initialData, onSubmit }: Props<T>) => {
           }}
         />
       </ModalBody>
-      <ContinueButton
-        onContinue={() => {
-          const d = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as T[]
-          onSubmit(d)
-        }}
-        title={BUTTON_TITLE}
-      />
+      <ContinueButton onContinue={onContinue} title={BUTTON_TITLE} />
     </>
   )
 }

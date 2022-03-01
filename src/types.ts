@@ -9,7 +9,7 @@ export type RsiProps<T = any> = {
   maxRecords?: number
   // Automatically map imported headers to specified fields if possible
   autoMapHeaders?: boolean
-  // is open by default
+  // Is modal visible
   isOpen: boolean
   // callback when RSI is closed before final submit
   onClose: () => void
@@ -100,7 +100,7 @@ export type Info = {
 export type Result<T> = {
   validData: T[]
   invalidData: T[]
-  all: []
+  all: T[]
 }
 
 export type MaybeConfig = {
