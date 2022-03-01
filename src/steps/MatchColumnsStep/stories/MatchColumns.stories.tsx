@@ -2,7 +2,7 @@ import { theme } from "../../../ReactSpreadsheetImport"
 import { MatchColumnsStep } from "../MatchColumnsStep"
 import { Providers } from "../../../components/Providers"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
-import { Box } from "@chakra-ui/react"
+import { ModalWrapper } from "../../../components/ModalWrapper"
 
 export default {
   title: "Match Columns Steps",
@@ -26,8 +26,8 @@ const mockData = [
 
 export const Basic = () => (
   <Providers theme={theme} rsiValues={mockRsiValues}>
-    <Box display="flex" flexDirection="column" flex={1} height="100vh" id="chakra-modal-rsi">
+    <ModalWrapper isOpen={true} onClose={() => {}}>
       <MatchColumnsStep headerValues={mockData[0] as string[]} data={mockData.slice(1)} onContinue={() => {}} />
-    </Box>
+    </ModalWrapper>
   </Providers>
 )

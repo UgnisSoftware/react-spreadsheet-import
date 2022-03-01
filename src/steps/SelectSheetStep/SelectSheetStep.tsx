@@ -1,4 +1,4 @@
-import { Flex, Heading, Radio, RadioGroup, Stack } from "@chakra-ui/react"
+import { Flex, Heading, ModalBody, Radio, RadioGroup, Stack } from "@chakra-ui/react"
 import { useState } from "react"
 import { ContinueButton } from "../../components/ContinueButton"
 
@@ -12,8 +12,8 @@ type SelectSheetProps = {
 export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) => {
   const [value, setValue] = useState(sheetNames[0])
   return (
-    <Flex flex={1} flexDirection="column">
-      <Flex direction="column" alignItems="center" justifyContent="center" p={8} flex={1}>
+    <>
+      <ModalBody alignItems="center" justifyContent="center" p={8} flex={1}>
         <Heading size="lg" mb={8}>
           {TITLE}
         </Heading>
@@ -24,8 +24,8 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
             ))}
           </Stack>
         </RadioGroup>
-      </Flex>
+      </ModalBody>
       <ContinueButton onContinue={() => onContinue(value)} />
-    </Flex>
+    </>
   )
 }

@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react"
 import { theme } from "../../../ReactSpreadsheetImport"
 import { SelectSheetStep } from "../SelectSheetStep"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
+import { ModalWrapper } from "../../../components/ModalWrapper"
 
 export default {
   title: "Select Sheet Step",
@@ -15,8 +15,8 @@ const sheetNames = ["Sheet1", "Sheet2", "Sheet3"]
 
 export const Basic = () => (
   <Providers theme={theme} rsiValues={mockRsiValues}>
-    <Box display="flex" flexDirection="column" flex={1} height="100vh" id="chakra-modal-rsi">
+    <ModalWrapper isOpen={true} onClose={() => {}}>
       <SelectSheetStep sheetNames={sheetNames} onContinue={() => {}} />
-    </Box>
+    </ModalWrapper>
   </Providers>
 )
