@@ -4,11 +4,11 @@ import { Table } from "../../../components/Table"
 import { generateColumns } from "./columns"
 import { generateExampleRow } from "../utils/generateExampleRow"
 
-interface Props<T> {
+interface Props<T extends string> {
   fields: Fields<T>
 }
 
-export const ExampleTable = <T,>({ fields }: Props<T>) => {
+export const ExampleTable = <T extends string>({ fields }: Props<T>) => {
   const data = useMemo(() => generateExampleRow(fields), [])
   const columns = useMemo(() => generateColumns(fields), [])
 

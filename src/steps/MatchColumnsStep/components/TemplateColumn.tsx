@@ -13,26 +13,27 @@ import { useRsi } from "../../../hooks/useRsi"
 import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
-import type { Fields } from "../../../types"
 import { getFieldOptions } from "../utils/getFieldOptions"
+import type { DeepReadonly } from "ts-essentials"
+import type { Fields } from "../../../types"
 
 const SELECT_PLACEHOLDER = "Select column..."
 const IGNORED_COLUMN_TEXT = "Column ignored"
 const SUB_SELECT_PLACEHOLDER = "Select..."
 
-const getAccordionTitle = (fields: Fields<any>, column: Column) => {
+const getAccordionTitle = <T extends string>(fields: DeepReadonly<Fields<T>>, column: Column<T>) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
   return `Match ${fieldLabel} (${"matchedOptions" in column && column.matchedOptions.length} Unmatched)`
 }
 
-type TemplateColumnProps = {
-  onChange: (val: string, index: number) => void
-  onSubChange: (val: string, index: number, option: string | number) => void
-  column: Column
+type TemplateColumnProps<T extends string> = {
+  onChange: (val: T, index: number) => void
+  onSubChange: (val: T, index: number, option: string | number) => void
+  column: Column<T>
 }
 
-export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumnProps) => {
-  const { fields } = useRsi()
+export const TemplateColumn = <T extends string>({ column, onChange, onSubChange }: TemplateColumnProps<T>) => {
+  const { fields } = useRsi<T>()
   const isIgnored = column.type === ColumnType.ignored
   const isChecked = column.type === ColumnType.matched || column.type === ColumnType.matchedSelectOptions
   const isSelect = "matchedOptions" in column
@@ -49,7 +50,7 @@ export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumn
             <Select
               placeholder={SELECT_PLACEHOLDER}
               value={"value" in column ? column.value : undefined}
-              onChange={(event) => onChange(event.target.value, column.index)}
+              onChange={(event) => onChange(event.target.value as T, column.index)}
             >
               {fields.map(({ label, key }) => (
                 <option value={key} key={key}>
@@ -67,7 +68,7 @@ export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumn
                     <AccordionIcon />
                     <Box textAlign="left">
                       <Text color="blue.600" fontSize="sm" lineHeight={5} pl={1}>
-                        {getAccordionTitle(fields, column)}
+                        {getAccordionTitle<T>(fields, column)}
                       </Text>
                     </Box>
                   </AccordionButton>
@@ -80,7 +81,7 @@ export const TemplateColumn = ({ column, onChange, onSubChange }: TemplateColumn
                         <Select
                           pb="0.375rem"
                           placeholder={SUB_SELECT_PLACEHOLDER}
-                          onChange={(event) => onSubChange(event.target.value, column.index, option.entry!)}
+                          onChange={(event) => onSubChange(event.target.value as T, column.index, option.entry!)}
                         >
                           {getFieldOptions(fields, column.value).map(({ label, value }) => (
                             <option value={value} key={value}>

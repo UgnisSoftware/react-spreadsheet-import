@@ -3,9 +3,9 @@ import { Box, Tooltip } from "@chakra-ui/react"
 import type { Field, Fields } from "../../../types"
 import { CgInfo } from "react-icons/cg"
 
-export const generateColumns = <T,>(fields: Fields<T>) =>
+export const generateColumns = <T extends string>(fields: Fields<T>) =>
   fields.map(
-    (column: Field<T>): Column<any> => ({
+    (column): Column<any> => ({
       key: column.key,
       name: column.label,
       resizable: true,

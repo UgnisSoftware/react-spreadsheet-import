@@ -3,19 +3,19 @@ import { CgClose, CgUndo } from "react-icons/cg"
 import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 
-type UserTableColumnProps = {
-  column: Column
+type UserTableColumnProps<T extends string> = {
+  column: Column<T>
   entries: (string | number)[]
   onIgnore: (index: number) => void
   onRevertIgnore: (index: number) => void
 }
 
-export const UserTableColumn = ({
+export const UserTableColumn = <T extends string>({
   column: { header, index, type },
   entries,
   onIgnore,
   onRevertIgnore,
-}: UserTableColumnProps) => {
+}: UserTableColumnProps<T>) => {
   const textColor = type === ColumnType.ignored ? "gray.400" : "gray.700"
   return (
     <Box>
