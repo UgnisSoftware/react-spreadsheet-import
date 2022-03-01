@@ -7,10 +7,12 @@ export type RsiProps<T = any> = {
   title?: string
   // Specifies maximum number of rows for a single import
   maxRecords?: number
-  // Automatically map imported headers to specified fields if possible
+  // Automatically map imported headers to specified fields if possible. Default: true
   autoMapHeaders?: boolean
-  // Is modal visible
+  // Is modal visible.
   isOpen: boolean
+  // Allows submitting with errors. Default: true
+  allowInvalidSubmit?: boolean
   // callback when RSI is closed before final submit
   onClose: () => void
   // Theme configuration passed to underlying Chakra-UI
@@ -101,10 +103,4 @@ export type Result<T> = {
   validData: T[]
   invalidData: T[]
   all: T[]
-}
-
-export type MaybeConfig = {
-  allowInvalidSubmit?: boolean
-  displayEncoding?: boolean
-  allowCustomFields?: boolean
 }

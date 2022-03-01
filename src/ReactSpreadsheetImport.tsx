@@ -16,3 +16,8 @@ export const ReactSpreadsheetImport = (props: RsiProps) => {
     </Providers>
   )
 }
+
+ReactSpreadsheetImport.defaultProps = {
+  autoMapHeaders: true,
+  allowInvalidSubmit: true,
+}

@@ -6,6 +6,7 @@ import type { Meta } from "./types"
 import { addErrorsAndRunHooks, addIndexes } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
+import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
 
 const VALIDATION_HEADER_TITLE = "Review data"
 const BUTTON_TITLE = "Confirm"
@@ -19,13 +20,14 @@ type Props<T> = {
 }
 
 export const ValidationStep = <T,>({ initialData }: Props<T>) => {
-  const { fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi()
+  const { fields, allowInvalidSubmit, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi()
 
   const [data, setData] = useState<(T & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook), []),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
+  const [showSubmitAlert, setShowSubmitAlert] = useState(false)
 
   const deleteSelectedRows = () => {
     if (selectedRows.size) {
@@ -53,7 +55,7 @@ export const ValidationStep = <T,>({ initialData }: Props<T>) => {
 
   const rowKeyGetter = useCallback((row: T & Meta) => row.__index, [])
 
-  const onContinue = () => {
+  const submitData = () => {
     const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as T[]
     const validData = all.filter((value, index) => {
       const originalValue = data[index]
@@ -65,9 +67,30 @@ export const ValidationStep = <T,>({ initialData }: Props<T>) => {
     const invalidData = all.filter((value) => !validData.includes(value))
     onSubmit({ validData, invalidData, all })
   }
+  const onContinue = () => {
+    const invalidData = data.find((value) => {
+      if (value?.__errors) {
+        return !!Object.values(value.__errors)?.filter((err) => err.level === "error").length
+      }
+      return false
+    })
+    if (!invalidData) {
+      submitData()
+    } else {
+      setShowSubmitAlert(true)
+    }
+  }
 
   return (
     <>
+      <SubmitDataAlert
+        isOpen={showSubmitAlert}
+        onClose={() => setShowSubmitAlert(false)}
+        onConfirm={() => {
+          setShowSubmitAlert(false)
+          submitData()
+        }}
+      />
       <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem">
           <Heading size="lg" color="gray.700">

@@ -80,6 +80,7 @@ export const mockRsiValues: RsiProps = {
     console.log(data)
   },
   isOpen: true,
+  allowInvalidSubmit: true,
   onClose: () => {},
 }
 
