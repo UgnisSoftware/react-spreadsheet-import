@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react"
 import { Box, Button, Heading, ModalBody, Switch } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
-import type { Meta } from "./types"
+import type { Data, Meta } from "./types"
 import { addErrorsAndRunHooks, addIndexes } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
@@ -19,8 +19,8 @@ type Props<T> = {
   initialData: T[]
 }
 
-export const ValidationStep = <T,>({ initialData }: Props<T>) => {
-  const { fields, allowInvalidSubmit, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi()
+export const ValidationStep = <T extends Data>({ initialData }: Props<T>) => {
+  const { fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
 
   const [data, setData] = useState<(T & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook), []),
@@ -65,7 +65,7 @@ export const ValidationStep = <T,>({ initialData }: Props<T>) => {
       return true
     })
     const invalidData = all.filter((value) => !validData.includes(value))
-    onSubmit({ validData, invalidData, all })
+    onSubmit({ validData, invalidData, all: data })
   }
   const onContinue = () => {
     const invalidData = data.find((value) => {

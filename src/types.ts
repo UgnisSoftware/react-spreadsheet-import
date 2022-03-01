@@ -1,3 +1,5 @@
+import type { Meta } from "./steps/ValidationStep/types"
+
 type MapKeyTupleToProps<T, P extends [keyof T] | Array<keyof T>> = {
   [K in keyof P]: P[K] extends keyof T ? T[P[K]] : never
 }
@@ -102,5 +104,5 @@ export type Info = {
 export type Result<T> = {
   validData: T[]
   invalidData: T[]
-  all: T[]
+  all: (T & Meta)[]
 }

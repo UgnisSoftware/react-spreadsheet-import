@@ -44,7 +44,7 @@ export const addErrorsAndRunHooks = <T extends Data>(
         }
         case "required": {
           data.forEach((entry, index) => {
-            if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key] === "") {
+            if (entry[field.key] === null || entry[field.key] === undefined || entry[field.key as string] === "") {
               errors[index] = {
                 ...errors[index],
                 [field.key]: {

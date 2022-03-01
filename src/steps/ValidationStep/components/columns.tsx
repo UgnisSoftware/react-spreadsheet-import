@@ -38,10 +38,10 @@ export const SelectColumn: Column<any, any> = {
   formatter: SelectFormatter,
 }
 
-export const generateColumns = <T,>(fields: Fields<T>) => [
+export const generateColumns = <T extends Data>(fields: Fields<T>) => [
   SelectColumn,
   ...fields.map(
-    (column: Field<T>): Column<T & Data & Meta> => ({
+    (column: Field<T>): Column<T & Meta> => ({
       key: column.key,
       name: column.label,
       resizable: true,
@@ -72,7 +72,9 @@ export const generateColumns = <T,>(fields: Fields<T>) => [
               placeholder=" "
             >
               {column.fieldType.options.map((option) => (
-                <option value={option.value} key={option.value}>{option.label}</option>
+                <option value={option.value} key={option.value}>
+                  {option.label}
+                </option>
               ))}
             </Select>
           </Box>
