@@ -3,6 +3,7 @@ import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
 import type { Field, Fields } from "../../../types"
 import type { ChangeEvent } from "react"
 import type { Data, Meta } from "../types"
+import { CgInfo } from "react-icons/cg"
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -44,6 +45,18 @@ export const generateColumns = <T,>(fields: Fields<T>) => [
       key: column.key,
       name: column.label,
       resizable: true,
+      headerRenderer: () => (
+        <Box display="flex" gap={1} alignItems="center" position="relative">
+          {column.label}
+          {column.description && (
+            <Tooltip placement="top" hasArrow label={column.description}>
+              <span>
+                <CgInfo size="1rem" />
+              </span>
+            </Tooltip>
+          )}
+        </Box>
+      ),
       editable: column.fieldType.type !== "checkbox",
       editor: ({ row, onRowChange, onClose }) =>
         column.fieldType.type === "select" ? (
