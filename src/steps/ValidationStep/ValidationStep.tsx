@@ -49,7 +49,13 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
 
   const tableData = useMemo(() => {
     if (filterByErrors) {
-      return data.filter((value) => value?.__errors)
+      return data.filter((value, index) => {
+        const originalValue = data[index]
+        if (originalValue?.__errors) {
+          return Object.values(originalValue.__errors)?.filter((err) => err.level === "error").length
+        }
+        return false
+      })
     }
     return data
   }, [data, filterByErrors])
