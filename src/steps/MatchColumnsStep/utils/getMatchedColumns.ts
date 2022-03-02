@@ -9,12 +9,12 @@ export const getMatchedColumns = <T extends string>(
   columns: Columns<T>,
   fields: Fields<T>,
   data: MatchColumnsProps["data"],
-  autoMapDistance: number
+  autoMapDistance: number,
 ) =>
   columns.reduce<Column<T>[]>((arr, column) => {
     const autoMatch = findMatch(column.header, fields, autoMapDistance)
     if (autoMatch) {
-      const field = fields.find((field) => field.key === autoMatch) as unknown as Field<T>
+      const field = fields.find((field) => field.key === autoMatch) as Field<T>
       const duplicateIndex = arr.findIndex((column) => "value" in column && column.value === field.key)
       const duplicate = arr[duplicateIndex]
       if (duplicate && "value" in duplicate) {
