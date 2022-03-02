@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { UserTableColumn } from "./components/UserTableColumn"
 import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
@@ -8,6 +8,7 @@ import { setIgnoreColumn } from "./utils/setIgnoreColumn"
 import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
 import type { Field } from "../../types"
+import { getMatchedColumns } from "./utils/getMatchedColumns"
 
 export type MatchColumnsProps = {
   data: (string | number)[][]
@@ -57,10 +58,10 @@ export type Columns<T extends string> = Column<T>[]
 
 export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps) => {
   const dataExample = data.slice(0, 2)
+  const { fields, autoMapHeaders, autoMapDistance } = useRsi<T>()
   const [columns, setColumns] = useState<Columns<T>>(
     headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
-  const { fields } = useRsi<T>()
 
   const onChange = useCallback(
     (value: T, columnIndex: number) => {
@@ -96,6 +97,12 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
     },
     [columns, setColumns],
   )
+
+  useEffect(() => {
+    if (autoMapHeaders) {
+      setColumns(getMatchedColumns(columns, fields, data, autoMapDistance))
+    }
+  }, [])
 
   return (
     <ColumnGrid

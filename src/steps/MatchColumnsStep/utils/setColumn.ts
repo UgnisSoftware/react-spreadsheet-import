@@ -2,7 +2,11 @@ import type { Field } from "../../../types"
 import { Column, ColumnType, MatchColumnsProps } from "../MatchColumnsStep"
 import { uniqueEntries } from "./uniqueEntries"
 
-export const setColumn = <T extends string>(oldColumn: Column<T>, field?: Field<T>, data?: MatchColumnsProps["data"]): Column<T> => {
+export const setColumn = <T extends string>(
+  oldColumn: Column<T>,
+  field?: Field<T>,
+  data?: MatchColumnsProps["data"],
+): Column<T> => {
   switch (field?.fieldType.type) {
     case "select":
       return {
