@@ -1,6 +1,6 @@
-import type { Field, RsiProps } from "../types"
+import type { RsiProps } from "../types"
 
-const fields: Field<any>[] = [
+const fields = [
   {
     label: "Name",
     key: "name",
@@ -72,17 +72,19 @@ const fields: Field<any>[] = [
     },
     example: "true",
   },
-]
+] as const
 
-export const mockRsiValues: RsiProps = {
+const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props
+
+export const mockRsiValues = mockComponentBehaviourForTypes({
   fields: fields,
   onSubmit: (data) => {
-    console.log(data)
+    console.log(data.all.map((value) => value))
   },
   isOpen: true,
   allowInvalidSubmit: true,
   onClose: () => {},
-}
+})
 
 export const editableTableInitialData = [
   {

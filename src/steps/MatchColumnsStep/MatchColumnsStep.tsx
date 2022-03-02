@@ -7,6 +7,7 @@ import { setColumn } from "./utils/setColumn"
 import { setIgnoreColumn } from "./utils/setIgnoreColumn"
 import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
+import type { Field } from "../../types"
 
 export type MatchColumnsProps = {
   data: (string | number)[][]
@@ -22,51 +23,58 @@ export enum ColumnType {
   matchedSelectOptions,
 }
 
-export type MatchedOptions = {
+export type MatchedOptions<T> = {
   entry: string | number
-  value: string
+  value: T
 }
 
 type EmptyColumn = { type: ColumnType.empty; index: number; header: string }
 type IgnoredColumn = { type: ColumnType.ignored; index: number; header: string }
-type MatchedColumn = { type: ColumnType.matched; index: number; header: string; value: string }
-export type MatchedSelectColumn = {
+type MatchedColumn<T> = { type: ColumnType.matched; index: number; header: string; value: T }
+export type MatchedSelectColumn<T> = {
   type: ColumnType.matchedSelect
   index: number
   header: string
-  value: string
-  matchedOptions: Partial<MatchedOptions>[]
+  value: T
+  matchedOptions: Partial<MatchedOptions<T>>[]
 }
-export type MatchedSelectOptionsColumn = {
+export type MatchedSelectOptionsColumn<T> = {
   type: ColumnType.matchedSelectOptions
   index: number
   header: string
-  value: string
-  matchedOptions: MatchedOptions[]
+  value: T
+  matchedOptions: MatchedOptions<T>[]
 }
 
-export type Column = EmptyColumn | IgnoredColumn | MatchedColumn | MatchedSelectColumn | MatchedSelectOptionsColumn
+export type Column<T extends string> =
+  | EmptyColumn
+  | IgnoredColumn
+  | MatchedColumn<T>
+  | MatchedSelectColumn<T>
+  | MatchedSelectOptionsColumn<T>
 
-export type Columns = Column[]
+export type Columns<T extends string> = Column<T>[]
 
-export const MatchColumnsStep = ({ data, headerValues, onContinue }: MatchColumnsProps) => {
+export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps) => {
   const dataExample = data.slice(0, 2)
-  const [columns, setColumns] = useState<Columns>(
+  const [columns, setColumns] = useState<Columns<T>>(
     headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
-  const { fields } = useRsi()
+  const { fields } = useRsi<T>()
 
   const onChange = useCallback(
-    (value, columnIndex) => {
-      const field = fields.find((field) => field.key === value)
-      setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)))
+    (value: T, columnIndex: number) => {
+      const field = fields.find((field) => field.key === value) as unknown as Field<T>
+      setColumns(
+        columns.map<Column<T>>((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)),
+      )
     },
     [columns, setColumns],
   )
 
   const onIgnore = useCallback(
     (columnIndex) => {
-      setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoreColumn(column) : column)))
+      setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoreColumn<T>(column) : column)))
     },
     [columns, setColumns],
   )

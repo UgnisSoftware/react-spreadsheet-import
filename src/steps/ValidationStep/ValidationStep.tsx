@@ -2,11 +2,12 @@ import React, { useCallback, useMemo, useState } from "react"
 import { Box, Button, Heading, ModalBody, Switch } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
-import type { Data, Meta } from "./types"
+import type { Meta } from "./types"
 import { addErrorsAndRunHooks, addIndexes } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
+import type { Data } from "../../types"
 
 const VALIDATION_HEADER_TITLE = "Review data"
 const BUTTON_TITLE = "Confirm"
@@ -15,15 +16,15 @@ const NO_ROWS_MESSAGE_WHEN_FILTERED = "No data containing errors"
 const DISCARD_BUTTON_TITLE = "Discard selected rows"
 const FILTER_SWITCH_TITLE = "Show only rows with errors"
 
-type Props<T> = {
-  initialData: T[]
+type Props<T extends string> = {
+  initialData: Data<T>[]
 }
 
-export const ValidationStep = <T extends Data>({ initialData }: Props<T>) => {
+export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const { fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
 
-  const [data, setData] = useState<(T & Meta)[]>(
-    useMemo(() => addErrorsAndRunHooks(addIndexes(initialHook(initialData)), fields, rowHook, tableHook), []),
+  const [data, setData] = useState<(Data<T> & Meta)[]>(
+    useMemo(() => addErrorsAndRunHooks<T>(addIndexes<T>(initialHook(initialData)), fields, rowHook, tableHook), []),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
@@ -39,7 +40,7 @@ export const ValidationStep = <T extends Data>({ initialData }: Props<T>) => {
 
   const updateRow = useCallback(
     (rows: typeof data) => {
-      setData(addErrorsAndRunHooks(rows, fields, rowHook, tableHook))
+      setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
     },
     [setData, addErrorsAndRunHooks, rowHook, tableHook],
   )
@@ -53,10 +54,10 @@ export const ValidationStep = <T extends Data>({ initialData }: Props<T>) => {
     return data
   }, [data, filterByErrors])
 
-  const rowKeyGetter = useCallback((row: T & Meta) => row.__index, [])
+  const rowKeyGetter = useCallback((row: Data<T> & Meta) => row.__index, [])
 
   const submitData = () => {
-    const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as T[]
+    const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as Data<T>[]
     const validData = all.filter((value, index) => {
       const originalValue = data[index]
       if (originalValue?.__errors) {

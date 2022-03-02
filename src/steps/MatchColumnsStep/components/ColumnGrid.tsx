@@ -8,14 +8,14 @@ const MATCH_COLUMNS_TITLE = "Validate column matching"
 const USER_TABLE_TITLE = "Your table"
 const TEMPLATE_TITLE = "Will become"
 
-type ColumnGridProps = {
-  columns: Columns
-  userColumn: (column: Column) => React.ReactNode
-  templateColumn: (column: Column) => React.ReactNode
+type ColumnGridProps<T extends string> = {
+  columns: Columns<T>
+  userColumn: (column: Column<T>) => React.ReactNode
+  templateColumn: (column: Column<T>) => React.ReactNode
   onContinue: (val: Record<string, string>[]) => void
 }
 
-export const ColumnGrid = ({ columns, userColumn, templateColumn, onContinue }: ColumnGridProps) => {
+export const ColumnGrid = <T extends string>({ columns, userColumn, templateColumn, onContinue }: ColumnGridProps<T>) => {
   return (
     <>
       <ModalBody flexDir="column" p={8} overflow="auto">

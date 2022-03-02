@@ -7,7 +7,7 @@ import { ModalWrapper } from "./components/ModalWrapper"
 
 export const theme = extendTheme(colorSchemeOverrides, themeOverrides)
 
-export const ReactSpreadsheetImport = (props: RsiProps) => {
+export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => {
   return (
     <Providers theme={theme} rsiValues={props}>
       <ModalWrapper isOpen={props.isOpen} onClose={props.onClose}>
