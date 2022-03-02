@@ -4,7 +4,7 @@ const fields = [
   {
     label: "Name",
     key: "name",
-    alternateMatches: ["first name"],
+    alternateMatches: ["first name", "first"],
     fieldType: {
       type: "input",
     },
@@ -13,7 +13,7 @@ const fields = [
   {
     label: "Surname",
     key: "surname",
-    alternateMatches: ["second name"],
+    alternateMatches: ["second name", "last name", "last"],
     fieldType: {
       type: "input",
     },
@@ -30,7 +30,7 @@ const fields = [
   {
     label: "Age",
     key: "age",
-    alternateMatches: ["oldness"],
+    alternateMatches: ["years"],
     fieldType: {
       type: "input",
     },
@@ -72,6 +72,15 @@ const fields = [
     },
     example: "true",
   },
+  {
+    label: "IP address",
+    key: "ip_address",
+    alternateMatches: ["ipAddress"],
+    fieldType: {
+      type: "input",
+    },
+    example: "127.0.0.1",
+  },
 ] as const
 
 const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props
@@ -84,6 +93,8 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
   isOpen: true,
   allowInvalidSubmit: true,
   onClose: () => {},
+  autoMapHeaders: true,
+  autoMapDistance: 2,
 })
 
 export const editableTableInitialData = [

@@ -8,6 +8,8 @@ export type RsiProps<T extends string> = {
   maxRecords?: number
   // Automatically map imported headers to specified fields if possible. Default: true
   autoMapHeaders?: boolean
+  // Headers matching accuracy: 1 for strict and up for more flexible matching
+  autoMapDistance?: number
   // Is modal visible.
   isOpen: boolean
   // Allows submitting with errors. Default: true

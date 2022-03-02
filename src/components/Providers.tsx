@@ -2,7 +2,7 @@ import { ChakraProvider, CSSObject } from "@chakra-ui/react"
 import { createContext } from "react"
 import type { RsiProps } from "../types"
 
-export const RsiContext = createContext({} as RsiProps<any>)
+export const RsiContext = createContext({} as any)
 
 type ProvidersProps<T extends string> = {
   children: React.ReactNode

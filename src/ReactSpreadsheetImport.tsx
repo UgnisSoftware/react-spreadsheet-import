@@ -20,4 +20,5 @@ export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => 
 ReactSpreadsheetImport.defaultProps = {
   autoMapHeaders: true,
   allowInvalidSubmit: true,
+  autoMapDistance: 2,
 }
