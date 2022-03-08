@@ -1,4 +1,5 @@
 import type { RsiProps } from "../types"
+import { defaultRSIProps } from "../ReactSpreadsheetImport"
 
 const fields = [
   {
@@ -86,15 +87,54 @@ const fields = [
 const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props
 
 export const mockRsiValues = mockComponentBehaviourForTypes({
+  ...defaultRSIProps,
   fields: fields,
   onSubmit: (data) => {
     console.log(data.all.map((value) => value))
   },
   isOpen: true,
-  allowInvalidSubmit: true,
   onClose: () => {},
-  autoMapHeaders: true,
-  autoMapDistance: 2,
+  // translations: {
+  //   uploadStep: {
+  //     title: "Hello",
+  //     manifestTitle: "Hello",
+  //     manifestDescription: "Hello",
+  //     dropzone: {
+  //       title: "Hello",
+  //       errorToastDescription: "Hello",
+  //       activeDropzoneTitle: "Hello",
+  //       buttonTitle: "Hello",
+  //       loadingTitle: "Hello",
+  //     },
+  //     selectSheet: {
+  //       title: "Hello",
+  //       nextButtonTitle: "Hello",
+  //     },
+  //   },
+  //   selectHeaderStep: {
+  //     title: "Hello",
+  //     nextButtonTitle: "Hello",
+  //   },
+  //   matchColumnsStep: {
+  //     title: "Hello",
+  //     nextButtonTitle: "Hello",
+  //     userTableTitle: "Hello",
+  //     templateTitle: "Hello",
+  //     selectPlaceholder: "Hello",
+  //     ignoredColumnText: "Hello",
+  //     subSelectPlaceholder: "Hello",
+  //     matchDropdownTitle: "Hello",
+  //     unmatched: "Hello",
+  //   },
+  //   validationStep: {
+  //     title: "Hello",
+  //     nextButtonTitle: "Hello",
+  //     noRowsMessage: "Hello",
+  //     noRowsMessageWhenFiltered: "Hello",
+  //     discardButtonTitle: "Hello",
+  //     filterSwitchTitle: "Hello",
+  //   },
+  // },
 })
 
 export const editableTableInitialData = [

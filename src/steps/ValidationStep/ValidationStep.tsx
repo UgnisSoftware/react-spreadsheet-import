@@ -9,19 +9,12 @@ import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
 import type { Data } from "../../types"
 
-const VALIDATION_HEADER_TITLE = "Review data"
-const BUTTON_TITLE = "Confirm"
-const NO_ROWS_MESSAGE = "No data found"
-const NO_ROWS_MESSAGE_WHEN_FILTERED = "No data containing errors"
-const DISCARD_BUTTON_TITLE = "Discard selected rows"
-const FILTER_SWITCH_TITLE = "Show only rows with errors"
-
 type Props<T extends string> = {
   initialData: Data<T>[]
 }
 
 export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
-  const { fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
+  const { translations, fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks<T>(addIndexes<T>(initialHook(initialData)), fields, rowHook, tableHook), []),
@@ -101,14 +94,14 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
       <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem">
           <Heading size="lg" color="gray.700">
-            {VALIDATION_HEADER_TITLE}
+            {translations.validationStep.title}
           </Heading>
           <Box display="flex" gap="16px" alignItems="center">
             <Button variant="outline" size="sm" onClick={deleteSelectedRows}>
-              {DISCARD_BUTTON_TITLE}
+              {translations.validationStep.discardButtonTitle}
             </Button>
             <Switch isChecked={filterByErrors} onChange={() => setFilterByErrors(!filterByErrors)}>
-              {FILTER_SWITCH_TITLE}
+              {translations.validationStep.filterSwitchTitle}
             </Switch>
           </Box>
         </Box>
@@ -122,13 +115,15 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
           components={{
             noRowsFallback: (
               <Box display="flex" justifyContent="center" gridColumn="1/-1" mt="32px">
-                {filterByErrors ? NO_ROWS_MESSAGE_WHEN_FILTERED : NO_ROWS_MESSAGE}
+                {filterByErrors
+                  ? translations.validationStep.noRowsMessageWhenFiltered
+                  : translations.validationStep.noRowsMessage}
               </Box>
             ),
           }}
         />
       </ModalBody>
-      <ContinueButton onContinue={onContinue} title={BUTTON_TITLE} />
+      <ContinueButton onContinue={onContinue} title={translations.validationStep.nextButtonTitle} />
     </>
   )
 }

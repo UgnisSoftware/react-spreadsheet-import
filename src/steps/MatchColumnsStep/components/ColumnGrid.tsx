@@ -1,12 +1,9 @@
 import type React from "react"
 import type { Column, Columns } from "../MatchColumnsStep"
-import {Box, Flex, Heading, ModalBody, Text} from "@chakra-ui/react"
+import { Box, Flex, Heading, ModalBody, Text } from "@chakra-ui/react"
 import { FadingWrapper } from "../../../components/FadingWrapper"
 import { ContinueButton } from "../../../components/ContinueButton"
-
-const MATCH_COLUMNS_TITLE = "Validate column matching"
-const USER_TABLE_TITLE = "Your table"
-const TEMPLATE_TITLE = "Will become"
+import { useRsi } from "../../../hooks/useRsi"
 
 type ColumnGridProps<T extends string> = {
   columns: Columns<T>
@@ -15,12 +12,19 @@ type ColumnGridProps<T extends string> = {
   onContinue: (val: Record<string, string>[]) => void
 }
 
-export const ColumnGrid = <T extends string>({ columns, userColumn, templateColumn, onContinue }: ColumnGridProps<T>) => {
+export const ColumnGrid = <T extends string>({
+  columns,
+  userColumn,
+  templateColumn,
+  onContinue,
+}: ColumnGridProps<T>) => {
+  const { translations } = useRsi()
+
   return (
     <>
       <ModalBody flexDir="column" p={8} overflow="auto">
         <Heading size="lg" mb={8}>
-          {MATCH_COLUMNS_TITLE}
+          {translations.matchColumnsStep.title}
         </Heading>
         <Flex
           flex={1}
@@ -30,7 +34,7 @@ export const ColumnGrid = <T extends string>({ columns, userColumn, templateColu
         >
           <Box gridColumn={`1/${columns.length + 3}`}>
             <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4}>
-              {USER_TABLE_TITLE}
+              {translations.matchColumnsStep.userTableTitle}
             </Text>
           </Box>
           {columns.map((column, index) => (
@@ -41,7 +45,7 @@ export const ColumnGrid = <T extends string>({ columns, userColumn, templateColu
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="2/3" />
           <Box gridColumn={`1/${columns.length + 1}`}>
             <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4} mt={7}>
-              {TEMPLATE_TITLE}
+              {translations.matchColumnsStep.templateTitle}
             </Text>
           </Box>
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
@@ -52,7 +56,7 @@ export const ColumnGrid = <T extends string>({ columns, userColumn, templateColu
           ))}
         </Flex>
       </ModalBody>
-      <ContinueButton onContinue={onContinue} />
+      <ContinueButton onContinue={onContinue} title={translations.matchColumnsStep.nextButtonTitle} />
     </>
   )
 }

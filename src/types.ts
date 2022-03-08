@@ -1,9 +1,8 @@
 import type { Meta } from "./steps/ValidationStep/types"
 import type { DeepReadonly } from "ts-essentials"
+import type { TranslationsRSIProps } from "./translationsRSIProps"
 
 export type RsiProps<T extends string> = {
-  // Title of importer modal
-  title?: string
   // Specifies maximum number of rows for a single import
   maxRecords?: number
   // Automatically map imported headers to specified fields if possible. Default: true
@@ -28,6 +27,8 @@ export type RsiProps<T extends string> = {
   initialHook?: InitHook<T>
   // Function called after user finishes the flow
   onSubmit: (data: Result<T>) => void
+  // Translations for each text
+  translations?: TranslationsRSIProps
 }
 
 export type Data<T extends string> = { [key in T]: string | boolean | number | undefined }
