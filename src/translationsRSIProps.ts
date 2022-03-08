@@ -2,7 +2,7 @@ import type { DeepPartial } from "ts-essentials"
 
 export const translations = {
   uploadStep: {
-    title: "Upload Sheet",
+    title: "Upload file",
     manifestTitle: "Data that we expect:",
     manifestDescription: "(You will have a chance to rename or remove columns in next steps)",
     dropzone: {
