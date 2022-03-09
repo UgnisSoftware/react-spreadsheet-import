@@ -94,47 +94,6 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
   },
   isOpen: true,
   onClose: () => {},
-  // translations: {
-  //   uploadStep: {
-  //     title: "Hello",
-  //     manifestTitle: "Hello",
-  //     manifestDescription: "Hello",
-  //     dropzone: {
-  //       title: "Hello",
-  //       errorToastDescription: "Hello",
-  //       activeDropzoneTitle: "Hello",
-  //       buttonTitle: "Hello",
-  //       loadingTitle: "Hello",
-  //     },
-  //     selectSheet: {
-  //       title: "Hello",
-  //       nextButtonTitle: "Hello",
-  //     },
-  //   },
-  //   selectHeaderStep: {
-  //     title: "Hello",
-  //     nextButtonTitle: "Hello",
-  //   },
-  //   matchColumnsStep: {
-  //     title: "Hello",
-  //     nextButtonTitle: "Hello",
-  //     userTableTitle: "Hello",
-  //     templateTitle: "Hello",
-  //     selectPlaceholder: "Hello",
-  //     ignoredColumnText: "Hello",
-  //     subSelectPlaceholder: "Hello",
-  //     matchDropdownTitle: "Hello",
-  //     unmatched: "Hello",
-  //   },
-  //   validationStep: {
-  //     title: "Hello",
-  //     nextButtonTitle: "Hello",
-  //     noRowsMessage: "Hello",
-  //     noRowsMessageWhenFiltered: "Hello",
-  //     discardButtonTitle: "Hello",
-  //     filterSwitchTitle: "Hello",
-  //   },
-  // },
 })
 
 export const editableTableInitialData = [
