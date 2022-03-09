@@ -5,7 +5,7 @@ import { ColumnType } from "../MatchColumnsStep"
 
 type UserTableColumnProps<T extends string> = {
   column: Column<T>
-  entries: (string | number)[]
+  entries: string[]
   onIgnore: (index: number) => void
   onRevertIgnore: (index: number) => void
 }
@@ -41,8 +41,8 @@ export const UserTableColumn = <T extends string>({
           />
         )}
       </Flex>
-      {entries.map((entry) => (
-        <Text fontSize="sm" lineHeight={5} fontWeight="medium" px={6} py={4} key={entry} color={textColor}>
+      {entries.map((entry, index) => (
+        <Text fontSize="sm" lineHeight={5} fontWeight="medium" px={6} py={4} key={entry + index} color={textColor}>
           {entry}
         </Text>
       ))}

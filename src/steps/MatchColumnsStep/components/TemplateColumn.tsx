@@ -15,23 +15,28 @@ import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
 import { getFieldOptions } from "../utils/getFieldOptions"
 import type { Fields } from "../../../types"
-import type {TranslationsRSIProps, Translations} from "../../../translationsRSIProps"
+import type { Translations } from "../../../translationsRSIProps"
 
 const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
-  return `${translations.matchColumnsStep.matchDropdownTitle} ${fieldLabel} (${"matchedOptions" in column && column.matchedOptions.length} ${translations.matchColumnsStep.unmatched})`
+  return `${translations.matchColumnsStep.matchDropdownTitle} ${fieldLabel} (${
+    "matchedOptions" in column && column.matchedOptions.length
+  } ${translations.matchColumnsStep.unmatched})`
 }
 
 type TemplateColumnProps<T extends string> = {
   onChange: (val: T, index: number) => void
-  onSubChange: (val: T, index: number, option: string | number) => void
+  onSubChange: (val: T, index: number, option: string) => void
   column: Column<T>
 }
 
 export const TemplateColumn = <T extends string>({ column, onChange, onSubChange }: TemplateColumnProps<T>) => {
   const { translations, fields } = useRsi<T>()
   const isIgnored = column.type === ColumnType.ignored
-  const isChecked = column.type === ColumnType.matched || column.type === ColumnType.matchedSelectOptions
+  const isChecked =
+    column.type === ColumnType.matched ||
+    column.type === ColumnType.matchedCheckbox ||
+    column.type === ColumnType.matchedSelectOptions
   const isSelect = "matchedOptions" in column
 
   return (
