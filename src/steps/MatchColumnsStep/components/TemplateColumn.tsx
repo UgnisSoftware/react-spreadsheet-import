@@ -15,14 +15,11 @@ import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
 import { getFieldOptions } from "../utils/getFieldOptions"
 import type { Fields } from "../../../types"
+import type {TranslationsRSIProps, Translations} from "../../../translationsRSIProps"
 
-const SELECT_PLACEHOLDER = "Select column..."
-const IGNORED_COLUMN_TEXT = "Column ignored"
-const SUB_SELECT_PLACEHOLDER = "Select..."
-
-const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>) => {
+const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
-  return `Match ${fieldLabel} (${"matchedOptions" in column && column.matchedOptions.length} Unmatched)`
+  return `${translations.matchColumnsStep.matchDropdownTitle} ${fieldLabel} (${"matchedOptions" in column && column.matchedOptions.length} ${translations.matchColumnsStep.unmatched})`
 }
 
 type TemplateColumnProps<T extends string> = {
@@ -32,7 +29,7 @@ type TemplateColumnProps<T extends string> = {
 }
 
 export const TemplateColumn = <T extends string>({ column, onChange, onSubChange }: TemplateColumnProps<T>) => {
-  const { fields } = useRsi<T>()
+  const { translations, fields } = useRsi<T>()
   const isIgnored = column.type === ColumnType.ignored
   const isChecked = column.type === ColumnType.matched || column.type === ColumnType.matchedSelectOptions
   const isSelect = "matchedOptions" in column
@@ -41,13 +38,13 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
     <Flex minH={10} w="100%" flexDir="column" justifyContent="center">
       {isIgnored ? (
         <Text fontSize="sm" lineHeight={5} fontWeight="normal" color="gray.400" px={4}>
-          {IGNORED_COLUMN_TEXT}
+          {translations.matchColumnsStep.ignoredColumnText}
         </Text>
       ) : (
         <>
           <Flex alignItems="center" minH={10} w="100%">
             <Select
-              placeholder={SELECT_PLACEHOLDER}
+              placeholder={translations.matchColumnsStep.selectPlaceholder}
               value={"value" in column ? column.value : undefined}
               onChange={(event) => onChange(event.target.value as T, column.index)}
             >
@@ -67,7 +64,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                     <AccordionIcon />
                     <Box textAlign="left">
                       <Text color="blue.600" fontSize="sm" lineHeight={5} pl={1}>
-                        {getAccordionTitle<T>(fields, column)}
+                        {getAccordionTitle<T>(fields, column, translations)}
                       </Text>
                     </Box>
                   </AccordionButton>
@@ -79,7 +76,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                         </Text>
                         <Select
                           pb="0.375rem"
-                          placeholder={SUB_SELECT_PLACEHOLDER}
+                          placeholder={translations.matchColumnsStep.subSelectPlaceholder}
                           onChange={(event) => onSubChange(event.target.value as T, column.index, option.entry!)}
                         >
                           {getFieldOptions(fields, column.value).map(({ label, value }) => (

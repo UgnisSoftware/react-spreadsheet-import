@@ -16,7 +16,6 @@ export const Basic = () => {
         isOpen={isOpen}
         onClose={onClose}
         onSubmit={onClose}
-        title="Upload file"
       />
     </>
   )

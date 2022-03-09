@@ -3,18 +3,14 @@ import { useDropzone } from "react-dropzone"
 import * as XLSX from "xlsx"
 import { useState } from "react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
-
-const UPLOAD_TITLE = "Upload .xlsx, .xls or .csv file"
-const ERROR_TOAST_DESCRIPTION = "upload rejected"
-const ACTIVE_DROP_ZONE_TITLE = "Drop file here..."
-const BUTTON_TITLE = "Select file"
-const LOADING_TITLE = "Processing..."
+import { useRsi } from "../../../hooks/useRsi"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
 }
 
 export const DropZone = ({ onContinue }: DropZoneProps) => {
+  const { translations } = useRsi()
   const {
     colors: { rsi },
   } = useTheme()
@@ -30,7 +26,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       fileRejections.forEach((fileRejection) => {
         toast({
           status: "error",
-          title: `${fileRejection.file.name} ${ERROR_TOAST_DESCRIPTION}`,
+          title: `${fileRejection.file.name} ${translations.uploadStep.dropzone.errorToastDescription}`,
           description: fileRejection.errors[0].message,
         })
       })
@@ -57,19 +53,19 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       <input {...getInputProps()} />
       {isDragActive ? (
         <Text size="lg" lineHeight={7} fontWeight="semibold">
-          {ACTIVE_DROP_ZONE_TITLE}
+          {translations.uploadStep.dropzone.activeDropzoneTitle}
         </Text>
       ) : loading ? (
         <Text size="lg" lineHeight={7} fontWeight="semibold">
-          {LOADING_TITLE}
+          {translations.uploadStep.dropzone.loadingTitle}
         </Text>
       ) : (
         <>
           <Text fontSize="lg" lineHeight={7} fontWeight="semibold">
-            {UPLOAD_TITLE}
+            {translations.uploadStep.dropzone.title}
           </Text>
           <Button mt="1rem" onClick={open}>
-            {BUTTON_TITLE}
+            {translations.uploadStep.dropzone.buttonTitle}
           </Button>
         </>
       )}

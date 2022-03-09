@@ -1,4 +1,5 @@
 import type { RsiProps } from "../types"
+import { defaultRSIProps } from "../ReactSpreadsheetImport"
 
 const fields = [
   {
@@ -86,15 +87,13 @@ const fields = [
 const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props
 
 export const mockRsiValues = mockComponentBehaviourForTypes({
+  ...defaultRSIProps,
   fields: fields,
   onSubmit: (data) => {
     console.log(data.all.map((value) => value))
   },
   isOpen: true,
-  allowInvalidSubmit: true,
   onClose: () => {},
-  autoMapHeaders: true,
-  autoMapDistance: 2,
 })
 
 export const editableTableInitialData = [

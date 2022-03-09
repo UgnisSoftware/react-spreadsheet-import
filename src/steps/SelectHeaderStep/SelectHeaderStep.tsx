@@ -2,8 +2,7 @@ import React, { useCallback, useState } from "react"
 import { Heading, ModalBody } from "@chakra-ui/react"
 import { SelectHeaderTable } from "./components/SelectHeaderTable"
 import { ContinueButton } from "../../components/ContinueButton"
-
-const SELECT_HEADER_TITLE = "Select header row"
+import { useRsi } from "../../hooks/useRsi"
 
 type SelectHeaderProps = {
   data: string[][]
@@ -11,6 +10,7 @@ type SelectHeaderProps = {
 }
 
 export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
+  const { translations } = useRsi()
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set([0]))
 
   const handleContinue = useCallback(() => {
@@ -24,11 +24,11 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
     <>
       <ModalBody pb={0}>
         <Heading size="lg" color="gray.700" mb="2rem">
-          {SELECT_HEADER_TITLE}
+          {translations.selectHeaderStep.title}
         </Heading>
         <SelectHeaderTable data={data} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
       </ModalBody>
-      <ContinueButton onContinue={handleContinue} />
+      <ContinueButton onContinue={handleContinue} title={translations.selectHeaderStep.nextButtonTitle} />
     </>
   )
 }
