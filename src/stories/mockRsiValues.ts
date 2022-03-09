@@ -70,6 +70,7 @@ const fields = [
     alternateMatches: ["manages"],
     fieldType: {
       type: "checkbox",
+      booleanMatches: {},
     },
     example: "true",
   },

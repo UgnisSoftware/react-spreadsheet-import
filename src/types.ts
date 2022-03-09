@@ -55,8 +55,8 @@ export type Field<T extends string> = {
 
 export type Checkbox = {
   type: "checkbox"
-  // Alternate values to be treated as booleans, e.g. 'yes'-> true, 'no' -> false
-  booleanMatches?: { [key: string]: boolean }[]
+  // Alternate values to be treated as booleans, e.g. {yes: true, no: false}
+  booleanMatches?: { [key: string]: boolean }
 }
 
 export type Select = {
@@ -69,7 +69,7 @@ export type SelectOptions = {
   // UI-facing option label
   label: string
   // Field entry matching criteria as well as select output
-  value: string | number
+  value: string
 }
 
 export type Input = {

@@ -5,6 +5,7 @@ export const mapWorkbook = (workbook: XLSX.WorkBook, sheetName?: string) => {
   const data = XLSX.utils.sheet_to_json(worksheet, {
     header: 1,
     blankrows: false,
+    raw: false,
   })
   return data as string[][]
 }

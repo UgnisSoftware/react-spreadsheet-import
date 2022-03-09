@@ -11,7 +11,7 @@ import type { Field } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 
 export type MatchColumnsProps = {
-  data: (string | number)[][]
+  data: string[][]
   headerValues: string[]
   onContinue: (data: any[]) => void
 }
@@ -20,18 +20,20 @@ export enum ColumnType {
   empty,
   ignored,
   matched,
+  matchedCheckbox,
   matchedSelect,
   matchedSelectOptions,
 }
 
 export type MatchedOptions<T> = {
-  entry: string | number
+  entry: string
   value: T
 }
 
 type EmptyColumn = { type: ColumnType.empty; index: number; header: string }
 type IgnoredColumn = { type: ColumnType.ignored; index: number; header: string }
 type MatchedColumn<T> = { type: ColumnType.matched; index: number; header: string; value: T }
+type MatchedSwitchColumn<T> = { type: ColumnType.matchedCheckbox; index: number; header: string; value: T }
 export type MatchedSelectColumn<T> = {
   type: ColumnType.matchedSelect
   index: number
@@ -51,6 +53,7 @@ export type Column<T extends string> =
   | EmptyColumn
   | IgnoredColumn
   | MatchedColumn<T>
+  | MatchedSwitchColumn<T>
   | MatchedSelectColumn<T>
   | MatchedSelectOptionsColumn<T>
 
@@ -107,7 +110,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   return (
     <ColumnGrid
       columns={columns}
-      onContinue={() => onContinue(normalizeTableData(columns, data))}
+      onContinue={() => onContinue(normalizeTableData(columns, data, fields))}
       userColumn={(column) => (
         <UserTableColumn
           column={column}
