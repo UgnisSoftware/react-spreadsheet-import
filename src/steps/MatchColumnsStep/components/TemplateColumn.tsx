@@ -1,6 +1,5 @@
 import {
   Flex,
-  Select,
   Text,
   Accordion,
   AccordionItem,
@@ -16,6 +15,7 @@ import { MatchIcon } from "./MatchIcon"
 import { getFieldOptions } from "../utils/getFieldOptions"
 import type { Fields } from "../../../types"
 import type { Translations } from "../../../translationsRSIProps"
+import { MatchColumnSelect } from "../../../components/Selects/MatchColumnSelect"
 
 const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
@@ -38,6 +38,8 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
     column.type === ColumnType.matchedCheckbox ||
     column.type === ColumnType.matchedSelectOptions
   const isSelect = "matchedOptions" in column
+  const selectOptions = fields.map(({ label, key }) => ({ value: key, label }))
+  const selectValue = selectOptions.find(({ value }) => "value" in column && column.value === value)
 
   return (
     <Flex minH={10} w="100%" flexDir="column" justifyContent="center">
@@ -48,17 +50,14 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
       ) : (
         <>
           <Flex alignItems="center" minH={10} w="100%">
-            <Select
-              placeholder={translations.matchColumnsStep.selectPlaceholder}
-              value={"value" in column ? column.value : undefined}
-              onChange={(event) => onChange(event.target.value as T, column.index)}
-            >
-              {fields.map(({ label, key }) => (
-                <option value={key} key={key}>
-                  {label}
-                </option>
-              ))}
-            </Select>
+            <Box flex={1} pl={2}>
+              <MatchColumnSelect
+                placeholder={translations.matchColumnsStep.selectPlaceholder}
+                value={selectValue}
+                onChange={(value) => onChange(value?.value as T, column.index)}
+                options={selectOptions}
+              />
+            </Box>
             <MatchIcon isChecked={isChecked} />
           </Flex>
           {isSelect && (
@@ -75,21 +74,15 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                   </AccordionButton>
                   <AccordionPanel pb={4} display="flex" flexDir="column">
                     {column.matchedOptions.map((option) => (
-                      <Box pl={2}>
+                      <Box pl={2} pb="0.375rem">
                         <Text pt="0.375rem" pb={2} fontSize="md" lineHeight={6} fontWeight="medium" color="gray.700">
                           {option.entry}
                         </Text>
-                        <Select
-                          pb="0.375rem"
+                        <MatchColumnSelect
                           placeholder={translations.matchColumnsStep.subSelectPlaceholder}
-                          onChange={(event) => onSubChange(event.target.value as T, column.index, option.entry!)}
-                        >
-                          {getFieldOptions(fields, column.value).map(({ label, value }) => (
-                            <option value={value} key={value}>
-                              {label}
-                            </option>
-                          ))}
-                        </Select>
+                          onChange={(value) => onSubChange(value?.value as T, column.index, option.entry!)}
+                          options={getFieldOptions(fields, column.value)}
+                        />
                       </Box>
                     ))}
                   </AccordionPanel>

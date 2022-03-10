@@ -62,10 +62,10 @@ export type Checkbox = {
 export type Select = {
   type: "select"
   // Options displayed in Select component
-  options: SelectOptions[]
+  options: SelectOption[]
 }
 
-export type SelectOptions = {
+export type SelectOption = {
   // UI-facing option label
   label: string
   // Field entry matching criteria as well as select output

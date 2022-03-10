@@ -1,9 +1,10 @@
 import { Column, useRowSelection } from "react-data-grid"
-import { Box, Checkbox, Input, Select, Switch, Tooltip } from "@chakra-ui/react"
+import { Box, Checkbox, Input, Switch, Tooltip } from "@chakra-ui/react"
 import type { Data, Fields } from "../../../types"
 import type { ChangeEvent } from "react"
 import type { Meta } from "../types"
 import { CgInfo } from "react-icons/cg"
+import { TableSelect } from "../../../components/Selects/TableSelect"
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -53,40 +54,40 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
         </Box>
       ),
       editable: column.fieldType.type !== "checkbox",
-      editor: ({ row, onRowChange, onClose }) =>
-        column.fieldType.type === "select" ? (
-          <Box pl="0.5rem">
-            <Select
-              variant="unstyled"
-              autoFocus
-              size="small"
-              value={row[column.key] as string}
-              onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                onRowChange({ ...row, [column.key]: event.target.value }, true)
-              }}
-              placeholder=" "
-            >
-              {column.fieldType.options.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </Select>
-          </Box>
-        ) : (
-          <Box pl="0.5rem">
-            <Input
-              variant="unstyled"
-              autoFocus
-              size="small"
-              value={row[column.key] as string}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                onRowChange({ ...row, [column.key]: event.target.value })
-              }}
-              onBlur={() => onClose(true)}
-            />
-          </Box>
-        ),
+      editor: ({ row, onRowChange, onClose }) => {
+        let component
+
+        switch (column.fieldType.type) {
+          case "select":
+            component = (
+              <TableSelect
+                value={column.fieldType.options.find((option) => option.value === (row[column.key] as string))}
+                onChange={(value) => {
+                  onRowChange({ ...row, [column.key]: value?.value }, true)
+                }}
+                options={column.fieldType.options}
+              />
+            )
+            break
+          default:
+            component = (
+              <Box pl="0.5rem">
+                <Input
+                  variant="unstyled"
+                  autoFocus
+                  size="small"
+                  value={row[column.key] as string}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                    onRowChange({ ...row, [column.key]: event.target.value })
+                  }}
+                  onBlur={() => onClose(true)}
+                />
+              </Box>
+            )
+        }
+
+        return component
+      },
       editorOptions: {
         editOnClick: true,
       },
