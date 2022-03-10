@@ -4,6 +4,7 @@ import * as XLSX from "xlsx"
 import { useState } from "react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useRsi } from "../../../hooks/useRsi"
+import { readFileAsync } from "../utils/readFilesAsync"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
@@ -33,7 +34,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
     },
     onDrop: async ([file]) => {
       setLoading(true)
-      const arrayBuffer = await file.arrayBuffer()
+      const arrayBuffer = await readFileAsync(file)
       const workbook = XLSX.read(arrayBuffer)
       onContinue(workbook)
     },
@@ -50,7 +51,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       flexDirection="column"
       flex={1}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} data-testid="rsi-dropzone" />
       {isDragActive ? (
         <Text size="lg" lineHeight={7} fontWeight="semibold">
           {translations.uploadStep.dropzone.activeDropzoneTitle}
