@@ -21,7 +21,9 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
         <RadioGroup onChange={(value) => setValue(value)} value={value}>
           <Stack spacing={8}>
             {sheetNames.map((sheetName) => (
-              <Radio value={sheetName}>{sheetName}</Radio>
+              <Radio value={sheetName} key={sheetName}>
+                {sheetName}
+              </Radio>
             ))}
           </Stack>
         </RadioGroup>

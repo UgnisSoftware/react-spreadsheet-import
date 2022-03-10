@@ -10,7 +10,7 @@ type DropZoneProps = {
 }
 
 export const DropZone = ({ onContinue }: DropZoneProps) => {
-  const { translations } = useRsi()
+  const { translations, maxFileSize } = useRsi()
   const {
     colors: { rsi },
   } = useTheme()
@@ -20,12 +20,15 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
     noClick: true,
     noKeyboard: true,
     maxFiles: 1,
+    maxSize: maxFileSize,
     accept: ".xls, .csv, .xlsx",
     onDropRejected: (fileRejections) => {
       setLoading(false)
       fileRejections.forEach((fileRejection) => {
         toast({
           status: "error",
+          variant: "left-accent",
+          position: "bottom-left",
           title: `${fileRejection.file.name} ${translations.uploadStep.dropzone.errorToastDescription}`,
           description: fileRejection.errors[0].message,
         })
@@ -36,6 +39,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       const arrayBuffer = await file.arrayBuffer()
       const workbook = XLSX.read(arrayBuffer)
       onContinue(workbook)
+      setLoading(false)
     },
   })
 

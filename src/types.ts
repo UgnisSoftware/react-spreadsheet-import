@@ -29,6 +29,8 @@ export type RsiProps<T extends string> = {
   onSubmit: (data: Result<T>) => void
   // Translations for each text
   translations?: TranslationsRSIProps
+  // Maximum upload filesize (in bytes)
+  maxFileSize?: number
 }
 
 export type Data<T extends string> = { [key in T]: string | boolean | number | undefined }
