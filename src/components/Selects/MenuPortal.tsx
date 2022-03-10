@@ -12,7 +12,6 @@ const MenuPortal = (props: PortalProps) => {
   const { popperRef, referenceRef } = usePopper({
     strategy: "fixed",
     matchWidth: true,
-    flip: false,
   })
 
   useEffect(() => {
