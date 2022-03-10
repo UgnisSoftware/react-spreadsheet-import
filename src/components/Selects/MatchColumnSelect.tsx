@@ -1,6 +1,9 @@
-import { rootId } from "../Providers"
 import { ChakraStylesConfig, Select } from "chakra-react-select"
 import type { SelectOption } from "../../types"
+import React, { useEffect } from "react"
+import { Box, useTheme } from "@chakra-ui/react"
+import { usePopper } from "@chakra-ui/popper"
+import {customComponents} from "./MenuPortal";
 
 const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   dropdownIndicator: (provided) => ({
@@ -41,7 +44,8 @@ const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   }),
   option: (provided, state) => ({
     ...provided,
-    bg: state.isSelected ? "var(--chakra-colors-rsi-500)" : provided.bg,
+    color: state.isSelected ? "gray.900" : provided.color,
+    bg: state.isSelected ? "gray.200" : provided.bg,
   }),
 }
 
@@ -52,15 +56,16 @@ interface Props {
   placeholder?: string
 }
 
-export const MatchColumnSelect = ({ onChange, value, options, placeholder }: Props) => (
-  <Select
-    value={value}
-    onChange={onChange}
-    placeholder={placeholder}
-    closeMenuOnScroll
-    menuPosition="fixed"
-    menuPortalTarget={document.getElementById(rootId)}
-    options={options}
-    chakraStyles={chakraSelectStyles}
-  />
-)
+export const MatchColumnSelect = ({ onChange, value, options, placeholder }: Props) => {
+  return (
+    <Select
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      options={options}
+      chakraStyles={chakraSelectStyles}
+      menuPosition="fixed"
+      components={customComponents}
+    />
+  )
+}

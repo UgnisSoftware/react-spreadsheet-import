@@ -44,7 +44,8 @@ const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   }),
   option: (provided, state) => ({
     ...provided,
-    bg: state.isSelected ? "var(--chakra-colors-rsi-500)" : provided.bg,
+    color: state.isSelected ? "gray.900" : provided.color,
+    bg: state.isSelected ? "gray.200" : provided.bg,
   }),
 }
 
