@@ -10,11 +10,13 @@ type ProvidersProps<T extends string> = {
   rsiValues: RsiProps<T>
 }
 
+export const rootId = "chakra-modal-rsi"
+
 export const Providers = <T extends string>({ children, theme, rsiValues }: ProvidersProps<T>) => (
   <RsiContext.Provider value={rsiValues}>
     <ChakraProvider>
       {/* cssVarsRoot used to override RSI theme but not the rest of chakra theme */}
-      <ChakraProvider cssVarsRoot="#chakra-modal-rsi" theme={theme}>
+      <ChakraProvider cssVarsRoot={`#${rootId}`} theme={theme}>
         {children}
       </ChakraProvider>
     </ChakraProvider>

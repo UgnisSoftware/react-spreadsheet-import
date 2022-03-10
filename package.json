@@ -41,6 +41,7 @@
     "@chakra-ui/react": "1.8.3",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
+    "chakra-react-select": "3.0.6",
     "chakra-ui-steps": "1.6.1",
     "framer-motion": "6.2.6",
     "js-levenshtein": "1.1.6",
