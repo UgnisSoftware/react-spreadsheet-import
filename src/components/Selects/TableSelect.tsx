@@ -29,7 +29,7 @@ const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   }),
   singleValue: (provided) => ({
     ...provided,
-    "margin-inline-start": 0,
+    marginInlineStart: 0,
   }),
   valueContainer: (provided) => ({
     ...provided,

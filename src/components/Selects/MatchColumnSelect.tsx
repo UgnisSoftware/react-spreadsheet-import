@@ -1,9 +1,7 @@
 import { ChakraStylesConfig, Select } from "chakra-react-select"
 import type { SelectOption } from "../../types"
-import React, { useEffect } from "react"
-import { Box, useTheme } from "@chakra-ui/react"
-import { usePopper } from "@chakra-ui/popper"
-import {customComponents} from "./MenuPortal";
+import React from "react"
+import { customComponents } from "./MenuPortal"
 
 const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   dropdownIndicator: (provided) => ({
