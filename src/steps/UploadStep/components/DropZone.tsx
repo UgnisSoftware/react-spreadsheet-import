@@ -1,4 +1,4 @@
-import { Box, Button, Text, useTheme, useToast } from "@chakra-ui/react"
+import { Box, Button, Text, useStyleConfig, useTheme, useToast } from "@chakra-ui/react"
 import { useDropzone } from "react-dropzone"
 import * as XLSX from "xlsx"
 import { useState } from "react"
@@ -12,6 +12,7 @@ type DropZoneProps = {
 
 export const DropZone = ({ onContinue }: DropZoneProps) => {
   const { translations, maxFileSize } = useRsi()
+  const styles = useStyleConfig("UploadStep") as any
   const {
     colors: { rsi },
   } = useTheme()
@@ -48,7 +49,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
   return (
     <Box
       {...getRootProps()}
-      {...getDropZoneBorder(rsi["500"])}
+      {...getDropZoneBorder(styles.dropZoneBorder)}
       width="100%"
       display="flex"
       justifyContent="center"
@@ -58,19 +59,13 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
     >
       <input {...getInputProps()} data-testid="rsi-dropzone" />
       {isDragActive ? (
-        <Text size="lg" lineHeight={7} fontWeight="semibold">
-          {translations.uploadStep.dropzone.activeDropzoneTitle}
-        </Text>
+        <Text sx={styles.dropzoneText}>{translations.uploadStep.dropzone.activeDropzoneTitle}</Text>
       ) : loading ? (
-        <Text size="lg" lineHeight={7} fontWeight="semibold">
-          {translations.uploadStep.dropzone.loadingTitle}
-        </Text>
+        <Text sx={styles.dropzoneText}>{translations.uploadStep.dropzone.loadingTitle}</Text>
       ) : (
         <>
-          <Text fontSize="lg" lineHeight={7} fontWeight="semibold">
-            {translations.uploadStep.dropzone.title}
-          </Text>
-          <Button mt="1rem" onClick={open}>
+          <Text sx={styles.dropzoneText}>{translations.uploadStep.dropzone.title}</Text>
+          <Button sx={styles.dropzoneButton} onClick={open}>
             {translations.uploadStep.dropzone.buttonTitle}
           </Button>
         </>

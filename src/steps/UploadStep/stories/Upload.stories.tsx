@@ -1,5 +1,5 @@
 import { UploadStep } from "../UploadStep"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -13,7 +13,7 @@ export default {
 
 export const Basic = () => {
   return (
-    <Providers theme={theme} rsiValues={mockRsiValues}>
+    <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
         <UploadStep onContinue={() => {}} />
       </ModalWrapper>

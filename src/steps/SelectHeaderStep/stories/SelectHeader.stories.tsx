@@ -2,7 +2,7 @@ import { headerSelectionTableFields, mockRsiValues } from "../../../stories/mock
 import { SelectHeaderStep } from "../SelectHeaderStep"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 export default {
   title: "Select Header Step",
   parameters: {
@@ -11,7 +11,7 @@ export default {
 }
 
 export const Basic = () => (
-  <Providers theme={theme} rsiValues={mockRsiValues}>
+  <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
     <ModalWrapper isOpen={true} onClose={() => {}}>
       <SelectHeaderStep data={headerSelectionTableFields} onContinue={() => {}} />
     </ModalWrapper>

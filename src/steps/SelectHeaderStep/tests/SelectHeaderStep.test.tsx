@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
 import { SelectHeaderStep } from "../SelectHeaderStep"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -19,7 +19,7 @@ test("Select header row and click next", async () => {
 
   const onContinue = jest.fn()
   render(
-    <Providers theme={theme} rsiValues={mockRsiValues}>
+    <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
         <SelectHeaderStep data={data} onContinue={onContinue} />
       </ModalWrapper>

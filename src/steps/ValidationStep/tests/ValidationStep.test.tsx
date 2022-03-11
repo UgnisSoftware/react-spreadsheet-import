@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
 import { ValidationStep } from "../ValidationStep"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 test("Submit data", async () => {
   const onSubmit = jest.fn()
   render(
-    <Providers theme={theme} rsiValues={{...mockRsiValues, onSubmit: onSubmit}}>
+    <Providers theme={defaultTheme} rsiValues={{...mockRsiValues, onSubmit: onSubmit}}>
       <ModalWrapper isOpen={true} onClose={() => {}} >
         <ValidationStep initialData={[]}/>
       </ModalWrapper>

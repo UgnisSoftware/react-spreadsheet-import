@@ -2,11 +2,15 @@ import { StepsStyleConfig } from "chakra-ui-steps"
 import { darken, lighten, mode } from "@chakra-ui/theme-tools"
 import type { CSSObject } from "@chakra-ui/react"
 import { withDefaultColorScheme } from "@chakra-ui/react"
+import type { DeepPartial } from "ts-essentials"
 
 type CSSObjectWithActiveStep = CSSObject & { _activeStep: CSSObject }
 
 export const themeOverrides = {
   colors: {
+    textColor: "#2D3748",
+    subtitleColor: "#718096",
+    background: "white",
     rsi: {
       50: "#E6E6FF",
       100: "#4C63B6",
@@ -24,6 +28,38 @@ export const themeOverrides = {
     outline: 0,
   },
   components: {
+    UploadStep: {
+      baseStyle: {
+        heading: {
+          descriptionColor: "gray.500",
+          color: "textColor",
+          mb: "2rem",
+        },
+        title: {
+          fontSize: "2xl",
+          lineHeight: 8,
+          fontWeight: "semibold",
+          color: "textColor",
+        },
+        subtitle: {
+          fontSize: "md",
+          lineHeight: 6,
+          color: "subtitleColor",
+          mb: "1rem",
+        },
+        dropzoneText: {
+          size: "lg",
+          lineHeight: 7,
+          fontWeight: "semibold",
+          color: "textColor",
+        },
+        dropZoneBorder: "rsi.500",
+        dropzoneButton: {
+          bg: "rsi.500",
+          mt: "1rem",
+        },
+      },
+    },
     MatchIcon: {
       baseStyle: (props: any) => {
         return {
@@ -102,3 +138,5 @@ export const colorSchemeOverrides = withDefaultColorScheme({
   colorScheme: "rsi",
   components: ["Button"],
 })
+
+export type CustomTheme = DeepPartial<typeof themeOverrides>

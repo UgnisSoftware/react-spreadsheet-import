@@ -1,24 +1,28 @@
-import { ChakraProvider, CSSObject } from "@chakra-ui/react"
+import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { createContext } from "react"
 import type { RsiProps } from "../types"
+import { colorSchemeOverrides, CustomTheme, themeOverrides } from "../theme"
 
 export const RsiContext = createContext({} as any)
 
 type ProvidersProps<T extends string> = {
   children: React.ReactNode
-  theme: CSSObject
+  theme: CustomTheme
   rsiValues: RsiProps<T>
 }
 
 export const rootId = "chakra-modal-rsi"
 
-export const Providers = <T extends string>({ children, theme, rsiValues }: ProvidersProps<T>) => (
-  <RsiContext.Provider value={rsiValues}>
-    <ChakraProvider>
-      {/* cssVarsRoot used to override RSI theme but not the rest of chakra theme */}
-      <ChakraProvider cssVarsRoot={`#${rootId}`} theme={theme}>
-        {children}
+export const Providers = <T extends string>({ children, theme, rsiValues }: ProvidersProps<T>) => {
+  const mergedTheme = extendTheme(colorSchemeOverrides, theme)
+  return (
+    <RsiContext.Provider value={rsiValues}>
+      <ChakraProvider>
+        {/* cssVarsRoot used to override RSI defaultTheme but not the rest of chakra defaultTheme */}
+        <ChakraProvider cssVarsRoot={`#${rootId}`} theme={mergedTheme}>
+          {children}
+        </ChakraProvider>
       </ChakraProvider>
-    </ChakraProvider>
-  </RsiContext.Provider>
-)
+    </RsiContext.Provider>
+  )
+}
