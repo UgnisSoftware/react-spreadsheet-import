@@ -31,7 +31,7 @@ export const themeOverrides = {
     UploadStep: {
       baseStyle: {
         heading: {
-          descriptionColor: "gray.500",
+          fontSize: "3xl",
           color: "textColor",
           mb: "2rem",
         },
@@ -57,6 +57,19 @@ export const themeOverrides = {
         dropzoneButton: {
           bg: "rsi.500",
           mt: "1rem",
+        },
+      },
+    },
+    SelectSheetStep: {
+      baseStyle: {
+        heading: {
+          color: "textColor",
+          mb: 8,
+          fontSize: "3xl",
+        },
+        radio: {},
+        radioLabel: {
+          color: "textColor",
         },
       },
     },
@@ -107,6 +120,7 @@ export const themeOverrides = {
             py: "1.5rem",
           },
           body: {
+            bg: "background",
             display: "flex",
             paddingX: "2rem",
             paddingY: "2rem",
