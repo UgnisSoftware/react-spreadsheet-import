@@ -1,28 +1,30 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
-import { SelectSheetStep } from "../SelectSheetStep"
+import { MatchColumnsStep } from "../MatchColumnsStep"
 import { theme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
 
-test("Select sheet and click next", async () => {
-  const sheetNames = ["Sheet1", "Sheet2"]
-  const selectSheetIndex = 1
+test("Match columns and click next", async () => {
+  const header = ["Name", "Phone", "Email"]
+  const data = [
+    ["John", "123", "j@j.com"],
+    ["Dane", "333", "dane@bane.com"],
+    ["Kane", "534", "kane@linch.com"],
+  ]
+  // finds only names with automatic matching
+  const result = [{ name: data[0][0] }, { name: data[1][0] }, { name: data[2][0] }]
 
   const onContinue = jest.fn()
   render(
     <Providers theme={theme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
-        <SelectSheetStep sheetNames={sheetNames} onContinue={onContinue} />
+        <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
       </ModalWrapper>
     </Providers>,
   )
-
-  const firstRadio = screen.getByLabelText(sheetNames[selectSheetIndex])
-
-  userEvent.click(firstRadio)
 
   const nextButton = screen.getByRole("button", {
     name: "Next",
@@ -32,6 +34,6 @@ test("Select sheet and click next", async () => {
 
   await waitFor(() => {
     expect(onContinue).toBeCalled()
-    expect(onContinue.mock.calls[0][0]).toEqual(sheetNames[selectSheetIndex])
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 })

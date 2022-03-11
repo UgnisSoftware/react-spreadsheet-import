@@ -53,14 +53,14 @@ const createGlobalStyleOverride = () => css`
     align-items: center;
   }
 
-  .rdg-cell:first-child {
+  .rdg-cell:first-of-type {
     border-left: 1px solid var(--chakra-colors-gray-100);
   }
   .rdg-cell:last-child {
     border-right: 1px solid var(--chakra-colors-gray-100);
   }
 
-  .rdg-header-row .rdg-cell:first-child {
+  .rdg-header-row .rdg-cell:first-of-type {
     border-radius: 8px 0 0 0;
   }
 
@@ -68,7 +68,7 @@ const createGlobalStyleOverride = () => css`
     border-radius: 0 8px 0 0;
   }
 
-  .rdg-row:last-child .rdg-cell:first-child {
+  .rdg-row:last-child .rdg-cell:first-of-type {
     border-radius: 0 0 0 8px;
   }
 
