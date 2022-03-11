@@ -2,12 +2,12 @@ import { Box, Text } from "@chakra-ui/react"
 import { MatchColumnSelect } from "../../../components/Selects/MatchColumnSelect"
 import { getFieldOptions } from "../utils/getFieldOptions"
 import { useRsi } from "../../../hooks/useRsi"
-import type { MatchedOptions, MatchedSelectColumn } from "../MatchColumnsStep"
+import type { MatchedOptions, MatchedSelectColumn, MatchedSelectOptionsColumn } from "../MatchColumnsStep"
 import { Column } from "../MatchColumnsStep"
 
 interface Props<T> {
   option: MatchedOptions<T> | Partial<MatchedOptions<T>>
-  column: MatchedSelectColumn<T>
+  column: MatchedSelectColumn<T> | MatchedSelectOptionsColumn<T>
   onSubChange: (val: T, index: number, option: string) => void
 }
 
