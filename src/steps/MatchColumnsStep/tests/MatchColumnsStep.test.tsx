@@ -6,6 +6,19 @@ import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
+import type { Fields } from "../../../types"
+
+const fields: Fields<any> = [
+  {
+    label: "Name",
+    key: "name",
+    alternateMatches: ["first name", "first"],
+    fieldType: {
+      type: "input",
+    },
+    example: "Stephanie",
+  },
+]
 
 test("Match columns and click next", async () => {
   const header = ["Name", "Phone", "Email"]
@@ -19,7 +32,7 @@ test("Match columns and click next", async () => {
 
   const onContinue = jest.fn()
   render(
-    <Providers theme={theme} rsiValues={mockRsiValues}>
+    <Providers theme={theme} rsiValues={{ ...mockRsiValues, fields }}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
         <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
       </ModalWrapper>
