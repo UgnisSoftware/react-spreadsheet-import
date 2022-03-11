@@ -1,7 +1,7 @@
 import { editableTableInitialData, mockRsiValues } from "../../../stories/mockRsiValues"
 import { ValidationStep } from "../ValidationStep"
 import { Providers } from "../../../components/Providers"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 
 export const Basic = () => (
-  <Providers theme={theme} rsiValues={mockRsiValues}>
+  <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
     <ModalWrapper isOpen={true} onClose={() => {}}>
       <ValidationStep initialData={editableTableInitialData} />
     </ModalWrapper>

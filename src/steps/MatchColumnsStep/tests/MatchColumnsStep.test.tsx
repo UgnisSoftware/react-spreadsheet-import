@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
 import { MatchColumnsStep } from "../MatchColumnsStep"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -32,7 +32,7 @@ test("Match columns and click next", async () => {
 
   const onContinue = jest.fn()
   render(
-    <Providers theme={theme} rsiValues={{ ...mockRsiValues, fields }}>
+    <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
         <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
       </ModalWrapper>

@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, fireEvent, waitFor, screen } from "@testing-library/react"
 import { UploadStep } from "../UploadStep"
-import { theme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -11,7 +11,7 @@ test("Upload a file", async () => {
 
   const onContinue = jest.fn()
   render(
-    <Providers theme={theme} rsiValues={mockRsiValues}>
+    <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
         <UploadStep onContinue={onContinue} />
       </ModalWrapper>
