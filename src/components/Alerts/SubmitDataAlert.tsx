@@ -16,15 +16,8 @@ interface Props {
   onConfirm: () => void
 }
 
-const SUBMIT_HEADER_TITLE = "Errors detected"
-const SUBMIT_BODY_TEXT =
-  "There are still some rows that contain errors. Rows with errors will be ignored when submitting."
-const SUBMIT_FORBIDDEN_BODY_TEXT = "There are still some rows containing errors."
-const CANCEL_BUTTON = "Cancel"
-const FINISH_BUTTON = "Submit"
-
 export const SubmitDataAlert = ({ isOpen, onClose, onConfirm }: Props) => {
-  const { allowInvalidSubmit } = useRsi()
+  const { allowInvalidSubmit, translations } = useRsi()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
@@ -32,16 +25,20 @@ export const SubmitDataAlert = ({ isOpen, onClose, onConfirm }: Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {SUBMIT_HEADER_TITLE}
+            {translations.alerts.submitIncomplete.headerTitle}
           </AlertDialogHeader>
-          <AlertDialogBody>{allowInvalidSubmit ? SUBMIT_BODY_TEXT : SUBMIT_FORBIDDEN_BODY_TEXT}</AlertDialogBody>
+          <AlertDialogBody>
+            {allowInvalidSubmit
+              ? translations.alerts.submitIncomplete.bodyText
+              : translations.alerts.submitIncomplete.bodyTextSubmitForbidden}
+          </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">
-              {CANCEL_BUTTON}
+              {translations.alerts.submitIncomplete.cancelButtonTitle}
             </Button>
             {allowInvalidSubmit && (
               <Button onClick={onConfirm} ml={3}>
-                {FINISH_BUTTON}
+                {translations.alerts.submitIncomplete.finishButtonTitle}
               </Button>
             )}
           </AlertDialogFooter>

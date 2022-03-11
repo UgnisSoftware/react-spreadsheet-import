@@ -8,6 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react"
 import { useRef } from "react"
+import { useRsi } from "../../hooks/useRsi"
 
 interface Props {
   isOpen: boolean
@@ -15,12 +16,8 @@ interface Props {
   onConfirm: () => void
 }
 
-const EXIT_HEADER_TITLE = "Exit import flow"
-const EXIT_BODY_TEXT = "Are you sure? Your current information will not be saved."
-const CANCEL_BUTTON = "Cancel"
-const EXIT_BUTTON = "Exit flow"
-
 export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
+  const { translations } = useRsi()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
@@ -28,15 +25,15 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {EXIT_HEADER_TITLE}
+            {translations.alerts.confirmClose.headerTitle}
           </AlertDialogHeader>
-          <AlertDialogBody>{EXIT_BODY_TEXT}</AlertDialogBody>
+          <AlertDialogBody>{translations.alerts.confirmClose.bodyText}</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">
-              {CANCEL_BUTTON}
+              {translations.alerts.confirmClose.cancelButtonTitle}
             </Button>
             <Button colorScheme="red" onClick={onConfirm} ml={3}>
-              {EXIT_BUTTON}
+              {translations.alerts.confirmClose.exitButtonTitle}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
