@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { UserTableColumn } from "./components/UserTableColumn"
 import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
@@ -9,6 +9,8 @@ import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
 import type { Field } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
+import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
+import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
 
 export type MatchColumnsProps = {
   data: string[][]
@@ -65,6 +67,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   const [columns, setColumns] = useState<Columns<T>>(
     headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
+  const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
 
   const onChange = useCallback(
     (value: T, columnIndex: number) => {
@@ -100,6 +103,15 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
     },
     [columns, setColumns],
   )
+  const unmatchedRequiredFields = useMemo(() => findUnmatchedRequiredFields(fields, columns), [fields, columns])
+
+  const handleOnContinue = useCallback(() => {
+    if (unmatchedRequiredFields.length > 0) {
+      setShowUnmatchedFieldsAlert(true)
+    } else {
+      onContinue(normalizeTableData(columns, data, fields))
+    }
+  }, [onContinue, columns, data, fields])
 
   useEffect(() => {
     if (autoMapHeaders) {
@@ -108,18 +120,29 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   }, [])
 
   return (
-    <ColumnGrid
-      columns={columns}
-      onContinue={() => onContinue(normalizeTableData(columns, data, fields))}
-      userColumn={(column) => (
-        <UserTableColumn
-          column={column}
-          onIgnore={onIgnore}
-          onRevertIgnore={onRevertIgnore}
-          entries={dataExample.map((row) => row[column.index])}
-        />
-      )}
-      templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
-    />
+    <>
+      <UnmatchedFieldsAlert
+        isOpen={showUnmatchedFieldsAlert}
+        onClose={() => setShowUnmatchedFieldsAlert(false)}
+        fields={unmatchedRequiredFields}
+        onConfirm={() => {
+          setShowUnmatchedFieldsAlert(false)
+          onContinue(normalizeTableData(columns, data, fields))
+        }}
+      />
+      <ColumnGrid
+        columns={columns}
+        onContinue={handleOnContinue}
+        userColumn={(column) => (
+          <UserTableColumn
+            column={column}
+            onIgnore={onIgnore}
+            onRevertIgnore={onRevertIgnore}
+            entries={dataExample.map((row) => row[column.index])}
+          />
+        )}
+        templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
+      />
+    </>
   )
 }
