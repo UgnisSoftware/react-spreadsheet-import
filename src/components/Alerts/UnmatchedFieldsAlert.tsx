@@ -28,12 +28,12 @@ export const UnmatchedFieldsAlert = ({ isOpen, onClose, onConfirm, fields }: Pro
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {translations.matchColumnsStep.unmatchedFieldsWarningTitle}
+            {translations.alerts.unmatchedRequiredFields.headerTitle}
           </AlertDialogHeader>
           <AlertDialogBody>
-            {translations.matchColumnsStep.unmatchedFieldsWarningDescription}
+            {translations.alerts.unmatchedRequiredFields.bodyText}
             <Box pt={3}>
-              <Text display="inline">{translations.matchColumnsStep.unmatchedFieldsWarningList}</Text>
+              <Text display="inline">{translations.alerts.unmatchedRequiredFields.listTitle}</Text>
               <Text display="inline" fontWeight="bold">
                 {" "}
                 {fields.join(", ")}
@@ -42,11 +42,11 @@ export const UnmatchedFieldsAlert = ({ isOpen, onClose, onConfirm, fields }: Pro
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">
-              {translations.matchColumnsStep.cancelButtonTitle}
+              {translations.alerts.unmatchedRequiredFields.cancelButtonTitle}
             </Button>
             {allowInvalidSubmit && (
               <Button onClick={onConfirm} ml={3}>
-                {translations.matchColumnsStep.continueButtonTitle}
+                {translations.alerts.unmatchedRequiredFields.continueButtonTitle}
               </Button>
             )}
           </AlertDialogFooter>
