@@ -57,7 +57,7 @@ interface Props {
 export const MatchColumnSelect = ({ onChange, value, options, placeholder }: Props) => {
   return (
     <Select
-      value={value}
+      value={value || null}
       onChange={onChange}
       placeholder={placeholder}
       options={options}

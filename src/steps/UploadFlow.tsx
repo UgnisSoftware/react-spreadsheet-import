@@ -61,6 +61,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
                   variant: "left-accent",
                   position: "bottom-left",
                   title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
+                  isClosable: true,
                 })
               }
               setState({ type: Type.selectHeader, data: mapWorkbook(workbook) })
@@ -82,6 +83,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
                 variant: "left-accent",
                 position: "bottom-left",
                 title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
+                isClosable: true,
               })
             }
             setState({ type: Type.selectHeader, data: mapWorkbook(state.workbook, sheetName) })

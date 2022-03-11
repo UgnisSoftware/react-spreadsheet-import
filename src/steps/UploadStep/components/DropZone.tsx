@@ -32,6 +32,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
           position: "bottom-left",
           title: `${fileRejection.file.name} ${translations.uploadStep.dropzone.errorToastDescription}`,
           description: fileRejection.errors[0].message,
+          isClosable: true,
         })
       })
     },

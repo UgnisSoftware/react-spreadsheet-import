@@ -11,6 +11,7 @@ import type { Field } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
+import { useToast } from "@chakra-ui/react"
 
 export type MatchColumnsProps = {
   data: string[][]
@@ -62,8 +63,9 @@ export type Column<T extends string> =
 export type Columns<T extends string> = Column<T>[]
 
 export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps) => {
+  const toast = useToast()
   const dataExample = data.slice(0, 2)
-  const { fields, autoMapHeaders, autoMapDistance } = useRsi<T>()
+  const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
   const [columns, setColumns] = useState<Columns<T>>(
     headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
@@ -72,8 +74,26 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   const onChange = useCallback(
     (value: T, columnIndex: number) => {
       const field = fields.find((field) => field.key === value) as unknown as Field<T>
+      const existingFieldIndex = columns.findIndex((column) => "value" in column && column.value === field.key)
       setColumns(
-        columns.map<Column<T>>((column, index) => (columnIndex === index ? setColumn(column, field, data) : column)),
+        columns.map<Column<T>>((column, index) => {
+          columnIndex === index ? setColumn(column, field, data) : column
+          if (columnIndex === index) {
+            return setColumn(column, field, data)
+          } else if (index === existingFieldIndex) {
+            toast({
+              status: "warning",
+              variant: "left-accent",
+              position: "bottom-left",
+              title: translations.matchColumnsStep.duplicateColumnWarningTitle,
+              description: translations.matchColumnsStep.duplicateColumnWarningDescription,
+              isClosable: true,
+            })
+            return setColumn(column)
+          } else {
+            return column
+          }
+        }),
       )
     },
     [columns, setColumns],
