@@ -3,20 +3,10 @@ import type { DeepReadonly } from "ts-essentials"
 import type { TranslationsRSIProps } from "./translationsRSIProps"
 
 export type RsiProps<T extends string> = {
-  // Specifies maximum number of rows for a single import
-  maxRecords?: number
-  // Automatically map imported headers to specified fields if possible. Default: true
-  autoMapHeaders?: boolean
-  // Headers matching accuracy: 1 for strict and up for more flexible matching
-  autoMapDistance?: number
   // Is modal visible.
   isOpen: boolean
-  // Allows submitting with errors. Default: true
-  allowInvalidSubmit?: boolean
   // callback when RSI is closed before final submit
   onClose: () => void
-  // Theme configuration passed to underlying Chakra-UI
-  customTheme?: object
   // Field description for requested data
   fields: Fields<T>
   // Runs after column matching and on entry change, more performant
@@ -27,10 +17,20 @@ export type RsiProps<T extends string> = {
   initialHook?: InitHook<T>
   // Function called after user finishes the flow
   onSubmit: (data: Result<T>) => void
+  // Allows submitting with errors. Default: true
+  allowInvalidSubmit?: boolean
   // Translations for each text
   translations?: TranslationsRSIProps
+  // Theme configuration passed to underlying Chakra-UI
+  customTheme?: object
+  // Specifies maximum number of rows for a single import
+  maxRecords?: number
   // Maximum upload filesize (in bytes)
   maxFileSize?: number
+  // Automatically map imported headers to specified fields if possible. Default: true
+  autoMapHeaders?: boolean
+  // Headers matching accuracy: 1 for strict and up for more flexible matching
+  autoMapDistance?: number
 }
 
 export type Data<T extends string> = { [key in T]: string | boolean | number | undefined }
