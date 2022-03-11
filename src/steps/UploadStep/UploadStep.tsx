@@ -5,8 +5,6 @@ import { useRsi } from "../../hooks/useRsi"
 import { ExampleTable } from "./components/ExampleTable"
 import React from "react"
 import { FadingOverlay } from "./components/FadingOverlay"
-import { variant } from "styled-system"
-
 type UploadProps = {
   onContinue: (data: XLSX.WorkBook) => void
 }
