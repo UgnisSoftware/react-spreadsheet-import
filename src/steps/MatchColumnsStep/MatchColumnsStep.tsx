@@ -9,9 +9,7 @@ import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
 import type { Field } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
-import { useToast } from "@chakra-ui/react"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
-import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
 
 export type MatchColumnsProps = {
@@ -122,29 +120,29 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   }, [])
 
   return (
-    <ColumnGrid
-      columns={columns}
-      onContinue={handleOnContinue}
-      userColumn={(column) => (
-        <UserTableColumn
-          column={column}
-          onIgnore={onIgnore}
-          onRevertIgnore={onRevertIgnore}
-          entries={dataExample.map((row) => row[column.index])}
-        />
-      )}
-      templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
-      alert={() => (
-        <UnmatchedFieldsAlert
-          isOpen={showUnmatchedFieldsAlert}
-          onClose={() => setShowUnmatchedFieldsAlert(false)}
-          fields={unmatchedRequiredFields}
-          onConfirm={() => {
-            setShowUnmatchedFieldsAlert(false)
-            onContinue(normalizeTableData(columns, data, fields))
-          }}
-        />
-      )}
-    />
+    <>
+      <UnmatchedFieldsAlert
+        isOpen={showUnmatchedFieldsAlert}
+        onClose={() => setShowUnmatchedFieldsAlert(false)}
+        fields={unmatchedRequiredFields}
+        onConfirm={() => {
+          setShowUnmatchedFieldsAlert(false)
+          onContinue(normalizeTableData(columns, data, fields))
+        }}
+      />
+      <ColumnGrid
+        columns={columns}
+        onContinue={handleOnContinue}
+        userColumn={(column) => (
+          <UserTableColumn
+            column={column}
+            onIgnore={onIgnore}
+            onRevertIgnore={onRevertIgnore}
+            entries={dataExample.map((row) => row[column.index])}
+          />
+        )}
+        templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
+      />
+    </>
   )
 }

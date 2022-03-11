@@ -9,7 +9,6 @@ type ColumnGridProps<T extends string> = {
   columns: Columns<T>
   userColumn: (column: Column<T>) => React.ReactNode
   templateColumn: (column: Column<T>) => React.ReactNode
-  alert: () => React.ReactNode
   onContinue: (val: Record<string, string>[]) => void
 }
 
@@ -18,13 +17,11 @@ export const ColumnGrid = <T extends string>({
   userColumn,
   templateColumn,
   onContinue,
-  alert,
 }: ColumnGridProps<T>) => {
   const { translations } = useRsi()
 
   return (
     <>
-      {alert()}
       <ModalBody flexDir="column" p={8} overflow="auto">
         <Heading size="lg" mb={8}>
           {translations.matchColumnsStep.title}
