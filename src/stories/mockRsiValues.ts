@@ -10,6 +10,12 @@ const fields = [
       type: "input",
     },
     example: "Stephanie",
+    validations: [
+      {
+        rule: "required",
+        errorMessage: "Name is required",
+      },
+    ],
   },
   {
     label: "Surname",

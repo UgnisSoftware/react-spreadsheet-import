@@ -32,6 +32,12 @@ export const translations = {
     subSelectPlaceholder: "Select...",
     matchDropdownTitle: "Match",
     unmatched: "Unmatched",
+    unmatchedFieldsWarningTitle: "Not all columns matched",
+    unmatchedFieldsWarningDescription:
+      "There are required columns that are not matched or ignored. Do you want to continue?",
+    unmatchedFieldsWarningList: "Columns not matched:",
+    cancelButtonTitle: "Cancel",
+    continueButtonTitle: "Continue",
   },
   validationStep: {
     title: "Validate data",
