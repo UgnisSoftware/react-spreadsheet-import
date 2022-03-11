@@ -33,7 +33,7 @@ export const translations = {
     matchDropdownTitle: "Match",
     unmatched: "Unmatched",
     duplicateColumnWarningTitle: "Another column unselected",
-    duplicateColumnWarningDescription: "Columns cannot duplicate.",
+    duplicateColumnWarningDescription: "Columns cannot duplicate",
   },
   validationStep: {
     title: "Validate data",
