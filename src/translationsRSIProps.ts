@@ -32,12 +32,6 @@ export const translations = {
     subSelectPlaceholder: "Select...",
     matchDropdownTitle: "Match",
     unmatched: "Unmatched",
-    unmatchedFieldsWarningTitle: "Not all columns matched",
-    unmatchedFieldsWarningDescription:
-      "There are required columns that are not matched or ignored. Do you want to continue?",
-    unmatchedFieldsWarningList: "Columns not matched:",
-    cancelButtonTitle: "Cancel",
-    continueButtonTitle: "Continue",
     duplicateColumnWarningTitle: "Another column unselected",
     duplicateColumnWarningDescription: "Columns cannot duplicate.",
   },
@@ -48,6 +42,28 @@ export const translations = {
     noRowsMessageWhenFiltered: "No data containing errors",
     discardButtonTitle: "Discard selected rows",
     filterSwitchTitle: "Show only rows with errors",
+  },
+  alerts: {
+    confirmClose: {
+      headerTitle: "Exit import flow",
+      bodyText: "Are you sure? Your current information will not be saved.",
+      cancelButtonTitle: "Cancel",
+      exitButtonTitle: "Exit flow",
+    },
+    submitIncomplete: {
+      headerTitle: "Errors detected",
+      bodyText: "There are still some rows that contain errors. Rows with errors will be ignored when submitting.",
+      bodyTextSubmitForbidden: "There are still some rows containing errors.",
+      cancelButtonTitle: "Cancel",
+      finishButtonTitle: "Submit",
+    },
+    unmatchedRequiredFields: {
+      headerTitle: "Not all columns matched",
+      bodyText: "There are required columns that are not matched or ignored. Do you want to continue?",
+      listTitle: "Columns not matched:",
+      cancelButtonTitle: "Cancel",
+      continueButtonTitle: "Continue",
+    },
   },
 }
 

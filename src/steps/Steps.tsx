@@ -6,6 +6,8 @@ import { useRsi } from "../hooks/useRsi"
 
 const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
 
+const steps = ["uploadStep", "selectHeaderStep", "matchColumnsStep", "validationStep"] as const
+
 export const Steps = () => {
   const { translations } = useRsi()
   const { nextStep, activeStep } = useSteps({
@@ -16,8 +18,8 @@ export const Steps = () => {
     <>
       <ModalHeader>
         <Stepper activeStep={activeStep} checkIcon={CheckIcon}>
-          {Object.values(translations).map(({ title }) => (
-            <Step label={title} key={title} />
+          {steps.map((key) => (
+            <Step label={translations[key].title} key={key} />
           ))}
         </Stepper>
       </ModalHeader>
