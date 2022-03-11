@@ -1,30 +1,36 @@
 import "@testing-library/jest-dom"
 import { render, fireEvent, waitFor, screen } from "@testing-library/react"
-import { UploadStep } from "../UploadStep"
+import { SelectSheetStep } from "../SelectSheetStep"
 import { theme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 
-test("Upload a file", async () => {
-  const file = new File(["Hello, Hello, Hello, Hello"], "test.csv", { type: "text/csv" })
+test("Select sheet and click next", async () => {
+  const sheetNames = ["Sheet1", "Sheet2"]
+  const selectSheetIndex = 1
 
   const onContinue = jest.fn()
   render(
     <Providers theme={theme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
-        <UploadStep onContinue={onContinue} />
+        <SelectSheetStep sheetNames={sheetNames} onContinue={onContinue} />
       </ModalWrapper>
     </Providers>,
   )
 
-  let uploader = screen.getByTestId("rsi-dropzone")
+  const firstRadio = screen.getByLabelText(sheetNames[selectSheetIndex])
 
-  fireEvent.drop(uploader, {
-    target: { files: [file] },
+  fireEvent.click(firstRadio)
+
+  const nextButton = screen.getByRole("button", {
+    name: "Next",
   })
+
+  fireEvent.click(nextButton)
 
   await waitFor(() => {
     expect(onContinue).toBeCalled()
+    expect(onContinue.mock.calls[0][0]).toEqual(sheetNames[selectSheetIndex])
   })
 })
