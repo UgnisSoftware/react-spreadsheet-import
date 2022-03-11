@@ -16,6 +16,7 @@ import { getFieldOptions } from "../utils/getFieldOptions"
 import type { Fields } from "../../../types"
 import type { Translations } from "../../../translationsRSIProps"
 import { MatchColumnSelect } from "../../../components/Selects/MatchColumnSelect"
+import { SubMatchingSelect } from "./SubMatchingSelect"
 
 const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
@@ -50,7 +51,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
       ) : (
         <>
           <Flex alignItems="center" minH={10} w="100%">
-            <Box flex={1} pl={2}>
+            <Box flex={1}>
               <MatchColumnSelect
                 placeholder={translations.matchColumnsStep.selectPlaceholder}
                 value={selectValue}
@@ -72,18 +73,9 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                       </Text>
                     </Box>
                   </AccordionButton>
-                  <AccordionPanel pb={4} display="flex" flexDir="column">
+                  <AccordionPanel pb={4} pr={3} display="flex" flexDir="column">
                     {column.matchedOptions.map((option) => (
-                      <Box pl={2} pb="0.375rem">
-                        <Text pt="0.375rem" pb={2} fontSize="md" lineHeight={6} fontWeight="medium" color="gray.700">
-                          {option.entry}
-                        </Text>
-                        <MatchColumnSelect
-                          placeholder={translations.matchColumnsStep.subSelectPlaceholder}
-                          onChange={(value) => onSubChange(value?.value as T, column.index, option.entry!)}
-                          options={getFieldOptions(fields, column.value)}
-                        />
-                      </Box>
+                      <SubMatchingSelect option={option} column={column} onSubChange={onSubChange} />
                     ))}
                   </AccordionPanel>
                 </AccordionItem>

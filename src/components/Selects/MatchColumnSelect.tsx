@@ -30,6 +30,8 @@ const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
   }),
   singleValue: (provided) => ({
     ...provided,
+    ml: 0,
+    mr: 0,
   }),
   valueContainer: (provided, state) => ({
     ...provided,
