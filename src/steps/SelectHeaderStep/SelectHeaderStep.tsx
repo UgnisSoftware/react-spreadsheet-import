@@ -18,7 +18,7 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
     // We consider data above header to be redundant
     const trimmedData = data.slice(selectedRowIndex + 1)
     onContinue(data[selectedRowIndex], trimmedData)
-  }, [onContinue, data])
+  }, [onContinue, data, selectedRows])
 
   return (
     <>
