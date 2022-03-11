@@ -73,6 +73,15 @@ export const themeOverrides = {
         },
       },
     },
+    SelectHeaderStep: {
+      baseStyle: {
+        heading: {
+          color: "textColor",
+          mb: 8,
+          fontSize: "3xl",
+        },
+      },
+    },
     MatchIcon: {
       baseStyle: (props: any) => {
         return {
