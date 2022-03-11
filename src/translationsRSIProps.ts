@@ -32,12 +32,6 @@ export const translations = {
     subSelectPlaceholder: "Select...",
     matchDropdownTitle: "Match",
     unmatched: "Unmatched",
-    unmatchedFieldsWarningTitle: "Not all columns matched",
-    unmatchedFieldsWarningDescription:
-      "There are required columns that are not matched or ignored. Do you want to continue?",
-    unmatchedFieldsWarningList: "Columns not matched:",
-    cancelButtonTitle: "Cancel",
-    continueButtonTitle: "Continue",
   },
   validationStep: {
     title: "Validate data",
@@ -60,6 +54,14 @@ export const translations = {
       bodyTextSubmitForbidden: "There are still some rows containing errors.",
       cancelButtonTitle: "Cancel",
       finishButtonTitle: "Submit",
+    },
+    unmatchedRequiredFields: {
+      headerTitle: "Not all columns matched",
+      bodyText:
+        "There are required columns that are not matched or ignored. Do you want to continue?",
+      listTitle: "Columns not matched:",
+      cancelButtonTitle: "Cancel",
+      continueButtonTitle: "Continue",
     },
   },
 }
