@@ -38,6 +38,8 @@ export const translations = {
     unmatchedFieldsWarningList: "Columns not matched:",
     cancelButtonTitle: "Cancel",
     continueButtonTitle: "Continue",
+    duplicateColumnWarningTitle: "Another column unselected",
+    duplicateColumnWarningDescription: "Columns cannot duplicate.",
   },
   validationStep: {
     title: "Validate data",
