@@ -57,8 +57,7 @@ export const translations = {
     },
     unmatchedRequiredFields: {
       headerTitle: "Not all columns matched",
-      bodyText:
-        "There are required columns that are not matched or ignored. Do you want to continue?",
+      bodyText: "There are required columns that are not matched or ignored. Do you want to continue?",
       listTitle: "Columns not matched:",
       cancelButtonTitle: "Cancel",
       continueButtonTitle: "Continue",
