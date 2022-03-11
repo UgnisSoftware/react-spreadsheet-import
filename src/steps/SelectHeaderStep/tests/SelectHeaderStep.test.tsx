@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
-import { SelectSheetStep } from "../SelectSheetStep"
+import { SelectHeaderStep } from "../SelectHeaderStep"
 import { theme } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
@@ -8,21 +8,27 @@ import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
 
 test("Select sheet and click next", async () => {
-  const sheetNames = ["Sheet1", "Sheet2"]
-  const selectSheetIndex = 1
+  const data = [
+    ["Some random header"],
+    ["2030"],
+    ["Name", "Phone", "Email"],
+    ["John", "123", "j@j.com"],
+    ["Dane", "333", "dane@bane.com"],
+  ]
+  const selectRowIndex = 2
 
   const onContinue = jest.fn()
   render(
     <Providers theme={theme} rsiValues={mockRsiValues}>
       <ModalWrapper isOpen={true} onClose={() => {}}>
-        <SelectSheetStep sheetNames={sheetNames} onContinue={onContinue} />
+        <SelectHeaderStep data={data} onContinue={onContinue} />
       </ModalWrapper>
     </Providers>,
   )
 
-  const firstRadio = screen.getByLabelText(sheetNames[selectSheetIndex])
+  const radioButtons = screen.getAllByRole("radio")
 
-  userEvent.click(firstRadio)
+  userEvent.click(radioButtons[selectRowIndex])
 
   const nextButton = screen.getByRole("button", {
     name: "Next",
@@ -32,6 +38,7 @@ test("Select sheet and click next", async () => {
 
   await waitFor(() => {
     expect(onContinue).toBeCalled()
-    expect(onContinue.mock.calls[0][0]).toEqual(sheetNames[selectSheetIndex])
+    expect(onContinue.mock.calls[0][0]).toEqual(data[selectRowIndex])
+    expect(onContinue.mock.calls[0][1]).toEqual(data.slice(selectRowIndex + 1))
   })
 })
