@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { useToast } from "@chakra-ui/react"
 import { UserTableColumn } from "./components/UserTableColumn"
 import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
@@ -11,7 +12,6 @@ import type { Field } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
-import { useToast } from "@chakra-ui/react"
 
 export type MatchColumnsProps = {
   data: string[][]

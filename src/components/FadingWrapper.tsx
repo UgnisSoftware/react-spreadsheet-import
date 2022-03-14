@@ -13,14 +13,14 @@ export const FadingWrapper = ({ gridColumn, gridRow }: FadingWrapperProps) => (
       gridRow={gridRow}
       borderRadius="1.2rem"
       border="1px solid"
-      borderColor="gray.200"
+      borderColor="border"
       pointerEvents="none"
     />
     <Box
       gridColumn={gridColumn}
       gridRow={gridRow}
       pointerEvents="none"
-      bg="linear-gradient(rgba(255, 255, 255, 0), 80%, rgba(255, 255, 255, 1))"
+      bgGradient="linear(transparent, 80%, background)"
     />
   </>
 )
