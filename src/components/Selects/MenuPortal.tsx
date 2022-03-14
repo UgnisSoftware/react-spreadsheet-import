@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { Box, useTheme } from "@chakra-ui/react"
 import { usePopper } from "@chakra-ui/popper"
+import { chakraComponents } from "chakra-react-select"
 
 interface PortalProps {
   controlElement: HTMLDivElement | null

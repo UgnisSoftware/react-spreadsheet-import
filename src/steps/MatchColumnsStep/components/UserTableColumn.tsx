@@ -1,7 +1,9 @@
-import { Box, Flex, IconButton, Text } from "@chakra-ui/react"
+import { Box, Flex, IconButton, Text, useStyleConfig } from "@chakra-ui/react"
 import { CgClose, CgUndo } from "react-icons/cg"
 import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
+import { dataAttr } from "@chakra-ui/utils"
+import type { Styles } from "./ColumnGrid"
 
 type UserTableColumnProps<T extends string> = {
   column: Column<T>
@@ -10,17 +12,19 @@ type UserTableColumnProps<T extends string> = {
   onRevertIgnore: (index: number) => void
 }
 
-export const UserTableColumn = <T extends string>({
-  column: { header, index, type },
-  entries,
-  onIgnore,
-  onRevertIgnore,
-}: UserTableColumnProps<T>) => {
-  const textColor = type === ColumnType.ignored ? "gray.400" : "gray.700"
+export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>) => {
+  const styles = useStyleConfig("MatchColumnsStep") as Styles
+  const {
+    column: { header, index, type },
+    entries,
+    onIgnore,
+    onRevertIgnore,
+  } = props
+  const isIgnored = type === ColumnType.ignored
   return (
     <Box>
       <Flex px={6} justifyContent="space-between" alignItems="center" mb={4}>
-        <Text fontSize="xs" lineHeight={4} fontWeight="bold" letterSpacing="wider" color={textColor}>
+        <Text sx={styles.userTable.header} data-ignored={dataAttr(isIgnored)}>
           {header}
         </Text>
         {type === ColumnType.ignored ? (
@@ -28,21 +32,19 @@ export const UserTableColumn = <T extends string>({
             aria-label="Ignore column"
             icon={<CgUndo />}
             onClick={() => onRevertIgnore(index)}
-            colorScheme="gray"
-            size="xs"
+            {...styles.userTable.ignoreButton}
           />
         ) : (
           <IconButton
             aria-label="Ignore column"
             icon={<CgClose />}
             onClick={() => onIgnore(index)}
-            colorScheme="gray"
-            size="xs"
+            {...styles.userTable.ignoreButton}
           />
         )}
       </Flex>
       {entries.map((entry, index) => (
-        <Text fontSize="sm" lineHeight={5} fontWeight="medium" px={6} py={4} key={entry + index} color={textColor}>
+        <Text key={entry + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
           {entry}
         </Text>
       ))}
