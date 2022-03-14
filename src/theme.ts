@@ -159,7 +159,7 @@ export const themeOverrides = {
     global: {
       ".rdg": {
         contain: "size layout style paint",
-        borderRadius: "8px",
+        borderRadius: "lg",
         border: "none",
         borderTop: "1px solid var(--rdg-border-color)",
         blockSize: "100%",
@@ -177,7 +177,7 @@ export const themeOverrides = {
         "--rdg-info-cell-background-color": "var(--chakra-colors-blue-50)",
         "--rdg-border-color": "var(--chakra-colors-gray-100)",
         "--rdg-frozen-cell-box-shadow": "none",
-        "--rdg-font-size": "14px",
+        "--rdg-font-size": "var(--chakra-fontSizes-sm)",
       },
       ".rdg-header-row .rdg-cell": {
         color: "gray.700",
@@ -187,17 +187,17 @@ export const themeOverrides = {
         letterSpacing: "wider",
         textTransform: "uppercase",
         "&:first-of-type": {
-          borderRadius: "8px 0 0 0",
+          borderTopLeftRadius: "lg",
         },
         "&:last-child": {
-          borderRadius: "0 8px 0 0",
+          borderTopRightRadius: "lg",
         },
       },
       ".rdg-row:last-child .rdg-cell:first-of-type": {
-        borderRadius: "0 0 0 8px",
+        borderBottomLeftRadius: "lg",
       },
       ".rdg-row:last-child .rdg-cell:last-child": {
-        borderRadius: "0 0 8px 0",
+        borderBottomRightRadius: "lg",
       },
       ".rdg-cell": {
         contain: "size layout style paint",
