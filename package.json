@@ -13,6 +13,7 @@
     "ts": "tsc",
     "prebuild": "rimraf dist",
     "build": "rollup -c rollup.config.ts",
+    "build-storybook": "build-storybook -o docs-build",
     "release:minor": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version patch && git add -A && git push && git push --tags && npm publish",
     "clean": "rimraf dist"
   },

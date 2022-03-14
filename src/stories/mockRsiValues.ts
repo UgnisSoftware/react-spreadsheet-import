@@ -54,7 +54,7 @@ const fields = [
   {
     label: "Team",
     key: "team",
-    alternateMatches: ["oldness"],
+    alternateMatches: ["department"],
     fieldType: {
       type: "select",
       options: [
@@ -79,15 +79,6 @@ const fields = [
       booleanMatches: {},
     },
     example: "true",
-  },
-  {
-    label: "IP address",
-    key: "ip_address",
-    alternateMatches: ["ipAddress"],
-    fieldType: {
-      type: "input",
-    },
-    example: "127.0.0.1",
   },
 ] as const
 

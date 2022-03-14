@@ -26,4 +26,5 @@ module.exports = {
       },
     }
   },
+  staticDirs: ["../src/stories/static"],
 }
