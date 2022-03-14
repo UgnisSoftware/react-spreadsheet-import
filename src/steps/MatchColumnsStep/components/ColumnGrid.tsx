@@ -30,7 +30,7 @@ export const ColumnGrid = <T extends string>({
           flex={1}
           display="grid"
           gridTemplateRows="auto auto auto 1fr"
-          gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(20rem, auto)) 0.75rem`}
+          gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(18rem, auto)) 0.75rem`}
         >
           <Box gridColumn={`1/${columns.length + 3}`}>
             <Text fontSize="2xl" lineHeight={8} fontWeight="semibold" mb={4}>
