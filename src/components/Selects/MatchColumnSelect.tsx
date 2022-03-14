@@ -42,6 +42,10 @@ const chakraSelectStyles: ChakraStylesConfig<SelectOption> = {
     p: 0,
     mt: 0,
   }),
+  menuList: (provided) => ({
+    ...provided,
+    minW: "initial",
+  }),
   option: (provided, state) => ({
     ...provided,
     color: state.isSelected ? "gray.900" : provided.color,
