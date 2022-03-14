@@ -155,8 +155,131 @@ export const themeOverrides = {
       },
     },
   },
-}
+  styles: {
+    global: {
+      ".rdg": {
+        contain: "size layout style paint",
+        borderRadius: "8px",
+        border: "none",
+        borderTop: "1px solid var(--rdg-border-color)",
+        blockSize: "100%",
 
+        // we have to use vars here because chakra does not autotransform unknown props
+        "--rdg-row-height": "35px",
+        "--rdg-color": "var(--chakra-colors-gray-800)",
+        "--rdg-background-color": "var(--chakra-colors-white)",
+        "--rdg-header-background-color": "var(--chakra-colors-white)",
+        "--rdg-row-hover-background-color": "var(--chakra-colors-white)",
+        "--rdg-selection-color": "var(--chakra-colors-blue-400)",
+        "--rdg-row-selected-background-color": "var(--chakra-colors-rsi-50)",
+        "--rdg-error-cell-background-color": "var(--chakra-colors-red-50)",
+        "--rdg-warning-cell-background-color": "var(--chakra-colors-orange-50)",
+        "--rdg-info-cell-background-color": "var(--chakra-colors-blue-50)",
+        "--rdg-border-color": "var(--chakra-colors-gray-100)",
+        "--rdg-frozen-cell-box-shadow": "none",
+        "--rdg-font-size": "14px",
+      },
+      ".rdg-header-row .rdg-cell": {
+        color: "gray.700",
+        background: "white",
+        fontSize: "xs",
+        lineHeight: 10,
+        fontWeight: "bold",
+        letterSpacing: "wider",
+        textTransform: "uppercase",
+        "&:first-of-type": {
+          borderRadius: "8px 0 0 0",
+        },
+        "&:last-child": {
+          borderRadius: "0 8px 0 0",
+        },
+      },
+      ".rdg-row:last-child .rdg-cell:first-of-type": {
+        borderRadius: "0 0 0 8px",
+      },
+      ".rdg-row:last-child .rdg-cell:last-child": {
+        borderRadius: "0 0 8px 0",
+      },
+      ".rdg-cell": {
+        contain: "size layout style paint",
+        borderRight: "none",
+        borderBottom: "1px solid var(--rdg-border-color)",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        "&[aria-selected='true']": {
+          boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
+        },
+        "&:first-of-type": {
+          borderLeft: "1px solid var(--rdg-border-color)",
+        },
+        "&:last-child": {
+          borderRight: "1px solid var(--rdg-border-color)",
+        },
+      },
+      ".rdg-cell-error": {
+        backgroundColor: "var(--rdg-error-cell-background-color)",
+      },
+      ".rdg-cell-warning": {
+        backgroundColor: "var(--rdg-warning-cell-background-color)",
+      },
+      ".rdg-cell-info": {
+        backgroundColor: "var(--rdg-info-cell-background-color)",
+      },
+      ".rdg-static": {
+        cursor: "pointer",
+      },
+      ".rdg-static .rdg-header-row": {
+        display: "none",
+      },
+      ".rdg-static .rdg-cell": {
+        "--rdg-selection-color": "none",
+      },
+      ".rdg-example .rdg-cell": {
+        "--rdg-selection-color": "none",
+        borderBottom: "none",
+      },
+
+      ".rdg-radio": {
+        display: "flex",
+        alignItems: "center",
+      },
+      ".rdg-checkbox": {
+        "--rdg-selection-color": "none",
+        display: "flex",
+        alignItems: "center",
+      },
+    },
+  },
+} as const
+
+// Table: {
+//   baseStyle: {
+//     rowHeight: 35,
+//       color: "gray.800",
+//       background: "white",
+//       borderColor: "gray.100",
+//       fontSize: "14px",
+//       header: {
+//       color: "gray.700",
+//         background: "white",
+//         fontSize: "xs",
+//         lineHeight: 10,
+//         fontWeight: "bold",
+//         letterSpacing: "wider",
+//     },
+//     row: {
+//       hoverBackground: "white",
+//         selectedBackground: "rsi.50",
+//     },
+//     cell: {
+//       selectedBorder: "blue.400",
+//         errorBackground: "red.50",
+//         warningBackground: "orange.50",
+//         infoBackground: "blue.50",
+//     },
+//   },
+// },
 export const colorSchemeOverrides = withDefaultColorScheme({
   colorScheme: "rsi",
   components: ["Button"],

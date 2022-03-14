@@ -5,6 +5,7 @@ import { useState } from "react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useRsi } from "../../../hooks/useRsi"
 import { readFileAsync } from "../utils/readFilesAsync"
+import type { themeOverrides } from "../../../theme"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
@@ -12,7 +13,7 @@ type DropZoneProps = {
 
 export const DropZone = ({ onContinue }: DropZoneProps) => {
   const { translations, maxFileSize } = useRsi()
-  const styles = useStyleConfig("UploadStep") as any
+  const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
   const {
     colors: { rsi },
   } = useTheme()

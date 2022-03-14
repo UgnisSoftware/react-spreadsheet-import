@@ -5,12 +5,14 @@ import { useRsi } from "../../hooks/useRsi"
 import { ExampleTable } from "./components/ExampleTable"
 import React from "react"
 import { FadingOverlay } from "./components/FadingOverlay"
+import type { themeOverrides } from "../../theme"
+
 type UploadProps = {
   onContinue: (data: XLSX.WorkBook) => void
 }
 
 export const UploadStep = (props: UploadProps) => {
-  const styles = useStyleConfig("UploadStep") as any
+  const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
   const { translations, fields } = useRsi()
   return (
     <ModalBody>
