@@ -181,7 +181,6 @@ export const themeOverrides = {
       },
       ".rdg-header-row .rdg-cell": {
         color: "gray.700",
-        background: "white",
         fontSize: "xs",
         lineHeight: 10,
         fontWeight: "bold",
