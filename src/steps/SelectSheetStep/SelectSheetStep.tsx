@@ -2,6 +2,7 @@ import { Heading, ModalBody, Radio, RadioGroup, Stack, useStyleConfig, Text } fr
 import { useState } from "react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
+import type { themeOverrides } from "../../theme"
 
 type SelectSheetProps = {
   sheetNames: string[]
@@ -11,7 +12,9 @@ type SelectSheetProps = {
 export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) => {
   const { translations } = useRsi()
   const [value, setValue] = useState(sheetNames[0])
-  const styles = useStyleConfig("SelectSheetStep") as any
+  const styles = useStyleConfig(
+    "SelectSheetStep",
+  ) as typeof themeOverrides["components"]["SelectSheetStep"]["baseStyle"]
 
   return (
     <>

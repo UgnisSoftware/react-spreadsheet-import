@@ -155,7 +155,102 @@ export const themeOverrides = {
       },
     },
   },
-}
+  styles: {
+    global: {
+      ".rdg": {
+        contain: "size layout style paint",
+        borderRadius: "lg",
+        border: "none",
+        borderTop: "1px solid var(--rdg-border-color)",
+        blockSize: "100%",
+
+        // we have to use vars here because chakra does not autotransform unknown props
+        "--rdg-row-height": "35px",
+        "--rdg-color": "var(--chakra-colors-gray-800)",
+        "--rdg-background-color": "var(--chakra-colors-white)",
+        "--rdg-header-background-color": "var(--chakra-colors-white)",
+        "--rdg-row-hover-background-color": "var(--chakra-colors-white)",
+        "--rdg-selection-color": "var(--chakra-colors-blue-400)",
+        "--rdg-row-selected-background-color": "var(--chakra-colors-rsi-50)",
+        "--rdg-error-cell-background-color": "var(--chakra-colors-red-50)",
+        "--rdg-warning-cell-background-color": "var(--chakra-colors-orange-50)",
+        "--rdg-info-cell-background-color": "var(--chakra-colors-blue-50)",
+        "--rdg-border-color": "var(--chakra-colors-gray-100)",
+        "--rdg-frozen-cell-box-shadow": "none",
+        "--rdg-font-size": "var(--chakra-fontSizes-sm)",
+      },
+      ".rdg-header-row .rdg-cell": {
+        color: "gray.700",
+        fontSize: "xs",
+        lineHeight: 10,
+        fontWeight: "bold",
+        letterSpacing: "wider",
+        textTransform: "uppercase",
+        "&:first-of-type": {
+          borderTopLeftRadius: "lg",
+        },
+        "&:last-child": {
+          borderTopRightRadius: "lg",
+        },
+      },
+      ".rdg-row:last-child .rdg-cell:first-of-type": {
+        borderBottomLeftRadius: "lg",
+      },
+      ".rdg-row:last-child .rdg-cell:last-child": {
+        borderBottomRightRadius: "lg",
+      },
+      ".rdg-cell": {
+        contain: "size layout style paint",
+        borderRight: "none",
+        borderBottom: "1px solid var(--rdg-border-color)",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        "&[aria-selected='true']": {
+          boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
+        },
+        "&:first-of-type": {
+          borderLeft: "1px solid var(--rdg-border-color)",
+        },
+        "&:last-child": {
+          borderRight: "1px solid var(--rdg-border-color)",
+        },
+      },
+      ".rdg-cell-error": {
+        backgroundColor: "var(--rdg-error-cell-background-color)",
+      },
+      ".rdg-cell-warning": {
+        backgroundColor: "var(--rdg-warning-cell-background-color)",
+      },
+      ".rdg-cell-info": {
+        backgroundColor: "var(--rdg-info-cell-background-color)",
+      },
+      ".rdg-static": {
+        cursor: "pointer",
+      },
+      ".rdg-static .rdg-header-row": {
+        display: "none",
+      },
+      ".rdg-static .rdg-cell": {
+        "--rdg-selection-color": "none",
+      },
+      ".rdg-example .rdg-cell": {
+        "--rdg-selection-color": "none",
+        borderBottom: "none",
+      },
+
+      ".rdg-radio": {
+        display: "flex",
+        alignItems: "center",
+      },
+      ".rdg-checkbox": {
+        "--rdg-selection-color": "none",
+        display: "flex",
+        alignItems: "center",
+      },
+    },
+  },
+} as const
 
 export const colorSchemeOverrides = withDefaultColorScheme({
   colorScheme: "rsi",

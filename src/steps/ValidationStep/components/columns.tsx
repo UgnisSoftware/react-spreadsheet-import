@@ -40,6 +40,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
     (column): Column<Data<T> & Meta> => ({
       key: column.key,
       name: column.label,
+      minWidth: 150,
       resizable: true,
       headerRenderer: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
