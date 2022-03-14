@@ -129,6 +129,15 @@ export const themeOverrides = {
             color: "textColor",
           },
         },
+        selectColumn: {
+          text: {
+            fontSize: "sm",
+            lineHeight: 5,
+            fontWeight: "normal",
+            color: "inactiveColor",
+            px: 4,
+          },
+        },
         select: {
           dropdownIndicator: (provided) => ({
             ...provided,

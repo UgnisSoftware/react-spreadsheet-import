@@ -7,16 +7,17 @@ import {
   AccordionIcon,
   Box,
   AccordionPanel,
+  useStyleConfig,
 } from "@chakra-ui/react"
 import { useRsi } from "../../../hooks/useRsi"
 import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { MatchIcon } from "./MatchIcon"
-import { getFieldOptions } from "../utils/getFieldOptions"
 import type { Fields } from "../../../types"
 import type { Translations } from "../../../translationsRSIProps"
 import { MatchColumnSelect } from "../../../components/Selects/MatchColumnSelect"
 import { SubMatchingSelect } from "./SubMatchingSelect"
+import type { Styles } from "./ColumnGrid"
 
 const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
@@ -33,6 +34,7 @@ type TemplateColumnProps<T extends string> = {
 
 export const TemplateColumn = <T extends string>({ column, onChange, onSubChange }: TemplateColumnProps<T>) => {
   const { translations, fields } = useRsi<T>()
+  const styles = useStyleConfig("MatchColumnsStep") as Styles
   const isIgnored = column.type === ColumnType.ignored
   const isChecked =
     column.type === ColumnType.matched ||
@@ -45,9 +47,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
   return (
     <Flex minH={10} w="100%" flexDir="column" justifyContent="center">
       {isIgnored ? (
-        <Text fontSize="sm" lineHeight={5} fontWeight="normal" color="gray.400" px={4}>
-          {translations.matchColumnsStep.ignoredColumnText}
-        </Text>
+        <Text sx={styles.selectColumn.text}>{translations.matchColumnsStep.ignoredColumnText}</Text>
       ) : (
         <>
           <Flex alignItems="center" minH={10} w="100%">
