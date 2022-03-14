@@ -1,5 +1,8 @@
 # RSI react-spreadsheet-import 
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/test)
+![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) ![npm](https://img.shields.io/npm/v/react-spreadsheet-import)
+
 A component for importing XLS / XLSX / CSV documents.
 Automatic column matching and custom validation rules.
 All styles and texts are customisable.
@@ -26,9 +29,20 @@ import { ReactSpreadsheetImport } from "react-spreadsheet-import";
 />
 ```
 
+## Required Props
+
+```tsx
+  // Determines if modal is visible.
+  isOpen: Boolean
+  // Called when flow is closed without reaching submit.
+  onClose: () => void 
+  // Called after user completes the flow. Provides data array, where data keys matches your field keys.
+  onSubmit: (data) => void 
+```
+
 ### Fields
 
-Configuring fields:
+Fields describe what data you are trying to collect.
 
 ```tsx
 const fields = [
@@ -60,6 +74,7 @@ const fields = [
 ] as const
 ```
 
+## Optional Props
 ### Hooks
 
 You can transform and validate data with custom hooks. There are 3 hooks that have different performance tradeoffs:
@@ -82,6 +97,25 @@ Example:
     // Sorry John
   }}
 />
+```
+
+### Other optional props
+
+```tsx
+  // Allows submitting with errors. Default: true
+  allowInvalidSubmit?: boolean
+  // Translations for each text. See customisation bellow
+  translations?: object
+  // Theme configuration passed to underlying Chakra-UI. See customisation bellow
+  customTheme?: object
+  // Specifies maximum number of rows for a single import
+  maxRecords?: number
+  // Maximum upload filesize (in bytes)
+  maxFileSize?: number
+  // Automatically map imported headers to specified fields if possible. Default: true
+  autoMapHeaders?: boolean
+  // Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
+  autoMapDistance?: number
 ```
 
 ## Customisation
@@ -114,20 +148,20 @@ You can change any text in the flow:
 
 Flatfile vs react-spreadsheet-import and Dromo vs react-spreadsheet-import:
 
-|                                    | RSI           | Flatfile    | Dromo       |
-|------------------------------------|---------------|-------------|-------------|
-| Licence                        | MIT           | Proprietary | Proprietary |
-| Price                          | Free          | Paid        | Paid        |
-| Support                        | Github Issues | Enterprise  | Enterprise  |
-| Self-host                      | Yes           | Paid        | Paid        |
-| Hosted solution                | In progress   | Yes         | No          |
-| On-prem deployment             | N/A           | Yes         | Yes         |
-| Hooks                          | Yes           | Yes         | Yes         |
-| Automatic header matching      | Yes           | Yes         | Yes         |
-| Data validation                | Yes           | Yes         | Yes         |
-| Custom styling                 | Yes           | Yes         | Yes         |
-| Translations                   | Yes           | Yes         | No          |
-| Trademarked words `Data Hooks` | No            | Yes         | No          |
+|                                    | RSI            | Flatfile    | Dromo       |
+|------------------------------------|----------------|-------------|-------------|
+| Licence                        | MIT            | Proprietary | Proprietary |
+| Price                          | Free           | Paid        | Paid        |
+| Support                        | Github Issues  | Enterprise  | Enterprise  |
+| Self-host                      | Yes            | Paid        | Paid        |
+| Hosted solution                | In development | Yes         | No          |
+| On-prem deployment             | N/A            | Yes         | Yes         |
+| Hooks                          | Yes            | Yes         | Yes         |
+| Automatic header matching      | Yes            | Yes         | Yes         |
+| Data validation                | Yes            | Yes         | Yes         |
+| Custom styling                 | Yes            | Yes         | Yes         |
+| Translations                   | Yes            | Yes         | No          |
+| Trademarked words `Data Hooks` | No             | Yes         | No          |
 
 React-spreadsheet-import can be used as a free and open-source alternative to Flatfile and Dromo.
 
@@ -137,4 +171,4 @@ Feel free to open issues if you have any questions or notice bugs. If you want d
 
 ## Credits
 
-Created by [Julita Kriauciunaite](https://github.com/JulitorK) and [Karolis Masiulis](https://github.com/masiulis). You can contact us at `info@ugnis.com`
+Created by Ugnis. [Julita Kriauciunaite](https://github.com/JulitorK) and [Karolis Masiulis](https://github.com/masiulis). You can contact us at `info@ugnis.com`
