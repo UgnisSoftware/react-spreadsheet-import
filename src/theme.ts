@@ -253,33 +253,6 @@ export const themeOverrides = {
   },
 } as const
 
-// Table: {
-//   baseStyle: {
-//     rowHeight: 35,
-//       color: "gray.800",
-//       background: "white",
-//       borderColor: "gray.100",
-//       fontSize: "14px",
-//       header: {
-//       color: "gray.700",
-//         background: "white",
-//         fontSize: "xs",
-//         lineHeight: 10,
-//         fontWeight: "bold",
-//         letterSpacing: "wider",
-//     },
-//     row: {
-//       hoverBackground: "white",
-//         selectedBackground: "rsi.50",
-//     },
-//     cell: {
-//       selectedBorder: "blue.400",
-//         errorBackground: "red.50",
-//         warningBackground: "orange.50",
-//         infoBackground: "blue.50",
-//     },
-//   },
-// },
 export const colorSchemeOverrides = withDefaultColorScheme({
   colorScheme: "rsi",
   components: ["Button"],
