@@ -8,7 +8,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>) =>
     (column): Column<any> => ({
       key: column.key,
       name: column.label,
-      resizable: true,
+      minWidth: 150,
       headerRenderer: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
           {column.label}
