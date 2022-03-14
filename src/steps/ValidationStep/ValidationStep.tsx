@@ -14,7 +14,7 @@ type Props<T extends string> = {
 }
 
 export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
-  const { translations, fields, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
+  const { translations, fields, onClose, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks<T>(addIndexes<T>(initialHook(initialData)), fields, rowHook, tableHook), []),
@@ -66,6 +66,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     })
     const invalidData = all.filter((value) => !validData.includes(value))
     onSubmit({ validData, invalidData, all: data })
+    onClose()
   }
   const onContinue = () => {
     const invalidData = data.find((value) => {
