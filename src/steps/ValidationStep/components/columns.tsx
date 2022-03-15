@@ -8,6 +8,11 @@ import { TableSelect } from "../../../components/Selects/TableSelect"
 
 const SELECT_COLUMN_KEY = "select-row"
 
+function autoFocusAndSelect(input: HTMLInputElement | null) {
+  input?.focus()
+  input?.select()
+}
+
 export const generateColumns = <T extends string>(fields: Fields<T>): Column<Data<T> & Meta>[] => [
   {
     key: SELECT_COLUMN_KEY,
@@ -74,6 +79,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
             component = (
               <Box pl="0.5rem">
                 <Input
+                  ref={autoFocusAndSelect}
                   variant="unstyled"
                   autoFocus
                   size="small"

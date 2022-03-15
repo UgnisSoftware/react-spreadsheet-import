@@ -33,7 +33,7 @@ export type RsiProps<T extends string> = {
   autoMapDistance?: number
 }
 
-export type Data<T extends string> = { [key in T]: string | boolean | number | undefined }
+export type Data<T extends string> = { [key in T]: string | boolean | undefined }
 
 // Data model RSI uses for spreadsheet imports
 export type Fields<T extends string> = DeepReadonly<Field<T>[]>
