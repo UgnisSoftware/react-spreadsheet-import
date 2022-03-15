@@ -31,3 +31,5 @@ if (typeof window !== "undefined") {
 
   Element.prototype.setPointerCapture ??= () => {}
 }
+
+jest.setTimeout(30000)
