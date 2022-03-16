@@ -68,7 +68,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                   <AccordionButton _hover={{ bg: "transparent" }} _focus={{ boxShadow: "none" }} px={0} py={4}>
                     <AccordionIcon />
                     <Box textAlign="left">
-                      <Text color="blue.600" fontSize="sm" lineHeight={5} pl={1}>
+                      <Text sx={styles.selectColumn.accordionLabel}>
                         {getAccordionTitle<T>(fields, column, translations)}
                       </Text>
                     </Box>
