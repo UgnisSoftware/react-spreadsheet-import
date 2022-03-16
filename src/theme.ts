@@ -259,7 +259,11 @@ export const themeOverrides = {
           option: (provided, state) => ({
             ...provided,
             color: state.isSelected ? "gray.900" : provided.color,
-            bg: state.isSelected ? "gray.200" : provided.bg,
+            bg: state.isSelected || state.isFocused ? "secondaryBackground" : provided.bg,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "block",
+            whiteSpace: "nowrap",
           }),
         } as ChakraStylesConfig<SelectOption>,
       },
