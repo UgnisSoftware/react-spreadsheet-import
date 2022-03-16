@@ -1,6 +1,6 @@
 import type { Column } from "react-data-grid"
 import { Box, Tooltip } from "@chakra-ui/react"
-import type { Field, Fields } from "../../../types"
+import type { Fields } from "../../../types"
 import { CgInfo } from "react-icons/cg"
 
 export const generateColumns = <T extends string>(fields: Fields<T>) =>
@@ -11,12 +11,14 @@ export const generateColumns = <T extends string>(fields: Fields<T>) =>
       minWidth: 150,
       headerRenderer: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
-          {column.label}
+          <Box flex={1} overflow="hidden" textOverflow="ellipsis">
+            {column.label}
+          </Box>
           {column.description && (
             <Tooltip placement="top" hasArrow label={column.description}>
-              <span>
+              <Box flex={"0 0 auto"}>
                 <CgInfo size="1rem" />
-              </span>
+              </Box>
             </Tooltip>
           )}
         </Box>

@@ -49,12 +49,14 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
       resizable: true,
       headerRenderer: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
-          {column.label}
+          <Box flex={1} overflow="hidden" textOverflow="ellipsis">
+            {column.label}
+          </Box>
           {column.description && (
             <Tooltip placement="top" hasArrow label={column.description}>
-              <span>
+              <Box flex={"0 0 auto"}>
                 <CgInfo size="1rem" />
-              </span>
+              </Box>
             </Tooltip>
           )}
         </Box>
