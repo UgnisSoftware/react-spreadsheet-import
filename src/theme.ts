@@ -250,7 +250,7 @@ export const themeOverrides = {
             borderColor: "background",
             _activeStep: {
               ...(StepsStyleConfig.baseStyle(props).stepIconContainer! as CSSObjectWithActiveStep)._activeStep,
-              bg: mode(darken("background", 0.5), lighten("background", 0.5))(props),
+              bg: darken("background", 0.5),
             },
           },
         }
