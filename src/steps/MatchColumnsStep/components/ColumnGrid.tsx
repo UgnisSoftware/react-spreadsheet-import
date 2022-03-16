@@ -26,51 +26,34 @@ export const ColumnGrid = <T extends string>({
 
   return (
     <>
-      <Box position="relative" display="grid" flex="1 1 auto" overflow="auto">
-        <ModalBody flexDir="column" p={8}>
-          <Heading sx={styles.heading}>{translations.matchColumnsStep.title}</Heading>
-          <Flex
-            flex={1}
-            display="grid"
-            gridTemplateRows="auto auto auto 1fr"
-            gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(18rem, auto)) 0.75rem`}
-          >
-            <Box gridColumn={`1/${columns.length + 3}`}>
-              <Text sx={styles.title}>{translations.matchColumnsStep.userTableTitle}</Text>
+      <ModalBody flexDir="column" p={8} overflow="auto">
+        <Heading sx={styles.heading}>{translations.matchColumnsStep.title}</Heading>
+        <Flex
+          flex={1}
+          display="grid"
+          gridTemplateRows="auto auto auto 1fr"
+          gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(18rem, auto)) 0.75rem`}
+        >
+          <Box gridColumn={`1/${columns.length + 3}`}>
+            <Text sx={styles.title}>{translations.matchColumnsStep.userTableTitle}</Text>
+          </Box>
+          {columns.map((column, index) => (
+            <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header}>
+              {userColumn(column)}
             </Box>
-            {columns.map((column, index) => (
-              <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header}>
-                {userColumn(column)}
-              </Box>
-            ))}
-            <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="2/3" />
-            <Box gridColumn={`1/${columns.length + 1}`} mt={7}>
-              <Text sx={styles.title}>{translations.matchColumnsStep.templateTitle}</Text>
+          ))}
+          <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="2/3" />
+          <Box gridColumn={`1/${columns.length + 1}`} mt={7}>
+            <Text sx={styles.title}>{translations.matchColumnsStep.templateTitle}</Text>
+          </Box>
+          <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
+          {columns.map((column, index) => (
+            <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py="1.125rem" pl={2} pr={3}>
+              {templateColumn(column)}
             </Box>
-            <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
-            {columns.map((column, index) => (
-              <Box
-                gridRow="4/5"
-                gridColumn={`${index + 2}/${index + 3}`}
-                key={column.index}
-                py="1.125rem"
-                pl={2}
-                pr={3}
-              >
-                {templateColumn(column)}
-              </Box>
-            ))}
-          </Flex>
-        </ModalBody>
-        <Box
-          top={0}
-          bottom={0}
-          right={0}
-          position="absolute"
-          width="16px"
-          bgGradient="linear(to-r, transparent, background)"
-        />
-      </Box>
+          ))}
+        </Flex>
+      </ModalBody>
       <ContinueButton onContinue={onContinue} title={translations.matchColumnsStep.nextButtonTitle} />
     </>
   )
