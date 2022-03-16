@@ -101,7 +101,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
             <Button variant="outline" size="sm" onClick={deleteSelectedRows}>
               {translations.validationStep.discardButtonTitle}
             </Button>
-            <Switch isChecked={filterByErrors} onChange={() => setFilterByErrors(!filterByErrors)}>
+            <Switch display="flex" isChecked={filterByErrors} onChange={() => setFilterByErrors(!filterByErrors)}>
               {translations.validationStep.filterSwitchTitle}
             </Switch>
           </Box>
