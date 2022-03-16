@@ -9,9 +9,10 @@ interface Props {
   value?: SelectOption
   options: readonly SelectOption[]
   placeholder?: string
+  name?: string
 }
 
-export const MatchColumnSelect = ({ onChange, value, options, placeholder }: Props) => {
+export const MatchColumnSelect = ({ onChange, value, options, placeholder, name }: Props) => {
   const styles = useStyleConfig("MatchColumnsStep") as Styles
   return (
     <Select
@@ -23,6 +24,7 @@ export const MatchColumnSelect = ({ onChange, value, options, placeholder }: Pro
       chakraStyles={styles.select}
       menuPosition="fixed"
       components={customComponents}
+      aria-label={name}
     />
   )
 }

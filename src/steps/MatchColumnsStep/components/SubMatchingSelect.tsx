@@ -25,6 +25,7 @@ export const SubMatchingSelect = <T extends string>({ option, column, onSubChang
         placeholder={translations.matchColumnsStep.subSelectPlaceholder}
         onChange={(value) => onSubChange(value?.value as T, column.index, option.entry!)}
         options={options}
+        name={option.entry}
       />
     </Box>
   )

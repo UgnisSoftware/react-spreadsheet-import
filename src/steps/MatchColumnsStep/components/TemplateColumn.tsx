@@ -57,6 +57,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                 value={selectValue}
                 onChange={(value) => onChange(value?.value as T, column.index)}
                 options={selectOptions}
+                name={column.header}
               />
             </Box>
             <MatchIcon isChecked={isChecked} />
@@ -65,7 +66,13 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
             <Flex width="100%">
               <Accordion allowMultiple width="100%">
                 <AccordionItem border="none" py={1}>
-                  <AccordionButton _hover={{ bg: "transparent" }} _focus={{ boxShadow: "none" }} px={0} py={4}>
+                  <AccordionButton
+                    _hover={{ bg: "transparent" }}
+                    _focus={{ boxShadow: "none" }}
+                    px={0}
+                    py={4}
+                    data-testid="accordion-button"
+                  >
                     <AccordionIcon />
                     <Box textAlign="left">
                       <Text sx={styles.selectColumn.accordionLabel}>
@@ -75,7 +82,7 @@ export const TemplateColumn = <T extends string>({ column, onChange, onSubChange
                   </AccordionButton>
                   <AccordionPanel pb={4} pr={3} display="flex" flexDir="column">
                     {column.matchedOptions.map((option) => (
-                      <SubMatchingSelect option={option} column={column} onSubChange={onSubChange} />
+                      <SubMatchingSelect option={option} column={column} onSubChange={onSubChange} key={option.entry} />
                     ))}
                   </AccordionPanel>
                 </AccordionItem>

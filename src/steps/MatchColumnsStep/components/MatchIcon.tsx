@@ -26,13 +26,14 @@ export const MatchIcon = (props: MatchIconProps) => {
       minH={6}
       w={6}
       h={6}
-      data-highlighted={dataAttr(props.isChecked)}
       ml="0.875rem"
       mr={3}
+      data-highlighted={dataAttr(props.isChecked)}
+      data-testid="column-checkmark"
     >
       {props.isChecked && (
         <MotionFlex {...animationConfig}>
-          <CgCheck size="1.5rem"/>
+          <CgCheck size="1.5rem" />
         </MotionFlex>
       )}
     </chakra.div>

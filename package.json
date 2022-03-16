@@ -72,6 +72,7 @@
     "jest": "27.5.1",
     "jest-watch-typeahead": "1.0.0",
     "prettier": "2.5.1",
+    "react-select-event": "5.3.0",
     "rollup": "2.67.3",
     "rollup-plugin-typescript2": "0.31.2",
     "ts-essentials": "9.1.2",
