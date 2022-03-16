@@ -108,6 +108,9 @@ export const themeOverrides = {
             fontWeight: "bold",
             letterSpacing: "wider",
             color: "textColor",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
             ["&[data-ignored]"]: {
               color: "inactiveColor",
             },
@@ -119,6 +122,9 @@ export const themeOverrides = {
             color: "textColor",
             px: 6,
             py: 4,
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
             ["&[data-ignored]"]: {
               color: "inactiveColor",
             },
@@ -189,14 +195,71 @@ export const themeOverrides = {
             borderColor: "border",
             minW: "initial",
           }),
-
           option: (provided, state) => ({
             ...provided,
             color: "textColor",
             bg: state.isSelected || state.isFocused ? "secondaryBackground" : provided.bg,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "block",
+            whiteSpace: "nowrap",
             _hover: {
               bg: "secondaryBackground",
             },
+          }),
+        } as ChakraStylesConfig<SelectOption>,
+      },
+    },
+    ValidationStep: {
+      baseStyle: {
+        select: {
+          dropdownIndicator: (provided) => ({
+            ...provided,
+            background: "none",
+            border: "none",
+            p: 0,
+            w: "40px",
+          }),
+          control: (provided) => ({
+            ...provided,
+            background: "none",
+            border: "none",
+            p: 0,
+            _focus: undefined,
+          }),
+          input: (provided) => ({
+            ...provided,
+            background: "none",
+            border: "none",
+            p: 0,
+          }),
+          indicatorSeparator: (provided) => ({
+            ...provided,
+            opacity: 0,
+          }),
+          singleValue: (provided) => ({
+            ...provided,
+            marginInlineStart: 0,
+          }),
+          valueContainer: (provided) => ({
+            ...provided,
+            p: 0,
+            pl: 2,
+            color: "gray.400",
+          }),
+          menu: (provided) => ({
+            ...provided,
+            p: 0,
+            mt: 0,
+          }),
+          menuList: (provided) => ({
+            ...provided,
+            minW: "initial",
+          }),
+          option: (provided, state) => ({
+            ...provided,
+            color: state.isSelected ? "gray.900" : provided.color,
+            bg: state.isSelected ? "gray.200" : provided.bg,
           }),
         } as ChakraStylesConfig<SelectOption>,
       },
