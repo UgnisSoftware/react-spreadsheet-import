@@ -105,6 +105,9 @@
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],
+    "setupFiles": [
+      "./src/tests/setup.ts"
+    ],
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
     ],

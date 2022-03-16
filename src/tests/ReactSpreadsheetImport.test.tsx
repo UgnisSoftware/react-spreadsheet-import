@@ -24,3 +24,9 @@ test("Close modal", async () => {
     expect(onClose).toBeCalled()
   })
 })
+
+test("Close modal", async () => {
+  const errorRender = () => render(<ReactSpreadsheetImport {...mockRsiValues} fields={undefined} />)
+
+  expect(errorRender).toThrow()
+})

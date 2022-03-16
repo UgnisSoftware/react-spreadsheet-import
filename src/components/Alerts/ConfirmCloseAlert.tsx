@@ -24,9 +24,7 @@ export const ConfirmCloseAlert = ({ isOpen, onClose, onConfirm }: Props) => {
     <AlertDialog isOpen={isOpen} onClose={onClose} leastDestructiveRef={cancelRef} isCentered id="rsi">
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {translations.alerts.confirmClose.headerTitle}
-          </AlertDialogHeader>
+          <AlertDialogHeader>{translations.alerts.confirmClose.headerTitle}</AlertDialogHeader>
           <AlertDialogBody>{translations.alerts.confirmClose.bodyText}</AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose} variant="secondary">

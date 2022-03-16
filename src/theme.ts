@@ -15,7 +15,8 @@ export const themeOverrides = {
     inactiveColor: "#A0AEC0",
     border: "#E2E8F0",
     background: "white",
-    secondaryBackground: "#E2E8F0",
+    secondaryBackground: "#EDF2F7",
+    highlight: "#E2E8F0",
     rsi: {
       50: "#E6E6FF",
       100: "#4C63B6",
@@ -143,6 +144,20 @@ export const themeOverrides = {
             color: "inactiveColor",
             px: 4,
           },
+          accordionLabel: {
+            color: "blue.600",
+            fontSize: "sm",
+            lineHeight: 5,
+            pl: 1,
+          },
+          selectLabel: {
+            pt: "0.375rem",
+            pb: 2,
+            fontSize: "md",
+            lineHeight: 6,
+            fontWeight: "medium",
+            color: "textColor",
+          },
         },
         select: {
           dropdownIndicator: (provided) => ({
@@ -192,19 +207,18 @@ export const themeOverrides = {
           menuList: (provided) => ({
             ...provided,
             bg: "background",
-            borderColor: "border",
             minW: "initial",
           }),
           option: (provided, state) => ({
             ...provided,
             color: "textColor",
-            bg: state.isSelected || state.isFocused ? "secondaryBackground" : provided.bg,
+            bg: state.isSelected || state.isFocused ? "highlight" : provided.bg,
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "block",
             whiteSpace: "nowrap",
             _hover: {
-              bg: "secondaryBackground",
+              bg: "highlight",
             },
           }),
         } as ChakraStylesConfig<SelectOption>,
@@ -287,30 +301,42 @@ export const themeOverrides = {
     Steps: {
       ...StepsStyleConfig,
       baseStyle: (props: any) => {
-        const inactiveColor = mode("white", "gray.700")(props)
         return {
           ...StepsStyleConfig.baseStyle(props),
           connector: {
             ...StepsStyleConfig.baseStyle(props).connector,
-            borderColor: inactiveColor,
+            borderColor: "background",
+          },
+          label: {
+            ...StepsStyleConfig.baseStyle(props).label,
+            color: "textColor",
           },
           stepIconContainer: {
             ...StepsStyleConfig.baseStyle(props).stepIconContainer,
-            bg: inactiveColor,
-            borderColor: inactiveColor,
+            bg: "background",
+            borderColor: "background",
             _activeStep: {
               ...(StepsStyleConfig.baseStyle(props).stepIconContainer! as CSSObjectWithActiveStep)._activeStep,
-              bg: mode(darken(inactiveColor, 0.5), lighten(inactiveColor, 0.5))(props),
+              bg: darken("background", 0.5),
             },
           },
         }
       },
     },
+    // Styles AlertDialog
     Modal: {
+      baseStyle: {
+        dialog: {
+          borderRadius: "lg",
+          bg: "background",
+          fontSize: "lg",
+          color: "textColor",
+        },
+      },
       variants: {
         rsi: {
           header: {
-            bg: "gray.100",
+            bg: "secondaryBackground",
             px: "2rem",
             py: "1.5rem",
           },
@@ -325,7 +351,7 @@ export const themeOverrides = {
             height: "100%",
           },
           footer: {
-            bg: "gray.100",
+            bg: "secondaryBackground",
             py: "1.5rem",
             justifyContent: "center",
           },
@@ -352,21 +378,21 @@ export const themeOverrides = {
 
         // we have to use vars here because chakra does not autotransform unknown props
         "--rdg-row-height": "35px",
-        "--rdg-color": "var(--chakra-colors-gray-800)",
-        "--rdg-background-color": "var(--chakra-colors-white)",
-        "--rdg-header-background-color": "var(--chakra-colors-white)",
-        "--rdg-row-hover-background-color": "var(--chakra-colors-white)",
+        "--rdg-color": "var(--chakra-colors-textColor)",
+        "--rdg-background-color": "var(--chakra-colors-background)",
+        "--rdg-header-background-color": "var(--chakra-colors-background)",
+        "--rdg-row-hover-background-color": "var(--chakra-colors-background)",
         "--rdg-selection-color": "var(--chakra-colors-blue-400)",
         "--rdg-row-selected-background-color": "var(--chakra-colors-rsi-50)",
         "--rdg-error-cell-background-color": "var(--chakra-colors-red-50)",
         "--rdg-warning-cell-background-color": "var(--chakra-colors-orange-50)",
         "--rdg-info-cell-background-color": "var(--chakra-colors-blue-50)",
-        "--rdg-border-color": "var(--chakra-colors-gray-100)",
+        "--rdg-border-color": "var(--chakra-colors-border)",
         "--rdg-frozen-cell-box-shadow": "none",
         "--rdg-font-size": "var(--chakra-fontSizes-sm)",
       },
       ".rdg-header-row .rdg-cell": {
-        color: "gray.700",
+        color: "textColor",
         fontSize: "xs",
         lineHeight: 10,
         fontWeight: "bold",
