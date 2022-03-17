@@ -1,6 +1,8 @@
 import React, { useEffect } from "react"
+import ReactDOM from "react-dom"
 import { Box, useTheme } from "@chakra-ui/react"
 import { usePopper } from "@chakra-ui/popper"
+import { rootId } from "../Providers"
 
 interface PortalProps {
   controlElement: HTMLDivElement | null
@@ -18,10 +20,11 @@ const MenuPortal = (props: PortalProps) => {
     referenceRef(props.controlElement)
   }, [props.controlElement])
 
-  return (
-    <Box ref={popperRef} zIndex={theme.zIndices.tooltip}>
+  return ReactDOM.createPortal(
+    <Box ref={popperRef} zIndex={theme.zIndices.tooltip} id={rootId}>
       {props.children}
-    </Box>
+    </Box>,
+    document.body,
   )
 }
 
