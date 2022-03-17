@@ -17,7 +17,7 @@ export const MatchColumnSelect = ({ onChange, value, options, placeholder, name 
   return (
     <Select
       value={value || null}
-      colorScheme={"pink"}
+      colorScheme="gray"
       onChange={onChange}
       placeholder={placeholder}
       options={options}
