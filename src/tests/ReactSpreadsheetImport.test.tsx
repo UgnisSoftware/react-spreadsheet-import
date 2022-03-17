@@ -8,9 +8,7 @@ test("Close modal", async () => {
   const onClose = jest.fn()
   render(<ReactSpreadsheetImport {...mockRsiValues} onClose={onClose} />)
 
-  const closeButton = screen.getByRole("button", {
-    name: "Close modal",
-  })
+  const closeButton = screen.getByLabelText("Close modal")
 
   userEvent.click(closeButton)
 
