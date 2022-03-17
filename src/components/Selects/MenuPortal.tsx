@@ -19,7 +19,16 @@ const MenuPortal = (props: PortalProps) => {
   }, [props.controlElement])
 
   return (
-    <Box ref={popperRef} zIndex={theme.zIndices.tooltip}>
+    <Box
+      ref={popperRef}
+      zIndex={theme.zIndices.tooltip}
+      sx={{
+        "&[data-popper-reference-hidden]": {
+          visibility: "hidden",
+          pointerEvents: "none",
+        },
+      }}
+    >
       {props.children}
     </Box>
   )
