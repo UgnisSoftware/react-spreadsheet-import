@@ -1,7 +1,7 @@
 # RSI react-spreadsheet-import 
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
-![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) ![npm](https://img.shields.io/npm/v/react-spreadsheet-import?link=https://www.npmjs.com/package/react-spreadsheet-import)
+![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) [![npm](https://img.shields.io/npm/v/react-spreadsheet-import)](https://www.npmjs.com/package/react-spreadsheet-import)
 
 A component for importing XLS / XLSX / CSV documents.
 Automatic column matching and custom validation rules.
