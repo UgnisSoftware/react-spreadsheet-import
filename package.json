@@ -2,9 +2,11 @@
   "name": "react-spreadsheet-import",
   "version": "1.0.0",
   "description": "React spreadsheet import for xlsx and csv files with column matching and validation",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist-commonjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./types/index.d.ts",
   "files": [
+    "dist-commonjs",
     "dist"
   ],
   "scripts": {
@@ -46,7 +48,6 @@
     "chakra-react-select": "3.1.1",
     "chakra-ui-steps": "1.6.2",
     "framer-motion": "6.2.8",
-    "glob-parent": "6.0.2",
     "js-levenshtein": "1.1.6",
     "lodash": "4.17.21",
     "react": "17.0.2",
@@ -54,7 +55,6 @@
     "react-dom": "17.0.2",
     "react-dropzone": "12.0.4",
     "react-icons": "4.3.1",
-    "trim": "1.0.1",
     "xlsx": "0.18.4"
   },
   "devDependencies": {
