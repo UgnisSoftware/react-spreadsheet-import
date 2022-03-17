@@ -1,6 +1,6 @@
 # RSI react-spreadsheet-import 
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/test)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
 ![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) ![npm](https://img.shields.io/npm/v/react-spreadsheet-import)
 
 A component for importing XLS / XLSX / CSV documents.
