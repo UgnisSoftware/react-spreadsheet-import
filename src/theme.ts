@@ -269,6 +269,10 @@ export const themeOverrides = {
     },
     ValidationStep: {
       baseStyle: {
+        heading: {
+          color: "textColor",
+          fontSize: "3xl",
+        },
         select: {
           dropdownIndicator: (provided) => ({
             ...provided,
