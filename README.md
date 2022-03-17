@@ -7,6 +7,8 @@ A component for importing XLS / XLSX / CSV documents.
 Automatic column matching and custom validation rules.
 All styles and texts are customisable.
 
+[**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story)
+
 ## Figma
 
 We provide full figma designs. You can duplicate the designs
