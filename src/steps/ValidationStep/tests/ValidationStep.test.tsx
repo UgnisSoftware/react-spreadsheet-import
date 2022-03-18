@@ -87,6 +87,97 @@ describe("Validation step tests", () => {
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
   })
+
+  test("Filters rows with errors, fixes row, removes filter", async () => {
+    const UNIQUE_NAME = "very unique name"
+    const SECOND_UNIQUE_NAME = "another unique name"
+    const FINAL_NAME = "just name"
+    const initialData = [
+      {
+        name: UNIQUE_NAME,
+      },
+      {
+        name: undefined,
+      },
+      {
+        name: SECOND_UNIQUE_NAME,
+      },
+    ]
+    const result = [
+      {
+        name: UNIQUE_NAME,
+      },
+      {
+        name: FINAL_NAME,
+      },
+      {
+        name: SECOND_UNIQUE_NAME,
+      },
+    ]
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+        validations: [
+          {
+            rule: "required",
+            errorMessage: "Name is required",
+          },
+        ],
+      },
+    ] as const
+
+    const onSubmit = jest.fn()
+    render(
+      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields, onSubmit }}>
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <ValidationStep initialData={initialData} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    const allRowsWithHeader = await screen.findAllByRole("row")
+    expect(allRowsWithHeader).toHaveLength(4)
+
+    const validRow = screen.getByText(UNIQUE_NAME)
+    expect(validRow).toBeInTheDocument()
+
+    const switchFilter = getFilterSwitch()
+
+    userEvent.click(switchFilter)
+
+    const filteredRowsWithHeader = await screen.findAllByRole("row")
+    expect(filteredRowsWithHeader).toHaveLength(2)
+
+    // don't really know another way to select an empty cell
+    const emptyCell = screen.getAllByRole("gridcell", { name: undefined })[1]
+    console.log(emptyCell)
+    userEvent.click(emptyCell)
+
+    await userEvent.keyboard(FINAL_NAME + "{enter}")
+
+    const filteredRowsNoErrorsWithHeader = await screen.findAllByRole("row")
+    expect(filteredRowsNoErrorsWithHeader).toHaveLength(1)
+
+    userEvent.click(switchFilter)
+
+    const allRowsFixedWithHeader = await screen.findAllByRole("row")
+    expect(allRowsFixedWithHeader).toHaveLength(4)
+
+    const finishButton = screen.getByRole("button", {
+      name: "Confirm",
+    })
+
+    userEvent.click(finishButton)
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalled()
+    })
+  })
+
   test("Filters rows with unique errors", async () => {
     const NON_UNIQUE_NAME = "very unique name"
     const initialData = [
