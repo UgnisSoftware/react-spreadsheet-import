@@ -18,7 +18,7 @@ export const Basic = () => {
         </Button>
         (make sure you have a file to upload)
       </Box>
-      <Link href="/exampleFile.csv" border="2px solid #718096" p="8px" borderRadius="8px" download="exampleCSV">
+      <Link href="./exampleFile.csv" border="2px solid #718096" p="8px" borderRadius="8px" download="exampleCSV">
         Download example file
       </Link>
       <ReactSpreadsheetImport {...mockRsiValues} isOpen={isOpen} onClose={onClose} onSubmit={setData} />
