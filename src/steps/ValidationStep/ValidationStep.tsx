@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Box, Button, Heading, ModalBody, Switch } from "@chakra-ui/react"
+import { Box, Button, Heading, ModalBody, Switch, Text, useStyleConfig } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
@@ -8,6 +8,7 @@ import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
 import type { Data } from "../../types"
+import type { themeOverrides } from "../../theme"
 
 type Props<T extends string> = {
   initialData: Data<T>[]
@@ -15,6 +16,7 @@ type Props<T extends string> = {
 
 export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const { translations, fields, onClose, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
+  const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
     useMemo(() => addErrorsAndRunHooks<T>(addIndexes<T>(initialHook(initialData)), fields, rowHook, tableHook), []),
@@ -94,14 +96,17 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
       />
       <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem">
-          <Heading size="lg" color="gray.700">
-            {translations.validationStep.title}
-          </Heading>
+          <Heading sx={styles.heading}>{translations.validationStep.title}</Heading>
           <Box display="flex" gap="16px" alignItems="center">
             <Button variant="outline" size="sm" onClick={deleteSelectedRows}>
               {translations.validationStep.discardButtonTitle}
             </Button>
-            <Switch display="flex" isChecked={filterByErrors} onChange={() => setFilterByErrors(!filterByErrors)}>
+            <Switch
+              display="flex"
+              alignItems="center"
+              isChecked={filterByErrors}
+              onChange={() => setFilterByErrors(!filterByErrors)}
+            >
               {translations.validationStep.filterSwitchTitle}
             </Switch>
           </Box>

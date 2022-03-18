@@ -21,7 +21,17 @@ const MenuPortal = (props: PortalProps) => {
   }, [props.controlElement])
 
   return ReactDOM.createPortal(
-    <Box ref={popperRef} zIndex={theme.zIndices.tooltip} id={rootId}>
+    <Box
+      ref={popperRef}
+      zIndex={theme.zIndices.tooltip}
+      sx={{
+        "&[data-popper-reference-hidden]": {
+          visibility: "hidden",
+          pointerEvents: "none",
+        },
+      }}
+      id={rootId}
+    >
       {props.children}
     </Box>,
     document.body,
