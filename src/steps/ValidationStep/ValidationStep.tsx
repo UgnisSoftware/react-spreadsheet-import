@@ -9,6 +9,7 @@ import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
 import type { Data } from "../../types"
 import type { themeOverrides } from "../../theme"
+import type { RowsChangeData } from "react-data-grid"
 
 type Props<T extends string> = {
   initialData: Data<T>[]
@@ -25,17 +26,30 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const [filterByErrors, setFilterByErrors] = useState(false)
   const [showSubmitAlert, setShowSubmitAlert] = useState(false)
 
+  const updateData = useCallback(
+    (rows: typeof data) => {
+      setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
+    },
+    [setData, addErrorsAndRunHooks, rowHook, tableHook],
+  )
+
   const deleteSelectedRows = () => {
     if (selectedRows.size) {
       const newData = data.filter((value) => !selectedRows.has(value.__index))
-      updateRow(newData)
+      updateData(newData)
       setSelectedRows(new Set())
     }
   }
 
-  const updateRow = useCallback(
-    (rows: typeof data) => {
-      setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
+  const updateRowTable = useCallback(
+    (rows: typeof data, changedData?: RowsChangeData<typeof data[number]>) => {
+      const changes = changedData?.indexes.reduce((acc, val) => {
+        const realIndex = rows[val].__index
+        acc[realIndex] = rows[val]
+        return acc
+      }, {} as Record<number, typeof data[number]>)
+      const newData = Object.assign([], data, changes)
+      updateData(newData)
     },
     [setData, addErrorsAndRunHooks, rowHook, tableHook],
   )
@@ -45,9 +59,8 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const tableData = useMemo(() => {
     if (filterByErrors) {
       return data.filter((value, index) => {
-        const originalValue = data[index]
-        if (originalValue?.__errors) {
-          return Object.values(originalValue.__errors)?.filter((err) => err.level === "error").length
+        if (value?.__errors) {
+          return Object.values(value.__errors)?.filter((err) => err.level === "error").length
         }
         return false
       })
@@ -114,7 +127,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
         <Table
           rowKeyGetter={rowKeyGetter}
           rows={tableData}
-          onRowsChange={updateRow}
+          onRowsChange={updateRowTable}
           columns={columns}
           selectedRows={selectedRows}
           onSelectedRowsChange={setSelectedRows}
