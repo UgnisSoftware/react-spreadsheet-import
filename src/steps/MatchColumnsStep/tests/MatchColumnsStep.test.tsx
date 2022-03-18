@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event"
 import type { Fields } from "../../../types"
 import selectEvent from "react-select-event"
 import { translations } from "../../../translationsRSIProps"
+import { SELECT_DROPDOWN_ID } from "../../../components/Selects/MenuPortal"
 
 const fields: Fields<any> = [
   {
@@ -346,11 +347,14 @@ describe("Match Columns general tests", () => {
       <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label)
+    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
@@ -377,6 +381,7 @@ describe("Match Columns general tests", () => {
       <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
@@ -385,7 +390,9 @@ describe("Match Columns general tests", () => {
     // kinda dumb way to check if it has checkmark or not
     expect(checkmark).toBeEmptyDOMElement()
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label)
+    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
     expect(checkmark).not.toBeEmptyDOMElement()
   })
@@ -430,21 +437,28 @@ describe("Match Columns general tests", () => {
       <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields: enumFields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
     expect(screen.queryByTestId("accordion-button")).not.toBeInTheDocument()
 
-    await selectEvent.select(screen.getByLabelText(header[0]), enumFields[0].label)
+    await selectEvent.select(screen.getByLabelText(header[0]), enumFields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
     expect(screen.queryByTestId("accordion-button")).toBeInTheDocument()
 
     userEvent.click(screen.getByTestId("accordion-button"))
 
-    await selectEvent.select(screen.getByLabelText(data[0][0]), options[0].label)
+    await selectEvent.select(screen.getByLabelText(data[0][0]), options[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
-    await selectEvent.select(screen.getByLabelText(data[1][0]), options[1].label)
+    await selectEvent.select(screen.getByLabelText(data[1][0]), options[1].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
@@ -538,7 +552,7 @@ describe("Match Columns general tests", () => {
     })
   })
 
-  test("Required unselected fields show warning alert on submit", async () => {
+  test("Selecting the same field twice shows toast", async () => {
     const header = ["Something random", "Phone", "Email"]
     const data = [
       ["John", "123", "j@j.com"],
@@ -551,12 +565,17 @@ describe("Match Columns general tests", () => {
       <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label)
-    await selectEvent.select(screen.getByLabelText(header[1]), fields[0].label)
+    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
+    await selectEvent.select(screen.getByLabelText(header[1]), fields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
 
     expect(screen.queryByText(translations.matchColumnsStep.duplicateColumnWarningDescription)).toBeInTheDocument()
   })
