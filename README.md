@@ -128,9 +128,11 @@ Underneath we use Chakra-UI, you can send in a custom theme for us to apply. Rea
 
 ```tsx
 <ReactSpreadsheetImport
-  ...
+  customTheme={yourTheme}
 />
 ```
+
+You can see all the changable styles [here](https://github.com/UgnisSoftware/react-spreadsheet-import/blob/master/src/theme.ts)
 
 ### Changing text (translations)
 
@@ -145,6 +147,8 @@ You can change any text in the flow:
   }}
 />
 ```
+
+You can see all the translation keys [here](https://github.com/UgnisSoftware/react-spreadsheet-import/blob/master/src/translationsRSIProps.ts)
 
 ## VS other libraries
 
