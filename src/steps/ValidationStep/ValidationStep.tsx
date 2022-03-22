@@ -51,7 +51,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
       const newData = Object.assign([], data, changes)
       updateData(newData)
     },
-    [setData, addErrorsAndRunHooks, rowHook, tableHook],
+    [data, setData, addErrorsAndRunHooks, rowHook, tableHook],
   )
 
   const columns = useMemo(() => generateColumns(fields), [fields, generateColumns])
