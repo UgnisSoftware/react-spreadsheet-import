@@ -1,22 +1,44 @@
-# RSI react-spreadsheet-import 
+<h1 align="center">RSI react-spreadsheet-import ⚡️</h1>
 
+<div align="center">
+  
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
 ![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) [![npm](https://img.shields.io/npm/v/react-spreadsheet-import)](https://www.npmjs.com/package/react-spreadsheet-import)
+  
+</div>
+<br />
 
-A component for importing XLS / XLSX / CSV documents.
-Automatic column matching and custom validation rules.
-All styles and texts are customisable.
+A component used for importing XLS / XLSX / CSV documents built with [**Chakra UI**](https://chakra-ui.com). Import flow combines:
 
-[**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story)
+- 📥  Uploader
+- ⚙️  Parser
+- 📊  File preview
+- 🧪  UI for column mapping
+- ✏  UI for validating and editing data
+
+## Features
+
+- Custom styles - edit Chakra UI theme to match your project's styles 🎨
+- Cutom validation rules - make sure valid data is being imported, easily spot and correct errors
+- Data hooks - alter raw data after upload or make adjustments on data changes
+- Auto-mapping columns - automatically map most likely value to your template values, e.g. `name` -> `firstName` 
+<br />
+
+![rsi-preview](https://user-images.githubusercontent.com/45755753/159503528-90aacb69-128f-4ece-b45b-ab97d403a9d3.gif)
+
+
+✨ [**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story) ✨
 
 ## Figma
 
-We provide full figma designs. You can duplicate the designs
+We provide full figma designs. You can copy the designs
 [here](https://www.figma.com/community/file/1080776795891439629)
 
 ## Getting started
 
-`npm i react-spreadsheet-import`
+```sh
+npm i react-spreadsheet-import
+```
 
 Using the component: (it's up to you when the flow is open and what you do on submit with the imported data)
 
