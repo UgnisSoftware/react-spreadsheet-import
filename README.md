@@ -16,6 +16,10 @@ A component used for importing XLS / XLSX / CSV documents built with [**Chakra U
 - 🧪  UI for column mapping
 - ✏  UI for validating and editing data
 
+
+✨ [**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story) ✨
+<br />
+
 ## Features
 
 - Custom styles - edit Chakra UI theme to match your project's styles 🎨
@@ -26,8 +30,6 @@ A component used for importing XLS / XLSX / CSV documents built with [**Chakra U
 
 ![rsi-preview](https://user-images.githubusercontent.com/45755753/159503528-90aacb69-128f-4ece-b45b-ab97d403a9d3.gif)
 
-
-✨ [**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story) ✨
 
 ## Figma
 
