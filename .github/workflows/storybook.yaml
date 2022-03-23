@@ -20,6 +20,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: gh-pages
-          folder: docs-build
+          folder: "."
           clean: true
-          target: docs
