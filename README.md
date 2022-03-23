@@ -23,7 +23,7 @@ A component used for importing XLS / XLSX / CSV documents built with [**Chakra U
 ## Features
 
 - Custom styles - edit Chakra UI theme to match your project's styles 🎨
-- Cutom validation rules - make sure valid data is being imported, easily spot and correct errors
+- Custom validation rules - make sure valid data is being imported, easily spot and correct errors
 - Data hooks - alter raw data after upload or make adjustments on data changes
 - Auto-mapping columns - automatically map most likely value to your template values, e.g. `name` -> `firstName` 
 <br />
