@@ -3,7 +3,7 @@ import { Box, Button, Heading, ModalBody, Switch, Text, useStyleConfig } from "@
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
-import { addErrorsAndRunHooks, addIndexes } from "./utils/dataMutations"
+import { addErrorsAndRunHooks, addIndexes, resetIndexes } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
@@ -36,7 +36,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const deleteSelectedRows = () => {
     if (selectedRows.size) {
       const newData = data.filter((value) => !selectedRows.has(value.__index))
-      updateData(newData)
+      updateData(resetIndexes<T>(newData))
       setSelectedRows(new Set())
     }
   }
