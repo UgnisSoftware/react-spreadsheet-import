@@ -2,7 +2,7 @@ import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
 import type { Meta, Errors } from "../types"
 
 export const addErrorsAndRunHooks = <T extends string>(
-  data: (Data<T> & Meta)[],
+  data: (Data<T> & Partial<Meta>)[],
   fields: Fields<T>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
@@ -17,11 +17,11 @@ export const addErrorsAndRunHooks = <T extends string>(
   }
 
   if (tableHook) {
-    data = addIndexes(tableHook(data, addHookError))
+    data = tableHook(data, addHookError)
   }
 
   if (rowHook) {
-    data = addIndexes(data.map((value, index) => rowHook(value, (...props) => addHookError(index, ...props), data)))
+    data = data.map((value, index) => rowHook(value, (...props) => addHookError(index, ...props), data))
   }
 
   fields.forEach((field) => {
@@ -78,20 +78,18 @@ export const addErrorsAndRunHooks = <T extends string>(
   })
 
   return data.map((value, index) => {
+    // This is required only for table. Mutates to prevent needless rerenders
+    if (!("__index" in value)) {
+      value.__index = crypto.randomUUID()
+    }
+    const newValue = value as Data<T> & Meta
+
     if (errors[index]) {
-      return { ...value, __errors: errors[index] }
+      return { ...newValue, __errors: errors[index] }
     }
     if (!errors[index] && value?.__errors) {
-      return { ...value, __errors: null }
+      return { ...newValue, __errors: null }
     }
-    return value
+    return newValue
   })
 }
-
-export const addIndexes = <T extends string>(arr: Data<T>[]): (Data<T> & { __index: number })[] =>
-  arr.map((value, index) => {
-    if ("__index" in value) {
-      return value as Data<T> & { __index: number }
-    }
-    return { ...value, __index: index }
-  })
