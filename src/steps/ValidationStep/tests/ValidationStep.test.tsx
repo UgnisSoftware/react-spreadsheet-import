@@ -154,7 +154,6 @@ describe("Validation step tests", () => {
 
     // don't really know another way to select an empty cell
     const emptyCell = screen.getAllByRole("gridcell", { name: undefined })[1]
-    console.log(emptyCell)
     userEvent.click(emptyCell)
 
     await userEvent.keyboard(FINAL_NAME + "{enter}")
@@ -325,6 +324,72 @@ describe("Validation step tests", () => {
     expect(filteredRowsWithHeader).toHaveLength(2)
 
     const validRow = screen.getByText(THIRD)
+    expect(validRow).toBeInTheDocument()
+  })
+
+  test("Deletes selected rows, changes the last one", async () => {
+    const FIRST_DELETE = "first"
+    const SECOND_DELETE = "second"
+    const THIRD = "third"
+    const THIRD_CHANGED = "third_changed"
+
+    const initialData = [
+      {
+        name: FIRST_DELETE,
+      },
+      {
+        name: SECOND_DELETE,
+      },
+      {
+        name: THIRD,
+      },
+    ]
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+    render(
+      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <ValidationStep initialData={initialData} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    const allRowsWithHeader = await screen.findAllByRole("row")
+    expect(allRowsWithHeader).toHaveLength(4)
+
+    const switchFilters = screen.getAllByRole("checkbox", {
+      name: "Select",
+    })
+
+    userEvent.click(switchFilters[0])
+    userEvent.click(switchFilters[1])
+
+    const discardButton = screen.getByRole("button", {
+      name: "Discard selected rows",
+    })
+
+    userEvent.click(discardButton)
+
+    const filteredRowsWithHeader = await screen.findAllByRole("row")
+    expect(filteredRowsWithHeader).toHaveLength(2)
+
+    const nameCell = screen.getByRole("gridcell", {
+      name: THIRD,
+    })
+
+    userEvent.click(nameCell)
+
+    screen.getByRole<HTMLInputElement>("textbox")
+    await userEvent.keyboard(THIRD_CHANGED + "{enter}")
+
+    const validRow = screen.getByText(THIRD_CHANGED)
     expect(validRow).toBeInTheDocument()
   })
 
