@@ -80,7 +80,7 @@ export const addErrorsAndRunHooks = <T extends string>(
   return data.map((value, index) => {
     // This is required only for table. Mutates to prevent needless rerenders
     if (!("__index" in value)) {
-      value.__index = index
+      value.__index = crypto.randomUUID()
     }
     const newValue = value as Data<T> & Meta
 
