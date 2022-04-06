@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react"
-import { Box, Button, Heading, ModalBody, Switch, Text, useStyleConfig } from "@chakra-ui/react"
+import { Box, Button, Heading, ModalBody, Switch, useStyleConfig } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
-import { addErrorsAndRunHooks, addIndexes } from "./utils/dataMutations"
+import { addErrorsAndRunHooks } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
@@ -20,7 +20,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
-    useMemo(() => addErrorsAndRunHooks<T>(addIndexes<T>(initialHook(initialData)), fields, rowHook, tableHook), []),
+    useMemo(() => addErrorsAndRunHooks<T>(initialHook(initialData), fields, rowHook, tableHook), []),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
@@ -30,7 +30,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     (rows: typeof data) => {
       setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
     },
-    [setData, addErrorsAndRunHooks, rowHook, tableHook],
+    [setData, addErrorsAndRunHooks, rowHook, tableHook, fields],
   )
 
   const deleteSelectedRows = () => {
@@ -41,24 +41,23 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     }
   }
 
-  const updateRowTable = useCallback(
+  const updateRow = useCallback(
     (rows: typeof data, changedData?: RowsChangeData<typeof data[number]>) => {
       const changes = changedData?.indexes.reduce((acc, val) => {
-        const realIndex = rows[val].__index
-        acc[realIndex] = rows[val]
+        acc[val] = rows[val]
         return acc
       }, {} as Record<number, typeof data[number]>)
       const newData = Object.assign([], data, changes)
       updateData(newData)
     },
-    [data, setData, addErrorsAndRunHooks, rowHook, tableHook],
+    [data, updateData],
   )
 
   const columns = useMemo(() => generateColumns(fields), [fields, generateColumns])
 
   const tableData = useMemo(() => {
     if (filterByErrors) {
-      return data.filter((value, index) => {
+      return data.filter((value) => {
         if (value?.__errors) {
           return Object.values(value.__errors)?.filter((err) => err.level === "error").length
         }
@@ -127,7 +126,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
         <Table
           rowKeyGetter={rowKeyGetter}
           rows={tableData}
-          onRowsChange={updateRowTable}
+          onRowsChange={updateRow}
           columns={columns}
           selectedRows={selectedRows}
           onSelectedRowsChange={setSelectedRows}
