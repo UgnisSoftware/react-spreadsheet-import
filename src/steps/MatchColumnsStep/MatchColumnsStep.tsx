@@ -8,14 +8,14 @@ import { setColumn } from "./utils/setColumn"
 import { setIgnoreColumn } from "./utils/setIgnoreColumn"
 import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
-import type { Field } from "../../types"
+import type { Field, RawData } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
 
 export type MatchColumnsProps = {
-  data: string[][]
-  headerValues: string[]
+  data: RawData[]
+  headerValues: RawData
   onContinue: (data: any[]) => void
 }
 
@@ -66,8 +66,9 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   const toast = useToast()
   const dataExample = data.slice(0, 2)
   const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
+  const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
-    headerValues.map((value, index) => ({ type: ColumnType.empty, index, header: value })),
+    (headerValues as string[]).map((value, index) => ({ type: ColumnType.empty, index, header: value })),
   )
   const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
 
@@ -125,13 +126,22 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   )
   const unmatchedRequiredFields = useMemo(() => findUnmatchedRequiredFields(fields, columns), [fields, columns])
 
-  const handleOnContinue = useCallback(() => {
+  const handleOnContinue = useCallback(async () => {
     if (unmatchedRequiredFields.length > 0) {
       setShowUnmatchedFieldsAlert(true)
     } else {
-      onContinue(normalizeTableData(columns, data, fields))
+      setIsLoading(true)
+      await onContinue(normalizeTableData(columns, data, fields))
+      setIsLoading(false)
     }
-  }, [onContinue, columns, data, fields])
+  }, [onContinue, columns, data, fields, setIsLoading])
+
+  const handleAlertOnContinue = useCallback(async () => {
+    setShowUnmatchedFieldsAlert(false)
+    setIsLoading(true)
+    await onContinue(normalizeTableData(columns, data, fields))
+    setIsLoading(false)
+  }, [setShowUnmatchedFieldsAlert, setIsLoading, onContinue])
 
   useEffect(() => {
     if (autoMapHeaders) {
@@ -145,14 +155,12 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
         isOpen={showUnmatchedFieldsAlert}
         onClose={() => setShowUnmatchedFieldsAlert(false)}
         fields={unmatchedRequiredFields}
-        onConfirm={() => {
-          setShowUnmatchedFieldsAlert(false)
-          onContinue(normalizeTableData(columns, data, fields))
-        }}
+        onConfirm={handleAlertOnContinue}
       />
       <ColumnGrid
         columns={columns}
         onContinue={handleOnContinue}
+        isLoading={isLoading}
         userColumn={(column) => (
           <UserTableColumn
             column={column}

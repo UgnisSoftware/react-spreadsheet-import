@@ -4,10 +4,11 @@ import type { Column } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
 import { dataAttr } from "@chakra-ui/utils"
 import type { Styles } from "./ColumnGrid"
+import type { RawData } from "../../../types"
 
 type UserTableColumnProps<T extends string> = {
   column: Column<T>
-  entries: string[]
+  entries: RawData
   onIgnore: (index: number) => void
   onRevertIgnore: (index: number) => void
 }
@@ -44,7 +45,7 @@ export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>
         )}
       </Flex>
       {entries.map((entry, index) => (
-        <Text key={entry + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
+        <Text key={entry || "" + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
           {entry}
         </Text>
       ))}

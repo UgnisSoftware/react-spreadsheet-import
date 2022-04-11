@@ -1,9 +1,9 @@
 import type { Columns } from "../MatchColumnsStep"
 import { ColumnType } from "../MatchColumnsStep"
-import type { Data, Fields } from "../../../types"
+import type { Data, Fields, RawData } from "../../../types"
 import { normalizeCheckboxValue } from "./normalizeCheckboxValue"
 
-export const normalizeTableData = <T extends string>(columns: Columns<T>, data: string[][], fields: Fields<T>) =>
+export const normalizeTableData = <T extends string>(columns: Columns<T>, data: RawData[], fields: Fields<T>) =>
   data.map((row) =>
     row.reduce((acc, curr, index) => {
       const column = columns[index]
@@ -12,7 +12,7 @@ export const normalizeTableData = <T extends string>(columns: Columns<T>, data: 
           const field = fields.find((field) => field.key === column.value)!
           if ("booleanMatches" in field.fieldType && Object.keys(field.fieldType).length) {
             const booleanMatchKey = Object.keys(field.fieldType.booleanMatches || []).find(
-              (key) => key.toLowerCase() === curr.toLowerCase(),
+              (key) => key.toLowerCase() === curr?.toLowerCase(),
             )!
             const booleanMatch = field.fieldType.booleanMatches?.[booleanMatchKey]
             acc[column.value] = booleanMatchKey ? booleanMatch : normalizeCheckboxValue(curr)

@@ -9,14 +9,12 @@ import type { themeOverrides } from "../../../theme"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
+  isLoading: boolean
 }
 
-export const DropZone = ({ onContinue }: DropZoneProps) => {
+export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
   const { translations, maxFileSize } = useRsi()
   const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
-  const {
-    colors: { rsi },
-  } = useTheme()
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
@@ -61,7 +59,7 @@ export const DropZone = ({ onContinue }: DropZoneProps) => {
       <input {...getInputProps()} data-testid="rsi-dropzone" />
       {isDragActive ? (
         <Text sx={styles.dropzoneText}>{translations.uploadStep.dropzone.activeDropzoneTitle}</Text>
-      ) : loading ? (
+      ) : loading || isLoading ? (
         <Text sx={styles.dropzoneText}>{translations.uploadStep.dropzone.loadingTitle}</Text>
       ) : (
         <>

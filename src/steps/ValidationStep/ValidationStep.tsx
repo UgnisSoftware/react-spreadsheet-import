@@ -16,11 +16,11 @@ type Props<T extends string> = {
 }
 
 export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
-  const { translations, fields, onClose, onSubmit, rowHook, tableHook, initialHook = (table) => table } = useRsi<T>()
+  const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
   const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
-    useMemo(() => addErrorsAndRunHooks<T>(initialHook(initialData), fields, rowHook, tableHook), []),
+    useMemo(() => addErrorsAndRunHooks<T>(initialData, fields, rowHook, tableHook), []),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)

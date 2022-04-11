@@ -11,6 +11,7 @@ type ColumnGridProps<T extends string> = {
   userColumn: (column: Column<T>) => React.ReactNode
   templateColumn: (column: Column<T>) => React.ReactNode
   onContinue: (val: Record<string, string>[]) => void
+  isLoading: boolean
 }
 
 export type Styles = typeof themeOverrides["components"]["MatchColumnsStep"]["baseStyle"]
@@ -20,6 +21,7 @@ export const ColumnGrid = <T extends string>({
   userColumn,
   templateColumn,
   onContinue,
+  isLoading,
 }: ColumnGridProps<T>) => {
   const { translations } = useRsi()
   const styles = useStyleConfig("MatchColumnsStep") as Styles
@@ -54,7 +56,11 @@ export const ColumnGrid = <T extends string>({
           ))}
         </Flex>
       </ModalBody>
-      <ContinueButton onContinue={onContinue} title={translations.matchColumnsStep.nextButtonTitle} />
+      <ContinueButton
+        isLoading={isLoading}
+        onContinue={onContinue}
+        title={translations.matchColumnsStep.nextButtonTitle}
+      />
     </>
   )
 }

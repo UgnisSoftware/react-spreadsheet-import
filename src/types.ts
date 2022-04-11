@@ -9,12 +9,16 @@ export type RsiProps<T extends string> = {
   onClose: () => void
   // Field description for requested data
   fields: Fields<T>
-  // Runs after column matching and on entry change, more performant
+  // Runs after file upload step, receives and returns raw sheet data
+  uploadStepHook?: (data: RawData[]) => Promise<RawData[]>
+  // Runs after header selection step, receives and returns raw sheet data
+  selectHeaderStepHook?: (headerValues: RawData, data: RawData[]) => Promise<{ headerValues: RawData; data: RawData[] }>
+  // Runs once before validation step, used for data mutations
+  validationStepHook?: (table: Data<T>[]) => Promise<Data<T>[]>
+  // Function called after user finishes the flow
   rowHook?: RowHook<T>
   // Runs after column matching and on entry change
   tableHook?: TableHook<T>
-  // // Runs once before validation step, used for data mutations
-  initialHook?: InitHook<T>
   // Function called after user finishes the flow
   onSubmit: (data: Result<T>) => void
   // Allows submitting with errors. Default: true
@@ -32,6 +36,8 @@ export type RsiProps<T extends string> = {
   // Headers matching accuracy: 1 for strict and up for more flexible matching
   autoMapDistance?: number
 }
+
+export type RawData = Array<string | undefined>
 
 export type Data<T extends string> = { [key in T]: string | boolean | undefined }
 
@@ -103,7 +109,6 @@ export type TableHook<T extends string> = (
   table: Data<T>[],
   addError: (rowIndex: number, fieldKey: T, error: Info) => void,
 ) => Data<T>[]
-export type InitHook<T extends string> = (table: Data<T>[]) => Data<T>[]
 
 export type ErrorLevel = "info" | "warning" | "error"
 
