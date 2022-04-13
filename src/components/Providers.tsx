@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { createContext } from "react"
 import type { RsiProps } from "../types"
-import { colorSchemeOverrides, CustomTheme, themeOverrides } from "../theme"
+import type { CustomTheme } from "../theme"
 
 export const RsiContext = createContext({} as any)
 
@@ -14,8 +14,9 @@ type ProvidersProps<T extends string> = {
 export const rootId = "chakra-modal-rsi"
 
 export const Providers = <T extends string>({ children, theme, rsiValues }: ProvidersProps<T>) => {
-  const mergedTheme = extendTheme(colorSchemeOverrides, theme)
+  const mergedTheme = extendTheme(theme)
 
+  console.log(mergedTheme)
   if (!rsiValues.fields) {
     throw new Error("Fields must be provided to react-spreadsheet-import")
   }

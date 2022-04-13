@@ -104,7 +104,6 @@ export const themeOverrides = {
         },
         dropZoneBorder: "rsi.500",
         dropzoneButton: {
-          bg: "rsi.500",
           mt: "1rem",
         },
       },
@@ -373,6 +372,11 @@ export const themeOverrides = {
         },
       },
     },
+    Button: {
+      defaultProps: {
+        colorScheme: "rsi",
+      },
+    },
   },
   styles: {
     global: {
@@ -471,10 +475,5 @@ export const themeOverrides = {
     },
   },
 } as const
-
-export const colorSchemeOverrides = withDefaultColorScheme({
-  colorScheme: "rsi",
-  components: ["Button"],
-})
 
 export type CustomTheme = DeepPartial<typeof themeOverrides>
