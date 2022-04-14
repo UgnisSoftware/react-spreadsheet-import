@@ -16,7 +16,6 @@ export const rootId = "chakra-modal-rsi"
 export const Providers = <T extends string>({ children, theme, rsiValues }: ProvidersProps<T>) => {
   const mergedTheme = extendTheme(theme)
 
-  console.log(mergedTheme)
   if (!rsiValues.fields) {
     throw new Error("Fields must be provided to react-spreadsheet-import")
   }
