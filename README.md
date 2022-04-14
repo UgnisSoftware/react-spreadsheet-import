@@ -148,15 +148,81 @@ Example:
 
 ### Customising styles (colors, fonts)
 
-Underneath we use Chakra-UI, you can send in a custom theme for us to apply. Read more about themes [here](https://chakra-ui.com/docs/styled-system/theming/theme)
+You can see default theme we use [here](https://github.com/UgnisSoftware/react-spreadsheet-import/blob/master/src/theme.ts). Your override should match this object's structure.
 
-```tsx
-<ReactSpreadsheetImport
-  customTheme={yourTheme}
-/>
+There are 3 ways you can style the component:
+
+1.) Change theme colors globally
+```jsx
+    <ReactSpreadsheetImport
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={setData}
+        customTheme={{
+          colors: {
+            background: 'white',
+            ...
+            rsi: {
+              // your brand colors should go here
+              50: '...'
+              ...
+              500: 'teal',
+              ...
+              900: "...",
+            },
+          },
+        }}
+      />
 ```
+<img width="1189" alt="Screenshot 2022-04-13 at 10 24 34" src="https://user-images.githubusercontent.com/5903616/163123718-15c05ad8-243b-4a81-8141-c47216047468.png">
 
-You can see all the changable styles [here](https://github.com/UgnisSoftware/react-spreadsheet-import/blob/master/src/theme.ts)
+2.) Change all components of the same type, like all Buttons, at the same time
+```jsx
+    <ReactSpreadsheetImport
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={setData}
+        customTheme={{
+          components: {
+            Button: {
+              baseStyle: {
+                borderRadius: "none",
+              },
+              defaultProps: {
+                colorScheme: "yellow",
+              },
+            },
+          },
+        }}
+      />
+```
+<img width="1191" alt="Screenshot 2022-04-13 at 11 04 30" src="https://user-images.githubusercontent.com/5903616/163130213-82f955b4-5081-49e0-8f43-8857d480dacd.png">
+ 
+3.) Change components specifically in each Step.
+```jsx
+    <ReactSpreadsheetImport
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={setData}
+        customTheme={{
+          components: {
+            UploadStep: {
+              baseStyle: {
+                dropzoneButton: {
+                  bg: "red",
+                },
+              },
+            },
+          },
+        }}
+      />
+```
+<img width="1182" alt="Screenshot 2022-04-13 at 10 21 58" src="https://user-images.githubusercontent.com/5903616/163123694-5b79179e-037e-4f9d-b1a9-6078f758bb7e.png">
+
+Underneath we use Chakra-UI, you can send in a custom theme for us to apply. Read more about themes [here](https://chakra-ui.com/docs/styled-system/theming/theme)
 
 ### Changing text (translations)
 
