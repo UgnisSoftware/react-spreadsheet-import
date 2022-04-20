@@ -1,20 +1,29 @@
 import { Heading, ModalBody, Radio, RadioGroup, Stack, useStyleConfig, Text } from "@chakra-ui/react"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { themeOverrides } from "../../theme"
 
 type SelectSheetProps = {
   sheetNames: string[]
-  onContinue: (sheetName: string) => void
+  onContinue: (sheetName: string) => Promise<void>
 }
 
 export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { translations } = useRsi()
   const [value, setValue] = useState(sheetNames[0])
   const styles = useStyleConfig(
     "SelectSheetStep",
   ) as typeof themeOverrides["components"]["SelectSheetStep"]["baseStyle"]
+  const handleOnContinue = useCallback(
+    async (data) => {
+      setIsLoading(true)
+      await onContinue(data)
+      setIsLoading(false)
+    },
+    [onContinue],
+  )
 
   return (
     <>
@@ -31,7 +40,8 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
         </RadioGroup>
       </ModalBody>
       <ContinueButton
-        onContinue={() => onContinue(value)}
+        isLoading={isLoading}
+        onContinue={() => handleOnContinue(value)}
         title={translations.uploadStep.selectSheet.nextButtonTitle}
       />
     </>

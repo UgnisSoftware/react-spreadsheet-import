@@ -1,5 +1,6 @@
 import { Column, FormatterProps, useRowSelection } from "react-data-grid"
 import { Radio } from "@chakra-ui/react"
+import type { RawData } from "../../../types"
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -34,7 +35,7 @@ export const SelectColumn: Column<any, any> = {
   formatter: SelectFormatter,
 }
 
-export const generateSelectionColumns = (data: string[][]) => [
+export const generateSelectionColumns = (data: RawData[]) => [
   SelectColumn,
   ...data?.[0].map(
     (value, index): Column<any, any> => ({

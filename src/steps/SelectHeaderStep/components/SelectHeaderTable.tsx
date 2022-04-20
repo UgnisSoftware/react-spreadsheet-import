@@ -1,9 +1,10 @@
 import { useMemo } from "react"
 import { Table } from "../../../components/Table"
 import { generateSelectionColumns } from "./columns"
+import type { RawData } from "../../../types"
 
 interface Props {
-  data: string[][]
+  data: RawData[]
   selectedRows: ReadonlySet<number>
   setSelectedRows: (rows: ReadonlySet<number>) => void
 }

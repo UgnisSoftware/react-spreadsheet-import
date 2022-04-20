@@ -9,6 +9,7 @@ import { ValidationStep } from "./ValidationStep/ValidationStep"
 import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
 import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
+import type { RawData } from "../types"
 
 enum Type {
   upload,
@@ -28,12 +29,12 @@ type State =
     }
   | {
       type: Type.selectHeader
-      data: string[][]
+      data: RawData[]
     }
   | {
       type: Type.matchColumns
-      data: string[][]
-      headerValues: string[]
+      data: RawData[]
+      headerValues: RawData
     }
   | {
       type: Type.validateData
@@ -46,25 +47,31 @@ interface Props {
 
 export const UploadFlow = ({ nextStep }: Props) => {
   const [state, setState] = useState<State>({ type: Type.upload })
-  const { maxRecords, translations } = useRsi()
+  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook,  matchColumnsStepHook } = useRsi()
   const toast = useToast()
 
   switch (state.type) {
     case Type.upload:
       return (
         <UploadStep
-          onContinue={(workbook) => {
-            if (workbook.SheetNames.length === 1) {
+          onContinue={async (workbook) => {
+            const isSingleSheet = workbook.SheetNames.length === 1
+            if (isSingleSheet) {
               if (maxRecords && exceedsMaxRecords(workbook.Sheets[workbook.SheetNames[0]], maxRecords)) {
-                return toast({
+                toast({
                   status: "error",
                   variant: "left-accent",
                   position: "bottom-left",
                   title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
                   isClosable: true,
                 })
+                return
               }
-              setState({ type: Type.selectHeader, data: mapWorkbook(workbook) })
+              const mappedWorkbook = await uploadStepHook(mapWorkbook(workbook))
+              setState({
+                type: Type.selectHeader,
+                data: mappedWorkbook,
+              })
               nextStep()
             } else {
               setState({ type: Type.selectSheet, workbook })
@@ -76,17 +83,22 @@ export const UploadFlow = ({ nextStep }: Props) => {
       return (
         <SelectSheetStep
           sheetNames={state.workbook.SheetNames}
-          onContinue={(sheetName) => {
+          onContinue={async (sheetName) => {
             if (maxRecords && exceedsMaxRecords(state.workbook.Sheets[sheetName], maxRecords)) {
-              return toast({
+              toast({
                 status: "error",
                 variant: "left-accent",
                 position: "bottom-left",
                 title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
                 isClosable: true,
               })
+              return
             }
-            setState({ type: Type.selectHeader, data: mapWorkbook(state.workbook, sheetName) })
+            const mappedWorkbook = await uploadStepHook(mapWorkbook(state.workbook, sheetName))
+            setState({
+              type: Type.selectHeader,
+              data: mappedWorkbook,
+            })
             nextStep()
           }}
         />
@@ -95,11 +107,12 @@ export const UploadFlow = ({ nextStep }: Props) => {
       return (
         <SelectHeaderStep
           data={state.data}
-          onContinue={(headerValues, data) => {
+          onContinue={async (...args) => {
+            const { data, headerValues } = await selectHeaderStepHook(...args)
             setState({
               type: Type.matchColumns,
-              headerValues,
               data,
+              headerValues,
             })
             nextStep()
           }}
@@ -110,7 +123,8 @@ export const UploadFlow = ({ nextStep }: Props) => {
         <MatchColumnsStep
           data={state.data}
           headerValues={state.headerValues}
-          onContinue={(data) => {
+          onContinue={async (values) => {
+            const data = await matchColumnsStepHook(values)
             setState({
               type: Type.validateData,
               data,
