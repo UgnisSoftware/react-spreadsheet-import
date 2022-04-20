@@ -14,7 +14,7 @@ export type RsiProps<T extends string> = {
   // Runs after header selection step, receives and returns raw sheet data
   selectHeaderStepHook?: (headerValues: RawData, data: RawData[]) => Promise<{ headerValues: RawData; data: RawData[] }>
   // Runs once before validation step, used for data mutations
-  validationStepHook?: (table: Data<T>[]) => Promise<Data<T>[]>
+  matchColumnsStepHook?: (table: Data<T>[]) => Promise<Data<T>[]>
   // Function called after user finishes the flow
   rowHook?: RowHook<T>
   // Runs after column matching and on entry change

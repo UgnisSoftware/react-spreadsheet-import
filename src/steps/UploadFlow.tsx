@@ -47,7 +47,7 @@ interface Props {
 
 export const UploadFlow = ({ nextStep }: Props) => {
   const [state, setState] = useState<State>({ type: Type.upload })
-  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, validationStepHook } = useRsi()
+  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook,  matchColumnsStepHook } = useRsi()
   const toast = useToast()
 
   switch (state.type) {
@@ -124,7 +124,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
           data={state.data}
           headerValues={state.headerValues}
           onContinue={async (values) => {
-            const data = await validationStepHook(values)
+            const data = await matchColumnsStepHook(values)
             setState({
               type: Type.validateData,
               data,

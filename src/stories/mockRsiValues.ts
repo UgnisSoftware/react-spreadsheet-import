@@ -115,7 +115,7 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
     }
   },
   // Runs after column matching and on entry change, more performant
-  validationStepHook: async (data) => {
+  matchColumnsStepHook: async (data) => {
     await new Promise((resolve) => {
       setTimeout(() => resolve(data), 4000)
     })

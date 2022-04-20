@@ -16,7 +16,7 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   translations: translations,
   uploadStepHook: async (value) => value,
   selectHeaderStepHook: async (headerValues, data) => ({ headerValues, data }),
-  validationStepHook: async (table) => table,
+  matchColumnsStepHook: async (table) => table,
 } as const
 
 export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => {
