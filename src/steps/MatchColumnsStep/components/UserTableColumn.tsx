@@ -45,7 +45,7 @@ export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>
         )}
       </Flex>
       {entries.map((entry, index) => (
-        <Text key={entry || "" + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
+        <Text key={(entry || "") + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
           {entry}
         </Text>
       ))}

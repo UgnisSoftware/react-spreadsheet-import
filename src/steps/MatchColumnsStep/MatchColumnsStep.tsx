@@ -141,7 +141,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
     setIsLoading(true)
     await onContinue(normalizeTableData(columns, data, fields))
     setIsLoading(false)
-  }, [setShowUnmatchedFieldsAlert, setIsLoading, onContinue])
+  }, [setShowUnmatchedFieldsAlert, setIsLoading, onContinue, columns])
 
   useEffect(() => {
     if (autoMapHeaders) {
