@@ -7,7 +7,7 @@ export const addErrorsAndRunHooks = <T extends string>(
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
 ): (Data<T> & Meta)[] => {
-  let errors: Errors = {}
+  const errors: Errors = {}
 
   const addHookError = (rowIndex: number, fieldKey: T, error: Info) => {
     errors[rowIndex] = {

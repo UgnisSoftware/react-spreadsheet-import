@@ -1,4 +1,4 @@
-const nodeCrypto = require("crypto")
+import * as nodeCrypto from "crypto"
 
 // Yeeted from https://github.com/adazzle/react-data-grid/blob/main/test/setup.ts
 if (typeof window !== "undefined") {

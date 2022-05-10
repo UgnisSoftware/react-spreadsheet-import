@@ -103,17 +103,6 @@ describe("Validation step tests", () => {
         name: SECOND_UNIQUE_NAME,
       },
     ]
-    const result = [
-      {
-        name: UNIQUE_NAME,
-      },
-      {
-        name: FINAL_NAME,
-      },
-      {
-        name: SECOND_UNIQUE_NAME,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -453,7 +442,7 @@ describe("Validation step tests", () => {
 
     userEvent.click(nameCell)
 
-    let input: HTMLInputElement | null = screen.getByRole<HTMLInputElement>("textbox")
+    const input: HTMLInputElement | null = screen.getByRole<HTMLInputElement>("textbox")
 
     expect(input).toHaveValue(NAME)
     expect(input).toHaveFocus()

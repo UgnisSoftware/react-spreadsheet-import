@@ -1,4 +1,4 @@
-import { Box, Button, Text, useStyleConfig, useTheme, useToast } from "@chakra-ui/react"
+import { Box, Button, Text, useStyleConfig, useToast } from "@chakra-ui/react"
 import { useDropzone } from "react-dropzone"
 import * as XLSX from "xlsx"
 import { useState } from "react"

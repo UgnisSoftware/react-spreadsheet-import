@@ -1,6 +1,6 @@
 import type { Field, Fields } from "../../../types"
 
-const titleMap: Record<Field<any>["fieldType"]["type"], string> = {
+const titleMap: Record<Field<string>["fieldType"]["type"], string> = {
   checkbox: "Boolean",
   select: "Options",
   input: "Text",

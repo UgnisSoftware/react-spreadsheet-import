@@ -5,6 +5,6 @@ interface Props<Data> extends DataGridProps<Data> {
   hiddenHeader?: boolean
 }
 
-export const Table = <Data extends {}>({ className, ...props }: Props<Data>) => {
+export const Table = <Data,>({ className, ...props }: Props<Data>) => {
   return <DataGrid className={"rdg-light " + className || ""} {...props} />
 }

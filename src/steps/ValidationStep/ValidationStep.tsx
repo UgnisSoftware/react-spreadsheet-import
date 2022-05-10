@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { Box, Button, Heading, ModalBody, Switch, useStyleConfig } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
@@ -20,7 +20,11 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
-    useMemo(() => addErrorsAndRunHooks<T>(initialData, fields, rowHook, tableHook), []),
+    useMemo(
+      () => addErrorsAndRunHooks<T>(initialData, fields, rowHook, tableHook),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [],
+    ),
   )
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
@@ -30,7 +34,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     (rows: typeof data) => {
       setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
     },
-    [setData, addErrorsAndRunHooks, rowHook, tableHook, fields],
+    [setData, rowHook, tableHook, fields],
   )
 
   const deleteSelectedRows = () => {
@@ -55,7 +59,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     [data, updateData],
   )
 
-  const columns = useMemo(() => generateColumns(fields), [fields, generateColumns])
+  const columns = useMemo(() => generateColumns(fields), [fields])
 
   const tableData = useMemo(() => {
     if (filterByErrors) {
