@@ -18,7 +18,7 @@ test("Upload a file", async () => {
     </Providers>,
   )
 
-  let uploader = screen.getByTestId("rsi-dropzone")
+  const uploader = screen.getByTestId("rsi-dropzone")
 
   fireEvent.drop(uploader, {
     target: { files: [file] },

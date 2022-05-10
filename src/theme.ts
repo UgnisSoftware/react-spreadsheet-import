@@ -1,7 +1,6 @@
 import { StepsStyleConfig } from "chakra-ui-steps"
 import { darken } from "@chakra-ui/theme-tools"
 import type { CSSObject } from "@chakra-ui/react"
-import { withDefaultColorScheme } from "@chakra-ui/react"
 import type { DeepPartial } from "ts-essentials"
 import type { ChakraStylesConfig } from "chakra-react-select"
 import type { SelectOption } from "./types"

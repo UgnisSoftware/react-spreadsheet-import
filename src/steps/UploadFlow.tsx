@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Progress, useToast } from "@chakra-ui/react"
 import type XLSX from "xlsx"
 import { UploadStep } from "./UploadStep/UploadStep"
@@ -47,7 +47,7 @@ interface Props {
 
 export const UploadFlow = ({ nextStep }: Props) => {
   const [state, setState] = useState<State>({ type: Type.upload })
-  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook,  matchColumnsStepHook } = useRsi()
+  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
 
   switch (state.type) {

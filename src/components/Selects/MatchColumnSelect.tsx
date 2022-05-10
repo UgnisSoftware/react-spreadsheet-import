@@ -1,6 +1,5 @@
 import { Select } from "chakra-react-select"
 import type { SelectOption } from "../../types"
-import React from "react"
 import { customComponents } from "./MenuPortal"
 import { useStyleConfig } from "@chakra-ui/react"
 import type { Styles } from "../../steps/MatchColumnsStep/components/ColumnGrid"
@@ -15,7 +14,7 @@ interface Props {
 export const MatchColumnSelect = ({ onChange, value, options, placeholder, name }: Props) => {
   const styles = useStyleConfig("MatchColumnsStep") as Styles
   return (
-    <Select
+    <Select<SelectOption, false>
       value={value || null}
       colorScheme="gray"
       onChange={onChange}

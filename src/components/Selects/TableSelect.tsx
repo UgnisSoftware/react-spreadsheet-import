@@ -13,7 +13,7 @@ interface Props {
 export const TableSelect = ({ onChange, value, options }: Props) => {
   const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
   return (
-    <Select
+    <Select<SelectOption, false>
       autoFocus
       size="sm"
       value={value}
