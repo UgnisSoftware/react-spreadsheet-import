@@ -100,7 +100,6 @@
     "*.{js,ts,tsx,md,html,css,json}": "prettier --write"
   },
   "prettier": {
-    "endOfLine": "crlf",
     "tabWidth": 2,
     "trailingComma": "all",
     "semi": false,
