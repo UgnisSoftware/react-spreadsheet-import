@@ -97,7 +97,14 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
         }),
       )
     },
-    [columns, setColumns],
+    [
+      columns,
+      data,
+      fields,
+      toast,
+      translations.matchColumnsStep.duplicateColumnWarningDescription,
+      translations.matchColumnsStep.duplicateColumnWarningTitle,
+    ],
   )
 
   const onIgnore = useCallback(
@@ -134,19 +141,20 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       await onContinue(normalizeTableData(columns, data, fields))
       setIsLoading(false)
     }
-  }, [onContinue, columns, data, fields, setIsLoading])
+  }, [unmatchedRequiredFields.length, onContinue, columns, data, fields])
 
   const handleAlertOnContinue = useCallback(async () => {
     setShowUnmatchedFieldsAlert(false)
     setIsLoading(true)
     await onContinue(normalizeTableData(columns, data, fields))
     setIsLoading(false)
-  }, [setShowUnmatchedFieldsAlert, setIsLoading, onContinue, columns])
+  }, [onContinue, columns, data, fields])
 
   useEffect(() => {
     if (autoMapHeaders) {
       setColumns(getMatchedColumns(columns, fields, data, autoMapDistance))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
