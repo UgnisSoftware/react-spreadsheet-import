@@ -13,10 +13,10 @@ import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
 
-export type MatchColumnsProps = {
+export type MatchColumnsProps<T extends string> = {
   data: RawData[]
   headerValues: RawData
-  onContinue: (data: any[]) => void
+  onContinue: (data: any[], rawData: RawData[], columns: Columns<T>) => void
 }
 
 export enum ColumnType {
@@ -62,7 +62,7 @@ export type Column<T extends string> =
 
 export type Columns<T extends string> = Column<T>[]
 
-export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps) => {
+export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
   const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
@@ -138,7 +138,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       setShowUnmatchedFieldsAlert(true)
     } else {
       setIsLoading(true)
-      await onContinue(normalizeTableData(columns, data, fields))
+      await onContinue(normalizeTableData(columns, data, fields), data, columns)
       setIsLoading(false)
     }
   }, [unmatchedRequiredFields.length, onContinue, columns, data, fields])
@@ -146,7 +146,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   const handleAlertOnContinue = useCallback(async () => {
     setShowUnmatchedFieldsAlert(false)
     setIsLoading(true)
-    await onContinue(normalizeTableData(columns, data, fields))
+    await onContinue(normalizeTableData(columns, data, fields), data, columns)
     setIsLoading(false)
   }, [onContinue, columns, data, fields])
 

@@ -123,8 +123,8 @@ export const UploadFlow = ({ nextStep }: Props) => {
         <MatchColumnsStep
           data={state.data}
           headerValues={state.headerValues}
-          onContinue={async (values) => {
-            const data = await matchColumnsStepHook(values)
+          onContinue={async (values, rawData, columns) => {
+            const data = await matchColumnsStepHook(values, rawData, columns)
             setState({
               type: Type.validateData,
               data,

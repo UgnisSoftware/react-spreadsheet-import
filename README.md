@@ -1,21 +1,20 @@
 <h1 align="center">RSI react-spreadsheet-import ⚡️</h1>
 
 <div align="center">
-  
+
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
 ![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) [![npm](https://img.shields.io/npm/v/react-spreadsheet-import)](https://www.npmjs.com/package/react-spreadsheet-import)
-  
+
 </div>
 <br />
 
 A component used for importing XLS / XLSX / CSV documents built with [**Chakra UI**](https://chakra-ui.com). Import flow combines:
 
-- 📥  Uploader
-- ⚙️  Parser
-- 📊  File preview
-- 🧪  UI for column mapping
-- ✏  UI for validating and editing data
-
+- 📥 Uploader
+- ⚙️ Parser
+- 📊 File preview
+- 🧪 UI for column mapping
+- ✏ UI for validating and editing data
 
 ✨ [**Demo**](https://ugnissoftware.github.io/react-spreadsheet-import/iframe.html?id=react-spreadsheet-import--basic&args=&viewMode=story) ✨
 <br />
@@ -25,11 +24,10 @@ A component used for importing XLS / XLSX / CSV documents built with [**Chakra U
 - Custom styles - edit Chakra UI theme to match your project's styles 🎨
 - Custom validation rules - make sure valid data is being imported, easily spot and correct errors
 - Hooks - alter raw data after upload or make adjustments on data changes
-- Auto-mapping columns - automatically map most likely value to your template values, e.g. `name` -> `firstName` 
-<br />
+- Auto-mapping columns - automatically map most likely value to your template values, e.g. `name` -> `firstName`
+  <br />
 
 ![rsi-preview](https://user-images.githubusercontent.com/45755753/159503528-90aacb69-128f-4ece-b45b-ab97d403a9d3.gif)
-
 
 ## Figma
 
@@ -45,25 +43,20 @@ npm i react-spreadsheet-import
 Using the component: (it's up to you when the flow is open and what you do on submit with the imported data)
 
 ```tsx
-import { ReactSpreadsheetImport } from "react-spreadsheet-import";
+import { ReactSpreadsheetImport } from "react-spreadsheet-import"
 
-<ReactSpreadsheetImport
-  isOpen={isOpen}
-  onClose={onClose}
-  onSubmit={onSubmit}
-  fields={fields}
-/>
+;<ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} onSubmit={onSubmit} fields={fields} />
 ```
 
 ## Required Props
 
 ```tsx
   // Determines if modal is visible.
-  isOpen: Boolean
-  // Called when flow is closed without reaching submit.
-  onClose: () => void 
+isOpen: Boolean
+// Called when flow is closed without reaching submit.
+onClose: () => void
   // Called after user completes the flow. Provides data array, where data keys matches your field keys.
-  onSubmit: (data) => void 
+  onSubmit: (data) => void
 ```
 
 ### Fields
@@ -101,11 +94,17 @@ const fields = [
 ```
 
 ## Optional Props
+
 ### Hooks
 
-You can transform and validate data with custom hooks. There are 3 hooks that have different performance tradeoffs:
+You can transform and validate data with custom hooks. There are hooks after each step:
 
-- **initialHook** - runs only once after column matching. Operations that should run once should be done here.
+- **uploadStepHook** - runs only once after uploading the file.
+- **selectHeaderStepHook** - runs only once after selecting the header row in spreadsheet.
+- **matchColumnsStepHook** - runs only once after column matching. Operations on data that are expensive should be done here.
+
+The last step - validation step has 2 unique hooks that run only in that step with different performance tradeoffs:
+
 - **tableHook** - runs at the start and on any change. Runs on all rows. Very expensive, but can change rows that depend on other rows.
 - **rowHook** - runs at the start and on any row change. Runs only on the rows changed. Fastest, most validations and transformations should be done here.
 
@@ -129,19 +128,19 @@ Example:
 
 ```tsx
   // Allows submitting with errors. Default: true
-  allowInvalidSubmit?: boolean
-  // Translations for each text. See customisation bellow
-  translations?: object
-  // Theme configuration passed to underlying Chakra-UI. See customisation bellow
-  customTheme?: object
-  // Specifies maximum number of rows for a single import
-  maxRecords?: number
-  // Maximum upload filesize (in bytes)
-  maxFileSize?: number
-  // Automatically map imported headers to specified fields if possible. Default: true
-  autoMapHeaders?: boolean
-  // Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
-  autoMapDistance?: number
+allowInvalidSubmit?: boolean
+// Translations for each text. See customisation bellow
+translations?: object
+// Theme configuration passed to underlying Chakra-UI. See customisation bellow
+customTheme?: object
+// Specifies maximum number of rows for a single import
+maxRecords?: number
+// Maximum upload filesize (in bytes)
+maxFileSize?: number
+// Automatically map imported headers to specified fields if possible. Default: true
+autoMapHeaders?: boolean
+// Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
+autoMapDistance?: number
 ```
 
 ## Customisation
@@ -153,73 +152,79 @@ You can see default theme we use [here](https://github.com/UgnisSoftware/react-s
 There are 3 ways you can style the component:
 
 1.) Change theme colors globally
+
 ```jsx
     <ReactSpreadsheetImport
-        {...mockRsiValues}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={setData}
-        customTheme={{
-          colors: {
-            background: 'white',
-            ...
-            rsi: {
-              // your brand colors should go here
-              50: '...'
-              ...
-              500: 'teal',
-              ...
-              900: "...",
-            },
-          },
-        }}
-      />
+  {...mockRsiValues}
+  isOpen={isOpen}
+  onClose={onClose}
+  onSubmit={setData}
+  customTheme={{
+    colors: {
+      background: 'white',
+      ...
+        rsi: {
+    // your brand colors should go here
+    50: '...'
+    ...
+    500: 'teal',
+    ...
+    900: "...",
+  },
+  },
+  }}
+/>
 ```
+
 <img width="1189" alt="Screenshot 2022-04-13 at 10 24 34" src="https://user-images.githubusercontent.com/5903616/163123718-15c05ad8-243b-4a81-8141-c47216047468.png">
 
 2.) Change all components of the same type, like all Buttons, at the same time
+
 ```jsx
-    <ReactSpreadsheetImport
-        {...mockRsiValues}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={setData}
-        customTheme={{
-          components: {
-            Button: {
-              baseStyle: {
-                borderRadius: "none",
-              },
-              defaultProps: {
-                colorScheme: "yellow",
-              },
-            },
-          },
-        }}
-      />
+<ReactSpreadsheetImport
+  {...mockRsiValues}
+  isOpen={isOpen}
+  onClose={onClose}
+  onSubmit={setData}
+  customTheme={{
+    components: {
+      Button: {
+        baseStyle: {
+          borderRadius: "none",
+        },
+        defaultProps: {
+          colorScheme: "yellow",
+        },
+      },
+    },
+  }}
+/>
 ```
+
 <img width="1191" alt="Screenshot 2022-04-13 at 11 04 30" src="https://user-images.githubusercontent.com/5903616/163130213-82f955b4-5081-49e0-8f43-8857d480dacd.png">
- 
+
 3.) Change components specifically in each Step.
+
 ```jsx
-    <ReactSpreadsheetImport
-        {...mockRsiValues}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={setData}
-        customTheme={{
-          components: {
-            UploadStep: {
-              baseStyle: {
-                dropzoneButton: {
-                  bg: "red",
-                },
-              },
-            },
+<ReactSpreadsheetImport
+  {...mockRsiValues}
+  isOpen={isOpen}
+  onClose={onClose}
+  onSubmit={setData}
+  customTheme={{
+    components: {
+      UploadStep: {
+        baseStyle: {
+          dropzoneButton: {
+            bg: "red",
           },
-        }}
-      />
+        },
+      },
+    },
+  }}
+/>
 ```
+
 <img width="1182" alt="Screenshot 2022-04-13 at 10 21 58" src="https://user-images.githubusercontent.com/5903616/163123694-5b79179e-037e-4f9d-b1a9-6078f758bb7e.png">
 
 Underneath we use Chakra-UI, you can send in a custom theme for us to apply. Read more about themes [here](https://chakra-ui.com/docs/styled-system/theming/theme)
@@ -244,8 +249,8 @@ You can see all the translation keys [here](https://github.com/UgnisSoftware/rea
 
 Flatfile vs react-spreadsheet-import and Dromo vs react-spreadsheet-import:
 
-|                                    | RSI            | Flatfile    | Dromo       |
-|------------------------------------|----------------|-------------|-------------|
+|                                | RSI            | Flatfile    | Dromo       |
+| ------------------------------ | -------------- | ----------- | ----------- |
 | Licence                        | MIT            | Proprietary | Proprietary |
 | Price                          | Free           | Paid        | Paid        |
 | Support                        | Github Issues  | Enterprise  | Enterprise  |

@@ -5,7 +5,7 @@ import { uniqueEntries } from "./uniqueEntries"
 export const setColumn = <T extends string>(
   oldColumn: Column<T>,
   field?: Field<T>,
-  data?: MatchColumnsProps["data"],
+  data?: MatchColumnsProps<T>["data"],
 ): Column<T> => {
   switch (field?.fieldType.type) {
     case "select":
