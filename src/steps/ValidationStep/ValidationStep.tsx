@@ -129,23 +129,25 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
             </Switch>
           </Box>
         </Box>
-        <Table
-          rowKeyGetter={rowKeyGetter}
-          rows={tableData}
-          onRowsChange={updateRow}
-          columns={columns}
-          selectedRows={selectedRows}
-          onSelectedRowsChange={setSelectedRows}
-          components={{
-            noRowsFallback: (
-              <Box display="flex" justifyContent="center" gridColumn="1/-1" mt="32px">
-                {filterByErrors
-                  ? translations.validationStep.noRowsMessageWhenFiltered
-                  : translations.validationStep.noRowsMessage}
-              </Box>
-            ),
-          }}
-        />
+        <Box h={0} flexGrow={1}>
+          <Table
+            rowKeyGetter={rowKeyGetter}
+            rows={tableData}
+            onRowsChange={updateRow}
+            columns={columns}
+            selectedRows={selectedRows}
+            onSelectedRowsChange={setSelectedRows}
+            components={{
+              noRowsFallback: (
+                <Box display="flex" justifyContent="center" gridColumn="1/-1" mt="32px">
+                  {filterByErrors
+                    ? translations.validationStep.noRowsMessageWhenFiltered
+                    : translations.validationStep.noRowsMessage}
+                </Box>
+              ),
+            }}
+          />
+        </Box>
       </ModalBody>
       <ContinueButton onContinue={onContinue} title={translations.validationStep.nextButtonTitle} />
     </>
