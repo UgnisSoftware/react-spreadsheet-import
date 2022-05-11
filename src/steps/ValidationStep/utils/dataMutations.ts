@@ -60,7 +60,8 @@ export const addErrorsAndRunHooks = <T extends string>(
         case "regex": {
           const regex = new RegExp(validation.value, validation.flags)
           data.forEach((entry, index) => {
-            if (!entry[field.key]?.toString()?.match(regex)) {
+            const value = entry[field.key]?.toString() ?? ""
+            if (!value.match(regex)) {
               errors[index] = {
                 ...errors[index],
                 [field.key]: {
