@@ -1,6 +1,7 @@
 import type { Meta } from "./steps/ValidationStep/types"
 import type { DeepReadonly } from "ts-essentials"
 import type { TranslationsRSIProps } from "./translationsRSIProps"
+import type { Columns } from "./steps/MatchColumnsStep/MatchColumnsStep"
 
 export type RsiProps<T extends string> = {
   // Is modal visible.
@@ -13,9 +14,9 @@ export type RsiProps<T extends string> = {
   uploadStepHook?: (data: RawData[]) => Promise<RawData[]>
   // Runs after header selection step, receives and returns raw sheet data
   selectHeaderStepHook?: (headerValues: RawData, data: RawData[]) => Promise<{ headerValues: RawData; data: RawData[] }>
-  // Runs once before validation step, used for data mutations
-  matchColumnsStepHook?: (table: Data<T>[]) => Promise<Data<T>[]>
-  // Function called after user finishes the flow
+  // Runs once before validation step, used for data mutations and if you want to change how columns were matched
+  matchColumnsStepHook?: (table: Data<T>[], rawData: RawData[], columns: Columns<T>) => Promise<Data<T>[]>
+  // Runs after column matching and on entry change
   rowHook?: RowHook<T>
   // Runs after column matching and on entry change
   tableHook?: TableHook<T>

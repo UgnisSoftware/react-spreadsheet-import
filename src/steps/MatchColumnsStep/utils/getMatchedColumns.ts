@@ -8,7 +8,7 @@ import type { MatchColumnsProps } from "../MatchColumnsStep"
 export const getMatchedColumns = <T extends string>(
   columns: Columns<T>,
   fields: Fields<T>,
-  data: MatchColumnsProps["data"],
+  data: MatchColumnsProps<T>["data"],
   autoMapDistance: number,
 ) =>
   columns.reduce<Column<T>[]>((arr, column) => {
