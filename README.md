@@ -43,9 +43,9 @@ npm i react-spreadsheet-import
 Using the component: (it's up to you when the flow is open and what you do on submit with the imported data)
 
 ```tsx
-import { ReactSpreadsheetImport } from "react-spreadsheet-import"
+import { ReactSpreadsheetImport } from "react-spreadsheet-import";
 
-;<ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} onSubmit={onSubmit} fields={fields} />
+<ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} onSubmit={onSubmit} fields={fields} />
 ```
 
 ## Required Props
