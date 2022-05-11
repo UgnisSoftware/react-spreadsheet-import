@@ -1,11 +1,5 @@
-import * as nodeCrypto from "crypto"
-
 // Yeeted from https://github.com/adazzle/react-data-grid/blob/main/test/setup.ts
 if (typeof window !== "undefined") {
-  if (!window.crypto) {
-    ;(window as any).crypto = nodeCrypto
-  }
-
   window.ResizeObserver ??= class {
     callback: ResizeObserverCallback
 
