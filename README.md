@@ -1,10 +1,10 @@
 <h1 align="center">RSI react-spreadsheet-import ⚡️</h1>
 
 <div align="center">
-
+  
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
 ![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) [![npm](https://img.shields.io/npm/v/react-spreadsheet-import)](https://www.npmjs.com/package/react-spreadsheet-import)
-
+  
 </div>
 <br />
 
@@ -52,9 +52,9 @@ import { ReactSpreadsheetImport } from "react-spreadsheet-import"
 
 ```tsx
   // Determines if modal is visible.
-isOpen: Boolean
-// Called when flow is closed without reaching submit.
-onClose: () => void
+  isOpen: Boolean
+  // Called when flow is closed without reaching submit.
+  onClose: () => void
   // Called after user completes the flow. Provides data array, where data keys matches your field keys.
   onSubmit: (data) => void
 ```
@@ -128,19 +128,19 @@ Example:
 
 ```tsx
   // Allows submitting with errors. Default: true
-allowInvalidSubmit?: boolean
-// Translations for each text. See customisation bellow
-translations?: object
-// Theme configuration passed to underlying Chakra-UI. See customisation bellow
-customTheme?: object
-// Specifies maximum number of rows for a single import
-maxRecords?: number
-// Maximum upload filesize (in bytes)
-maxFileSize?: number
-// Automatically map imported headers to specified fields if possible. Default: true
-autoMapHeaders?: boolean
-// Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
-autoMapDistance?: number
+  allowInvalidSubmit?: boolean
+  // Translations for each text. See customisation bellow
+  translations?: object
+  // Theme configuration passed to underlying Chakra-UI. See customisation bellow
+  customTheme?: object
+  // Specifies maximum number of rows for a single import
+  maxRecords?: number
+  // Maximum upload filesize (in bytes)
+  maxFileSize?: number
+  // Automatically map imported headers to specified fields if possible. Default: true
+  autoMapHeaders?: boolean
+  // Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
+  autoMapDistance?: number
 ```
 
 ## Customisation
@@ -155,25 +155,25 @@ There are 3 ways you can style the component:
 
 ```jsx
     <ReactSpreadsheetImport
-  {...mockRsiValues}
-  isOpen={isOpen}
-  onClose={onClose}
-  onSubmit={setData}
-  customTheme={{
-    colors: {
-      background: 'white',
-      ...
-        rsi: {
-    // your brand colors should go here
-    50: '...'
-    ...
-    500: 'teal',
-    ...
-    900: "...",
-  },
-  },
-  }}
-/>
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={setData}
+        customTheme={{
+          colors: {
+            background: 'white',
+            ...
+            rsi: {
+              // your brand colors should go here
+              50: '...'
+              ...
+              500: 'teal',
+              ...
+              900: "...",
+            },
+          },
+        }}
+      />
 ```
 
 <img width="1189" alt="Screenshot 2022-04-13 at 10 24 34" src="https://user-images.githubusercontent.com/5903616/163123718-15c05ad8-243b-4a81-8141-c47216047468.png">
@@ -202,29 +202,27 @@ There are 3 ways you can style the component:
 ```
 
 <img width="1191" alt="Screenshot 2022-04-13 at 11 04 30" src="https://user-images.githubusercontent.com/5903616/163130213-82f955b4-5081-49e0-8f43-8857d480dacd.png">
-
+ 
 3.) Change components specifically in each Step.
-
 ```jsx
-<ReactSpreadsheetImport
-  {...mockRsiValues}
-  isOpen={isOpen}
-  onClose={onClose}
-  onSubmit={setData}
-  customTheme={{
-    components: {
-      UploadStep: {
-        baseStyle: {
-          dropzoneButton: {
-            bg: "red",
+    <ReactSpreadsheetImport
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={setData}
+        customTheme={{
+          components: {
+            UploadStep: {
+              baseStyle: {
+                dropzoneButton: {
+                  bg: "red",
+                },
+              },
+            },
           },
-        },
-      },
-    },
-  }}
-/>
+        }}
+      />
 ```
-
 <img width="1182" alt="Screenshot 2022-04-13 at 10 21 58" src="https://user-images.githubusercontent.com/5903616/163123694-5b79179e-037e-4f9d-b1a9-6078f758bb7e.png">
 
 Underneath we use Chakra-UI, you can send in a custom theme for us to apply. Read more about themes [here](https://chakra-ui.com/docs/styled-system/theming/theme)
