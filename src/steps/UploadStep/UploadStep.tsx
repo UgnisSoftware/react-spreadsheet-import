@@ -28,7 +28,7 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
       <Heading sx={styles.heading}>{translations.uploadStep.title}</Heading>
       <Text sx={styles.title}>{translations.uploadStep.manifestTitle}</Text>
       <Text sx={styles.subtitle}>{translations.uploadStep.manifestDescription}</Text>
-      <Box mb="0.5rem" position="relative">
+      <Box sx={styles.tableWrapper}>
         <ExampleTable fields={fields} />
         <FadingOverlay />
       </Box>
