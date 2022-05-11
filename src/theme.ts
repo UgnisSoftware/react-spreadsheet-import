@@ -95,6 +95,11 @@ export const themeOverrides = {
           color: "subtitleColor",
           mb: "1rem",
         },
+        tableWrapper: {
+          mb: "0.5rem",
+          position: "relative",
+          h: "72px",
+        },
         dropzoneText: {
           size: "lg",
           lineHeight: 7,
