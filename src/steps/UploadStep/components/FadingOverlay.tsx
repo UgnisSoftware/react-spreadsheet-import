@@ -8,6 +8,6 @@ export const FadingOverlay = () => (
     bottom={0}
     height="48px"
     pointerEvents="none"
-    bgGradient="linear(transparent, background)"
+    bgGradient="linear(to bottom, backgroundAlpha, background)"
   />
 )

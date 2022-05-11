@@ -57,6 +57,7 @@ export const themeOverrides = {
     inactiveColor: "#A0AEC0",
     border: "#E2E8F0",
     background: "white",
+    backgroundAlpha: "rgba(255,255,255,0)",
     secondaryBackground: "#EDF2F7",
     highlight: "#E2E8F0",
     rsi: {

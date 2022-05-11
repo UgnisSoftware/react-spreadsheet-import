@@ -19,7 +19,7 @@ export const FadingWrapper = ({ gridColumn, gridRow }: FadingWrapperProps) => (
       gridColumn={gridColumn}
       gridRow={gridRow}
       pointerEvents="none"
-      bgGradient="linear(transparent, 80%, background)"
+      bgGradient="linear(to bottom, backgroundAlpha, background)"
     />
   </>
 )
