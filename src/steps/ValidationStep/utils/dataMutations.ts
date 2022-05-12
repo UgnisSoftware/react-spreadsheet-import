@@ -34,7 +34,12 @@ export const addErrorsAndRunHooks = <T extends string>(
           const taken = new Set() // Set of items used at least once
           const duplicates = new Set() // Set of items used multiple times
 
-          values.forEach((value, index) => {
+          values.forEach((value) => {
+            if (validation.allowEmpty && !value) {
+              // If allowEmpty is set, we will not validate falsy fields such as undefined or empty string.
+              return
+            }
+
             if (taken.has(value)) {
               duplicates.add(value)
             } else {
