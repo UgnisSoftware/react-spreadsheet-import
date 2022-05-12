@@ -42,6 +42,7 @@ const MatchIconTheme: any = {
       borderColor: "yellow.500",
       color: "background",
       transitionDuration: "ultra-fast",
+      borderStyle: "solid",
     }
   },
   defaultProps: {
