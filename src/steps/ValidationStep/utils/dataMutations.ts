@@ -30,8 +30,25 @@ export const addErrorsAndRunHooks = <T extends string>(
       switch (validation.rule) {
         case "unique": {
           const values = data.map((entry) => entry[field.key as T])
+
+          const taken = new Set() // Set of items used at least once
+          const duplicates = new Set() // Set of items used multiple times
+
+          values.forEach((value) => {
+            if (validation.allowEmpty && !value) {
+              // If allowEmpty is set, we will not validate falsy fields such as undefined or empty string.
+              return
+            }
+
+            if (taken.has(value)) {
+              duplicates.add(value)
+            } else {
+              taken.add(value)
+            }
+          })
+
           values.forEach((value, index) => {
-            if (values.indexOf(value) !== values.lastIndexOf(value)) {
+            if (duplicates.has(value)) {
               errors[index] = {
                 ...errors[index],
                 [field.key]: {

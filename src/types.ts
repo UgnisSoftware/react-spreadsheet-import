@@ -85,10 +85,17 @@ export type Input = {
   type: "input"
 }
 
-export type Validation = BasicValidation | RegexValidation
+export type Validation = RequiredValidation | UniqueValidation | RegexValidation
 
-export type BasicValidation = {
-  rule: "unique" | "required" //... to be determined
+export type RequiredValidation = {
+  rule: "required"
+  errorMessage?: string
+  level?: ErrorLevel
+}
+
+export type UniqueValidation = {
+  rule: "unique"
+  allowEmpty?: boolean
   errorMessage?: string
   level?: ErrorLevel
 }
