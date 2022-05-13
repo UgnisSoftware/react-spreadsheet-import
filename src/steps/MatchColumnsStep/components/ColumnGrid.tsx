@@ -45,7 +45,7 @@ export const ColumnGrid = <T extends string>({
             </Box>
           ))}
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="2/3" />
-          <Box gridColumn={`1/${columns.length + 1}`} mt={7}>
+          <Box gridColumn={`1/${columns.length + 3}`} mt={7}>
             <Text sx={styles.title}>{translations.matchColumnsStep.templateTitle}</Text>
           </Box>
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
