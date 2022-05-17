@@ -44,18 +44,20 @@
     "url": "https://github.com/UgnisSoftware/react-spreadsheet-import/issues"
   },
   "homepage": "https://github.com/UgnisSoftware/react-spreadsheet-import#readme",
-  "dependencies": {
+  "peerDependencies": {
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "framer-motion": "^4.1.17 || ^6.3.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
     "chakra-react-select": "^3.1.2",
     "chakra-ui-steps": "^1.7.2",
-    "framer-motion": "^6.3.0",
     "js-levenshtein": "^1.1.6",
     "lodash": "^4.17.21",
-    "react": "^17.0.2",
     "react-data-grid": "7.0.0-beta.11",
-    "react-dom": "^17.0.2",
     "react-dropzone": "^12.0.5",
     "react-icons": "^4.3.1",
     "uuid": "^8.3.2",
