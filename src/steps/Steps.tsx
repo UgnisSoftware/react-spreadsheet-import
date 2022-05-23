@@ -16,7 +16,7 @@ export const Steps = () => {
 
   return (
     <>
-      <ModalHeader>
+      <ModalHeader display={["none", "none", "block"]}>
         <Stepper activeStep={activeStep} checkIcon={CheckIcon}>
           {steps.map((key) => (
             <Step label={translations[key].title} key={key} />
