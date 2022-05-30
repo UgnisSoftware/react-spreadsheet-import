@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render, waitFor, screen, fireEvent } from "@testing-library/react"
+import { render, waitFor, screen } from "@testing-library/react"
 import { MatchColumnsStep } from "../MatchColumnsStep"
 import { defaultTheme, ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
@@ -607,7 +607,7 @@ describe("Match Columns general tests", () => {
     )
 
     const continueButton = screen.getByText(CONTINUE_BUTTON)
-    fireEvent.click(continueButton)
+    userEvent.click(continueButton)
 
     await waitFor(() => {
       expect(matchColumnsStepHook).toBeCalled()
@@ -639,7 +639,7 @@ describe("Match Columns general tests", () => {
     )
 
     const continueButton = getByText(CONTINUE_BUTTON)
-    fireEvent.click(continueButton)
+    userEvent.click(continueButton)
 
     const mutatedEntry = await screen.findByText(MUTATED_ENTRY)
     expect(mutatedEntry).toBeInTheDocument()
