@@ -7,3 +7,4 @@ web_modules
 dist
 dist-commonjs
 types
+coverage

@@ -11,15 +11,14 @@ import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
 import type { RawData } from "../types"
 
-enum Type {
+export enum Type {
   upload,
   selectSheet,
   selectHeader,
   matchColumns,
   validateData,
 }
-
-type State =
+export type StepState =
   | {
       type: Type.upload
     }
@@ -46,7 +45,8 @@ interface Props {
 }
 
 export const UploadFlow = ({ nextStep }: Props) => {
-  const [state, setState] = useState<State>({ type: Type.upload })
+  const { initialStepState } = useRsi()
+  const [state, setState] = useState<StepState>(initialStepState || { type: Type.upload })
   const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
 
