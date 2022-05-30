@@ -2,6 +2,7 @@ import type { Meta } from "./steps/ValidationStep/types"
 import type { DeepReadonly } from "ts-essentials"
 import type { TranslationsRSIProps } from "./translationsRSIProps"
 import type { Columns } from "./steps/MatchColumnsStep/MatchColumnsStep"
+import type { StepState } from "./steps/UploadFlow"
 
 export type RsiProps<T extends string> = {
   // Is modal visible.
@@ -36,6 +37,8 @@ export type RsiProps<T extends string> = {
   autoMapHeaders?: boolean
   // Headers matching accuracy: 1 for strict and up for more flexible matching
   autoMapDistance?: number
+  // initial Step state to be rendered on load
+  initialStepState?: StepState
 }
 
 export type RawData = Array<string | undefined>

@@ -8,7 +8,7 @@ import type { RawData } from "../../types"
 
 type SelectHeaderProps = {
   data: RawData[]
-  onContinue: (headerValues: RawData, data: RawData[]) => void
+  onContinue: (headerValues: RawData, data: RawData[]) => Promise<void>
 }
 
 export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {

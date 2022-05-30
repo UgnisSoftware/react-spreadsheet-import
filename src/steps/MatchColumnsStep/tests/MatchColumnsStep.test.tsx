@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom"
 import { render, waitFor, screen } from "@testing-library/react"
 import { MatchColumnsStep } from "../MatchColumnsStep"
-import { defaultTheme } from "../../../ReactSpreadsheetImport"
+import { defaultTheme, ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
@@ -10,6 +10,7 @@ import type { Fields } from "../../../types"
 import selectEvent from "react-select-event"
 import { translations } from "../../../translationsRSIProps"
 import { SELECT_DROPDOWN_ID } from "../../../components/Selects/MenuPortal"
+import { Type } from "../../UploadFlow"
 
 const fields: Fields<any> = [
   {
@@ -37,6 +38,9 @@ const fields: Fields<any> = [
     example: "No",
   },
 ]
+
+const CONTINUE_BUTTON = "Next"
+const MUTATED_ENTRY = "mutated entry"
 
 describe("Match Columns automatic matching", () => {
   test("AutoMatch column and click next", async () => {
@@ -66,8 +70,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("AutoMatching disabled does not match any columns", async () => {
@@ -97,8 +101,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("AutoMatching exact values", async () => {
@@ -128,8 +132,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("AutoMatches only one value", async () => {
@@ -171,8 +175,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("Boolean-like values are returned as Booleans", async () => {
@@ -210,8 +214,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("Boolean-like values are returned as Booleans for 'booleanMatches' props", async () => {
@@ -250,8 +254,8 @@ describe("Match Columns automatic matching", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 })
 
@@ -364,8 +368,8 @@ describe("Match Columns general tests", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("Checkmark changes when field is matched", async () => {
@@ -468,8 +472,8 @@ describe("Match Columns general tests", () => {
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
-      expect(onContinue.mock.calls[0][0]).toEqual(result)
     })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
   test("Can ignore columns", async () => {
@@ -578,5 +582,66 @@ describe("Match Columns general tests", () => {
     })
 
     expect(screen.queryByText(translations.matchColumnsStep.duplicateColumnWarningDescription)).toBeInTheDocument()
+  })
+
+  test("matchColumnsStepHook should be called after columns are matched", async () => {
+    const matchColumnsStepHook = jest.fn(async (values) => values)
+    const mockValues = {
+      ...mockRsiValues,
+      fields: mockRsiValues.fields.filter((field) => field.key === "name" || field.key === "age"),
+    }
+    render(
+      <ReactSpreadsheetImport
+        {...mockValues}
+        matchColumnsStepHook={matchColumnsStepHook}
+        initialStepState={{
+          type: Type.matchColumns,
+          data: [
+            ["Josh", "2"],
+            ["Charlie", "3"],
+            ["Lena", "50"],
+          ],
+          headerValues: ["name", "age"],
+        }}
+      />,
+    )
+
+    const continueButton = screen.getByText(CONTINUE_BUTTON)
+    userEvent.click(continueButton)
+
+    await waitFor(() => {
+      expect(matchColumnsStepHook).toBeCalled()
+    })
+  })
+
+  test("matchColumnsStepHook mutations to rawData should show up in ValidationStep", async () => {
+    const matchColumnsStepHook = jest.fn(async ([firstEntry, ...values]) => {
+      return [{ ...firstEntry, name: MUTATED_ENTRY }, ...values]
+    })
+    const mockValues = {
+      ...mockRsiValues,
+      fields: mockRsiValues.fields.filter((field) => field.key === "name" || field.key === "age"),
+    }
+    const { getByText } = render(
+      <ReactSpreadsheetImport
+        {...mockValues}
+        matchColumnsStepHook={matchColumnsStepHook}
+        initialStepState={{
+          type: Type.matchColumns,
+          data: [
+            ["Josh", "2"],
+            ["Charlie", "3"],
+            ["Lena", "50"],
+          ],
+          headerValues: ["name", "age"],
+        }}
+      />,
+    )
+
+    const continueButton = getByText(CONTINUE_BUTTON)
+    userEvent.click(continueButton)
+
+    const mutatedEntry = await screen.findByText(MUTATED_ENTRY)
+    expect(mutatedEntry).toBeInTheDocument()
   })
 })
