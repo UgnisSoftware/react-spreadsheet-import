@@ -11,32 +11,32 @@ import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
 import type { RawData } from "../types"
 
-export enum Type {
-  upload,
-  selectSheet,
-  selectHeader,
-  matchColumns,
-  validateData,
+export enum StepType {
+  upload = "upload",
+  selectSheet = "selectSheet",
+  selectHeader = "selectHeader",
+  matchColumns = "matchColumns",
+  validateData = "validateData",
 }
 export type StepState =
   | {
-      type: Type.upload
+      type: StepType.upload
     }
   | {
-      type: Type.selectSheet
+      type: StepType.selectSheet
       workbook: XLSX.WorkBook
     }
   | {
-      type: Type.selectHeader
+      type: StepType.selectHeader
       data: RawData[]
     }
   | {
-      type: Type.matchColumns
+      type: StepType.matchColumns
       data: RawData[]
       headerValues: RawData
     }
   | {
-      type: Type.validateData
+      type: StepType.validateData
       data: any[]
     }
 
@@ -46,12 +46,12 @@ interface Props {
 
 export const UploadFlow = ({ nextStep }: Props) => {
   const { initialStepState } = useRsi()
-  const [state, setState] = useState<StepState>(initialStepState || { type: Type.upload })
+  const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
   const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
 
   switch (state.type) {
-    case Type.upload:
+    case StepType.upload:
       return (
         <UploadStep
           onContinue={async (workbook) => {
@@ -69,17 +69,17 @@ export const UploadFlow = ({ nextStep }: Props) => {
               }
               const mappedWorkbook = await uploadStepHook(mapWorkbook(workbook))
               setState({
-                type: Type.selectHeader,
+                type: StepType.selectHeader,
                 data: mappedWorkbook,
               })
               nextStep()
             } else {
-              setState({ type: Type.selectSheet, workbook })
+              setState({ type: StepType.selectSheet, workbook })
             }
           }}
         />
       )
-    case Type.selectSheet:
+    case StepType.selectSheet:
       return (
         <SelectSheetStep
           sheetNames={state.workbook.SheetNames}
@@ -96,21 +96,21 @@ export const UploadFlow = ({ nextStep }: Props) => {
             }
             const mappedWorkbook = await uploadStepHook(mapWorkbook(state.workbook, sheetName))
             setState({
-              type: Type.selectHeader,
+              type: StepType.selectHeader,
               data: mappedWorkbook,
             })
             nextStep()
           }}
         />
       )
-    case Type.selectHeader:
+    case StepType.selectHeader:
       return (
         <SelectHeaderStep
           data={state.data}
           onContinue={async (...args) => {
             const { data, headerValues } = await selectHeaderStepHook(...args)
             setState({
-              type: Type.matchColumns,
+              type: StepType.matchColumns,
               data,
               headerValues,
             })
@@ -118,7 +118,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
           }}
         />
       )
-    case Type.matchColumns:
+    case StepType.matchColumns:
       return (
         <MatchColumnsStep
           data={state.data}
@@ -126,14 +126,14 @@ export const UploadFlow = ({ nextStep }: Props) => {
           onContinue={async (values, rawData, columns) => {
             const data = await matchColumnsStepHook(values, rawData, columns)
             setState({
-              type: Type.validateData,
+              type: StepType.validateData,
               data,
             })
             nextStep()
           }}
         />
       )
-    case Type.validateData:
+    case StepType.validateData:
       return <ValidationStep initialData={state.data} />
     default:
       return <Progress isIndeterminate />

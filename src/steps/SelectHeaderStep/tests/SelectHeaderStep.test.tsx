@@ -7,7 +7,7 @@ import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
 import { readFileSync } from "fs"
-import { Type } from "../../UploadFlow"
+import { StepType } from "../../UploadFlow"
 
 const MUTATED_HEADER = "mutated header"
 const CONTINUE_BUTTON = "Next"
@@ -86,7 +86,7 @@ test("selectHeaderStepHook should be able to modify raw data", async () => {
       {...mockRsiValues}
       selectHeaderStepHook={selectHeaderStepHook}
       initialStepState={{
-        type: Type.selectHeader,
+        type: StepType.selectHeader,
         data: [
           ["name", "age"],
           ["Josh", "2"],
