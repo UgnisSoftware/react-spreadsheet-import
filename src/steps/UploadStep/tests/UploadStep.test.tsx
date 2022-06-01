@@ -7,7 +7,7 @@ import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 
 const MUTATED_RAW_DATA = "Bye"
-const ERROR_MESSAGE = 'Something happened'
+const ERROR_MESSAGE = "Something happened"
 
 test("Upload a file", async () => {
   const file = new File(["Hello, Hello, Hello, Hello"], "test.csv", { type: "text/csv" })
