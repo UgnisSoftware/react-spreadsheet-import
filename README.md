@@ -124,6 +124,60 @@ Example:
 />
 ```
 
+### Initial state
+
+In rare case when you need to skip the beginning of he flow, you can start the flow from any of the steps.
+
+- **initialStepState** - initial state of component that will be rendered on load. 
+
+```tsx
+  initialStepState?: StepState
+  
+  type StepState =
+    | {
+        type: StepType.upload
+      }
+    | {
+        type: StepType.selectSheet
+        workbook: XLSX.WorkBook
+      }
+    | {
+        type: StepType.selectHeader
+        data: RawData[]
+      }
+    | {
+        type: StepType.matchColumns
+        data: RawData[]
+        headerValues: RawData
+      }
+    | {
+        type: StepType.validateData
+        data: any[]
+      }
+
+  type RawData = Array<string | undefined>
+
+  // XLSX.workbook type is native to SheetJS and can be viewed here: https://github.com/SheetJS/sheetjs/blob/83ddb4c1203f6bac052d8c1608b32fead02ea32f/types/index.d.ts#L269
+```
+
+Example:
+
+```tsx
+import { ReactSpreadsheetImport, StepType } from "react-spreadsheet-import";
+
+<ReactSpreadsheetImport
+  initialStepState={{
+    type: StepType.matchColumns,
+    data: [
+      ["Josh", "2"],
+      ["Charlie", "3"],
+      ["Lena", "50"],
+    ],
+    headerValues: ["name", "age"],
+  }}
+/>
+```
+
 ### Other optional props
 
 ```tsx

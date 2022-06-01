@@ -10,7 +10,7 @@ import type { Fields } from "../../../types"
 import selectEvent from "react-select-event"
 import { translations } from "../../../translationsRSIProps"
 import { SELECT_DROPDOWN_ID } from "../../../components/Selects/MenuPortal"
-import { Type } from "../../UploadFlow"
+import { StepType } from "../../UploadFlow"
 
 const fields: Fields<any> = [
   {
@@ -595,7 +595,7 @@ describe("Match Columns general tests", () => {
         {...mockValues}
         matchColumnsStepHook={matchColumnsStepHook}
         initialStepState={{
-          type: Type.matchColumns,
+          type: StepType.matchColumns,
           data: [
             ["Josh", "2"],
             ["Charlie", "3"],
@@ -627,7 +627,7 @@ describe("Match Columns general tests", () => {
         {...mockValues}
         matchColumnsStepHook={matchColumnsStepHook}
         initialStepState={{
-          type: Type.matchColumns,
+          type: StepType.matchColumns,
           data: [
             ["Josh", "2"],
             ["Charlie", "3"],
