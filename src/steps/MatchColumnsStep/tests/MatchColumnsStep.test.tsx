@@ -41,6 +41,7 @@ const fields: Fields<any> = [
 
 const CONTINUE_BUTTON = "Next"
 const MUTATED_ENTRY = "mutated entry"
+const ERROR_MESSAGE = "Something happened"
 
 describe("Match Columns automatic matching", () => {
   test("AutoMatch column and click next", async () => {
@@ -622,7 +623,7 @@ describe("Match Columns general tests", () => {
       ...mockRsiValues,
       fields: mockRsiValues.fields.filter((field) => field.key === "name" || field.key === "age"),
     }
-    const { getByText } = render(
+    render(
       <ReactSpreadsheetImport
         {...mockValues}
         matchColumnsStepHook={matchColumnsStepHook}
@@ -638,10 +639,44 @@ describe("Match Columns general tests", () => {
       />,
     )
 
-    const continueButton = getByText(CONTINUE_BUTTON)
+    const continueButton = screen.getByText(CONTINUE_BUTTON)
     userEvent.click(continueButton)
 
     const mutatedEntry = await screen.findByText(MUTATED_ENTRY)
     expect(mutatedEntry).toBeInTheDocument()
+  })
+
+  test("Should show error toast if error is thrown in matchColumnsStepHook", async () => {
+    const matchColumnsStepHook = jest.fn(async () => {
+      throw new Error(ERROR_MESSAGE)
+      return undefined as any
+    })
+
+    const mockValues = {
+      ...mockRsiValues,
+      fields: mockRsiValues.fields.filter((field) => field.key === "name" || field.key === "age"),
+    }
+
+    render(
+      <ReactSpreadsheetImport
+        {...mockValues}
+        matchColumnsStepHook={matchColumnsStepHook}
+        initialStepState={{
+          type: StepType.matchColumns,
+          data: [
+            ["Josh", "2"],
+            ["Charlie", "3"],
+            ["Lena", "50"],
+          ],
+          headerValues: ["name", "age"],
+        }}
+      />,
+    )
+
+    const continueButton = screen.getByText(CONTINUE_BUTTON)
+    userEvent.click(continueButton)
+
+    const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+    expect(errorToast).toBeInTheDocument()
   })
 })
