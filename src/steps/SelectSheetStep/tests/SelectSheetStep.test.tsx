@@ -12,6 +12,7 @@ const SHEET_TITLE_2 = "Sheet2"
 const SELECT_HEADER_TABLE_ENTRY_1 = "Charlie"
 const SELECT_HEADER_TABLE_ENTRY_2 = "Josh"
 const SELECT_HEADER_TABLE_ENTRY_3 = "50"
+const ERROR_MESSAGE = "Something happened"
 
 test("Should render select sheet screen if multi-sheet excel file was uploaded", async () => {
   render(<ReactSpreadsheetImport {...mockRsiValues} />)
@@ -82,4 +83,36 @@ test("Select sheet and click next", async () => {
     expect(onContinue).toBeCalled()
   })
   expect(onContinue.mock.calls[0][0]).toEqual(sheetNames[selectSheetIndex])
+})
+
+test("Should show error toast if error is thrown in uploadStepHook", async () => {
+  const uploadStepHook = jest.fn(async () => {
+    throw new Error(ERROR_MESSAGE)
+    return undefined as any
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} uploadStepHook={uploadStepHook} />)
+  const uploader = screen.getByTestId("rsi-dropzone")
+  const data = readFileSync(__dirname + "/../../../../static/Workbook1.xlsx")
+  fireEvent.drop(uploader, {
+    target: {
+      files: [
+        new File([data], "testFile.xlsx", {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+      ],
+    },
+  })
+
+  const nextButton = await screen.findByRole(
+    "button",
+    {
+      name: "Next",
+    },
+    { timeout: 5000 },
+  )
+
+  userEvent.click(nextButton)
+
+  const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+  expect(errorToast).toBeInTheDocument()
 })

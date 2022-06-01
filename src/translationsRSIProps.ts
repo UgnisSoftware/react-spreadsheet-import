@@ -64,6 +64,9 @@ export const translations = {
       cancelButtonTitle: "Cancel",
       continueButtonTitle: "Continue",
     },
+    toast: {
+      error: "Error",
+    },
   },
 }
 

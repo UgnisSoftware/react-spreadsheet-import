@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { Progress, useToast } from "@chakra-ui/react"
 import type XLSX from "xlsx"
 import { UploadStep } from "./UploadStep/UploadStep"
@@ -49,6 +49,19 @@ export const UploadFlow = ({ nextStep }: Props) => {
   const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
   const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
+  const errorToast = useCallback(
+    (description: string) => {
+      toast({
+        status: "error",
+        variant: "left-accent",
+        position: "bottom-left",
+        title: `${translations.alerts.toast.error}`,
+        description,
+        isClosable: true,
+      })
+    },
+    [toast, translations],
+  )
 
   switch (state.type) {
     case StepType.upload:
@@ -58,21 +71,19 @@ export const UploadFlow = ({ nextStep }: Props) => {
             const isSingleSheet = workbook.SheetNames.length === 1
             if (isSingleSheet) {
               if (maxRecords && exceedsMaxRecords(workbook.Sheets[workbook.SheetNames[0]], maxRecords)) {
-                toast({
-                  status: "error",
-                  variant: "left-accent",
-                  position: "bottom-left",
-                  title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
-                  isClosable: true,
-                })
+                errorToast(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
                 return
               }
-              const mappedWorkbook = await uploadStepHook(mapWorkbook(workbook))
-              setState({
-                type: StepType.selectHeader,
-                data: mappedWorkbook,
-              })
-              nextStep()
+              try {
+                const mappedWorkbook = await uploadStepHook(mapWorkbook(workbook))
+                setState({
+                  type: StepType.selectHeader,
+                  data: mappedWorkbook,
+                })
+                nextStep()
+              } catch (e) {
+                errorToast((e as Error).message)
+              }
             } else {
               setState({ type: StepType.selectSheet, workbook })
             }
@@ -85,21 +96,19 @@ export const UploadFlow = ({ nextStep }: Props) => {
           sheetNames={state.workbook.SheetNames}
           onContinue={async (sheetName) => {
             if (maxRecords && exceedsMaxRecords(state.workbook.Sheets[sheetName], maxRecords)) {
-              toast({
-                status: "error",
-                variant: "left-accent",
-                position: "bottom-left",
-                title: `${translations.uploadStep.maxRecordsExceeded(maxRecords.toString())}`,
-                isClosable: true,
-              })
+              errorToast(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
               return
             }
-            const mappedWorkbook = await uploadStepHook(mapWorkbook(state.workbook, sheetName))
-            setState({
-              type: StepType.selectHeader,
-              data: mappedWorkbook,
-            })
-            nextStep()
+            try {
+              const mappedWorkbook = await uploadStepHook(mapWorkbook(state.workbook, sheetName))
+              setState({
+                type: StepType.selectHeader,
+                data: mappedWorkbook,
+              })
+              nextStep()
+            } catch (e) {
+              errorToast((e as Error).message)
+            }
           }}
         />
       )
@@ -108,13 +117,17 @@ export const UploadFlow = ({ nextStep }: Props) => {
         <SelectHeaderStep
           data={state.data}
           onContinue={async (...args) => {
-            const { data, headerValues } = await selectHeaderStepHook(...args)
-            setState({
-              type: StepType.matchColumns,
-              data,
-              headerValues,
-            })
-            nextStep()
+            try {
+              const { data, headerValues } = await selectHeaderStepHook(...args)
+              setState({
+                type: StepType.matchColumns,
+                data,
+                headerValues,
+              })
+              nextStep()
+            } catch (e) {
+              errorToast((e as Error).message)
+            }
           }}
         />
       )
@@ -124,12 +137,16 @@ export const UploadFlow = ({ nextStep }: Props) => {
           data={state.data}
           headerValues={state.headerValues}
           onContinue={async (values, rawData, columns) => {
-            const data = await matchColumnsStepHook(values, rawData, columns)
-            setState({
-              type: StepType.validateData,
-              data,
-            })
-            nextStep()
+            try {
+              const data = await matchColumnsStepHook(values, rawData, columns)
+              setState({
+                type: StepType.validateData,
+                data,
+              })
+              nextStep()
+            } catch (e) {
+              errorToast((e as Error).message)
+            }
           }}
         />
       )

@@ -11,6 +11,7 @@ import { StepType } from "../../UploadFlow"
 
 const MUTATED_HEADER = "mutated header"
 const CONTINUE_BUTTON = "Next"
+const ERROR_MESSAGE = "Something happened"
 
 test("Select header row and click next", async () => {
   const data = [
@@ -64,7 +65,7 @@ test("selectHeaderStepHook should be called after header is selected", async () 
       ],
     },
   })
-  const continueButton = await screen.findByText(CONTINUE_BUTTON, undefined, { timeout: 5000 })
+  const continueButton = await screen.findByText(CONTINUE_BUTTON, undefined, { timeout: 10000 })
   fireEvent.click(continueButton)
   await waitFor(() => {
     expect(selectHeaderStepHook).toBeCalledWith(
@@ -102,5 +103,34 @@ test("selectHeaderStepHook should be able to modify raw data", async () => {
 
   await waitFor(() => {
     expect(mutatedHeader).toBeInTheDocument()
+  })
+})
+
+test("Should show error toast if error is thrown in selectHeaderStepHook", async () => {
+  const selectHeaderStepHook = jest.fn(async () => {
+    throw new Error(ERROR_MESSAGE)
+    return undefined as any
+  })
+  render(
+    <ReactSpreadsheetImport
+      {...mockRsiValues}
+      selectHeaderStepHook={selectHeaderStepHook}
+      initialStepState={{
+        type: StepType.selectHeader,
+        data: [
+          ["name", "age"],
+          ["Josh", "2"],
+          ["Charlie", "3"],
+          ["Lena", "50"],
+        ],
+      }}
+    />,
+  )
+  const continueButton = screen.getByText(CONTINUE_BUTTON)
+  fireEvent.click(continueButton)
+  const errorToast = await screen.findByText(ERROR_MESSAGE)
+
+  await waitFor(() => {
+    expect(errorToast).toBeInTheDocument()
   })
 })
