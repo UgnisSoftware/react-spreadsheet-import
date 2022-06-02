@@ -126,7 +126,7 @@ Example:
 
 ### Initial state
 
-In rare case when you need to skip the beginning of he flow, you can start the flow from any of the steps.
+In rare case when you need to skip the beginning of the flow, you can start the flow from any of the steps.
 
 - **initialStepState** - initial state of component that will be rendered on load. 
 
