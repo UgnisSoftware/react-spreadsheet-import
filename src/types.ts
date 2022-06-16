@@ -39,6 +39,8 @@ export type RsiProps<T extends string> = {
   autoMapDistance?: number
   // initial Step state to be rendered on load
   initialStepState?: StepState
+  // Date format to use
+  dateFormat?: string
 }
 
 export type RawData = Array<string | undefined>
