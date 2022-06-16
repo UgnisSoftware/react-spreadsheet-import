@@ -13,7 +13,7 @@ type DropZoneProps = {
 }
 
 export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
-  const { translations, maxFileSize } = useRsi()
+  const { translations, maxFileSize, dateFormat } = useRsi()
   const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
   const toast = useToast()
   const [loading, setLoading] = useState(false)
@@ -39,7 +39,7 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
     onDrop: async ([file]) => {
       setLoading(true)
       const arrayBuffer = await readFileAsync(file)
-      const workbook = XLSX.read(arrayBuffer)
+      const workbook = XLSX.read(arrayBuffer, { cellDates: true, dateNF: dateFormat })
       setLoading(false)
       onContinue(workbook)
     },

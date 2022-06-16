@@ -37,8 +37,10 @@ export type RsiProps<T extends string> = {
   autoMapHeaders?: boolean
   // Headers matching accuracy: 1 for strict and up for more flexible matching
   autoMapDistance?: number
-  // initial Step state to be rendered on load
+  // Initial Step state to be rendered on load
   initialStepState?: StepState
+  // Date format to use
+  dateFormat?: string
 }
 
 export type RawData = Array<string | undefined>
