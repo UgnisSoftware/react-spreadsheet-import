@@ -12,6 +12,8 @@ import { StepType } from "../../UploadFlow"
 const MUTATED_HEADER = "mutated header"
 const CONTINUE_BUTTON = "Next"
 const ERROR_MESSAGE = "Something happened"
+const RAW_DATE = "2020-03-03"
+const FORMATTED_DATE = "2020/03/03"
 
 test("Select header row and click next", async () => {
   const data = [
@@ -69,11 +71,11 @@ test("selectHeaderStepHook should be called after header is selected", async () 
   fireEvent.click(continueButton)
   await waitFor(() => {
     expect(selectHeaderStepHook).toBeCalledWith(
-      ["name", "age"],
+      ["name", "age", "date"],
       [
-        ["Josh", "2"],
-        ["Charlie", "3"],
-        ["Lena", "50"],
+        ["Josh", "2", "2020-03-03"],
+        ["Charlie", "3", "2010-04-04"],
+        ["Lena", "50", "1994-02-27"],
       ],
     )
   })
@@ -133,4 +135,36 @@ test("Should show error toast if error is thrown in selectHeaderStepHook", async
   await waitFor(() => {
     expect(errorToast).toBeInTheDocument()
   })
+})
+
+test("dateFormat property should be applied to dates read from csv files", async () => {
+  const file = new File([RAW_DATE], "test.csv", {
+    type: "text/csv",
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
+
+  const uploader = screen.getByTestId("rsi-dropzone")
+  fireEvent.drop(uploader, {
+    target: { files: [file] },
+  })
+
+  const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 5000 })
+  expect(el).toBeInTheDocument()
+})
+
+test("dateFormat property should be applied to dates read from xlsx files", async () => {
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
+  const uploader = screen.getByTestId("rsi-dropzone")
+  const data = readFileSync(__dirname + "/../../../../static/Workbook2.xlsx")
+  fireEvent.drop(uploader, {
+    target: {
+      files: [
+        new File([data], "testFile.xlsx", {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+      ],
+    },
+  })
+  const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 10000 })
+  expect(el).toBeInTheDocument()
 })
