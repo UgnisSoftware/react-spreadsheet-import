@@ -178,6 +178,15 @@ import { ReactSpreadsheetImport, StepType } from "react-spreadsheet-import";
 />
 ```
 
+### Dates and time
+
+Excel stores dates and times as numbers - offsets from an epoch. When reading xlsx files SheetJS provides date formatting helpers.
+**Default date import format** is `yyyy-mm-dd`. This format can be changed using **dateFormat** property.
+
+- **dateFormat** - can be used to format dates when importing sheet data.
+
+Common date-time formats can be viewed [here](https://docs.sheetjs.com/docs/csf/features/dates/#date-and-time-number-formats).
+
 ### Other optional props
 
 ```tsx

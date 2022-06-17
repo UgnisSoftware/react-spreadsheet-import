@@ -39,7 +39,7 @@ export type RsiProps<T extends string> = {
   autoMapDistance?: number
   // Initial Step state to be rendered on load
   initialStepState?: StepState
-  // Date format to use
+  // Date format to use e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
   dateFormat?: string
 }
 
