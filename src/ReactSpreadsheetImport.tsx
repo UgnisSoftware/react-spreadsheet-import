@@ -17,7 +17,8 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   uploadStepHook: async (value) => value,
   selectHeaderStepHook: async (headerValues, data) => ({ headerValues, data }),
   matchColumnsStepHook: async (table) => table,
-  dateFormat: "yyyy-mm-dd", // ISO 8601
+  dateFormat: "yyyy-mm-dd", // ISO 8601,
+  parseRaw: false,
 } as const
 
 export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => {
