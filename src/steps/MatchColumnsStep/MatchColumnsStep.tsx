@@ -68,7 +68,8 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
-    (headerValues as string[]).map((value, index) => ({ type: ColumnType.empty, index, header: value })),
+    // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
+    ([...headerValues] as string[]).map((value, index) => ({ type: ColumnType.empty, index, header: value ?? "" })),
   )
   const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
 
