@@ -4,6 +4,12 @@ const toPath = (_path: string) => path.join(process.cwd(), _path)
 
 module.exports = {
   stories: ["../src/**/stories/*.stories.tsx"],
+  core: {
+    builder: {
+      name: "webpack5",
+      lazyCompilation: true,
+    },
+  },
   webpackFinal: async (config: any) => {
     config.module.rules.push({
       test: /\.mjs$/,
