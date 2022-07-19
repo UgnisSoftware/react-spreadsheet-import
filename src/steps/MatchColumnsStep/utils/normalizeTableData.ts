@@ -5,8 +5,8 @@ import { normalizeCheckboxValue } from "./normalizeCheckboxValue"
 
 export const normalizeTableData = <T extends string>(columns: Columns<T>, data: RawData[], fields: Fields<T>) =>
   data.map((row) =>
-    row.reduce((acc, curr, index) => {
-      const column = columns[index]
+    columns.reduce((acc, column, index) => {
+      const curr = row[index]
       switch (column.type) {
         case ColumnType.matchedCheckbox: {
           const field = fields.find((field) => field.key === column.value)!

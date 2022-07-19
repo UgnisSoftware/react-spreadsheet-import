@@ -40,7 +40,7 @@ export const ColumnGrid = <T extends string>({
             <Text sx={styles.title}>{translations.matchColumnsStep.userTableTitle}</Text>
           </Box>
           {columns.map((column, index) => (
-            <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header}>
+            <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header + index}>
               {userColumn(column)}
             </Box>
           ))}
@@ -50,7 +50,14 @@ export const ColumnGrid = <T extends string>({
           </Box>
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
           {columns.map((column, index) => (
-            <Box gridRow="4/5" gridColumn={`${index + 2}/${index + 3}`} key={column.index} py="1.125rem" pl={2} pr={3}>
+            <Box
+              gridRow="4/5"
+              gridColumn={`${index + 2}/${index + 3}`}
+              key={column.header + index}
+              py="1.125rem"
+              pl={2}
+              pr={3}
+            >
               {templateColumn(column)}
             </Box>
           ))}
