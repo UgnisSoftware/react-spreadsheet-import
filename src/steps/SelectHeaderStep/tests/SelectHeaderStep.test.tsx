@@ -138,11 +138,26 @@ test("Should show error toast if error is thrown in selectHeaderStepHook", async
   })
 })
 
-test("dateFormat property should be applied to dates read from csv files", async () => {
+test("dateFormat property should NOT be applied to dates read from csv files IF parseRaw=true", async () => {
   const file = new File([RAW_DATE], "test.csv", {
     type: "text/csv",
   })
-  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={true} />)
+
+  const uploader = screen.getByTestId("rsi-dropzone")
+  fireEvent.drop(uploader, {
+    target: { files: [file] },
+  })
+
+  const el = await screen.findByText(RAW_DATE, undefined, { timeout: 5000 })
+  expect(el).toBeInTheDocument()
+})
+
+test("dateFormat property should be applied to dates read from csv files IF parseRaw=false", async () => {
+  const file = new File([RAW_DATE], "test.csv", {
+    type: "text/csv",
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={false} />)
 
   const uploader = screen.getByTestId("rsi-dropzone")
   fireEvent.drop(uploader, {
