@@ -41,6 +41,8 @@ export type RsiProps<T extends string> = {
   initialStepState?: StepState
   // Date format to use e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
   dateFormat?: string
+  //Skips parsing of values e.g. date
+  parseRaw?: boolean
 }
 
 export type RawData = Array<string | undefined>
