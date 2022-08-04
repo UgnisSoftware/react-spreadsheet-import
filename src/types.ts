@@ -39,9 +39,9 @@ export type RsiProps<T extends string> = {
   autoMapDistance?: number
   // Initial Step state to be rendered on load
   initialStepState?: StepState
-  // Date format to use e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
+  // Sets SheetJS dateNF option. If date parsing is applied, date will be formatted e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
   dateFormat?: string
-  //Skips parsing of values e.g. date
+  // Sets SheetJS "raw" option. If true, parsing will only be applied to xlsx date fields.
   parseRaw?: boolean
 }
 
