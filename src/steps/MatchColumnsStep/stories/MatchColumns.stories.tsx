@@ -26,8 +26,6 @@ const mockData = [
 
 export const Basic = () => (
   <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-    <ModalWrapper isOpen={true} onClose={() => {}}>
       <MatchColumnsStep headerValues={mockData[0] as string[]} data={mockData.slice(1)} onContinue={() => {}} />
-    </ModalWrapper>
   </Providers>
 )

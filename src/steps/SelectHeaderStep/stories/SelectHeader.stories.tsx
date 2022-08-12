@@ -12,8 +12,8 @@ export default {
 
 export const Basic = () => (
   <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-    <ModalWrapper isOpen={true} onClose={() => {}}>
+
       <SelectHeaderStep data={headerSelectionTableFields} onContinue={async () => {}} />
-    </ModalWrapper>
+
   </Providers>
 )

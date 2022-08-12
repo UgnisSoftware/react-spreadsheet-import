@@ -15,8 +15,6 @@ const sheetNames = ["Sheet1", "Sheet2", "Sheet3"]
 
 export const Basic = () => (
   <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-    <ModalWrapper isOpen={true} onClose={() => {}}>
       <SelectSheetStep sheetNames={sheetNames} onContinue={async () => {}} />
-    </ModalWrapper>
   </Providers>
 )

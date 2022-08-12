@@ -14,9 +14,7 @@ export default {
 export const Basic = () => {
   return (
     <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-      <ModalWrapper isOpen={true} onClose={() => {}}>
         <UploadStep onContinue={async () => {}} />
-      </ModalWrapper>
     </Providers>
   )
 }

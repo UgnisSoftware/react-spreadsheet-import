@@ -4,7 +4,6 @@ import { Steps } from "./steps/Steps"
 import { themeOverrides } from "./theme"
 import { Providers } from "./components/Providers"
 import type { RsiProps } from "./types"
-import { ModalWrapper } from "./components/ModalWrapper"
 import { translations } from "./translationsRSIProps"
 
 export const defaultTheme = themeOverrides
@@ -28,9 +27,7 @@ export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => 
 
   return (
     <Providers theme={mergedThemes} rsiValues={{ ...props, translations: mergedTranslations }}>
-      <ModalWrapper isOpen={props.isOpen} onClose={props.onClose}>
         <Steps />
-      </ModalWrapper>
     </Providers>
   )
 }

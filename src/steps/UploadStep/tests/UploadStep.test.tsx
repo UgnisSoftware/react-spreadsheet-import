@@ -4,7 +4,6 @@ import { UploadStep } from "../UploadStep"
 import { defaultTheme, ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
 import { mockRsiValues } from "../../../stories/mockRsiValues"
 import { Providers } from "../../../components/Providers"
-import { ModalWrapper } from "../../../components/ModalWrapper"
 
 const MUTATED_RAW_DATA = "Bye"
 const ERROR_MESSAGE = "Something happened"
@@ -15,9 +14,7 @@ test("Upload a file", async () => {
   const onContinue = jest.fn()
   render(
     <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-      <ModalWrapper isOpen={true} onClose={() => {}}>
-        <UploadStep onContinue={onContinue} />
-      </ModalWrapper>
+      <UploadStep onContinue={onContinue} />
     </Providers>,
   )
 

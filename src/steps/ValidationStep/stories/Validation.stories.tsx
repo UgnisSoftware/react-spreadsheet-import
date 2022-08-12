@@ -13,8 +13,6 @@ export default {
 
 export const Basic = () => (
   <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-    <ModalWrapper isOpen={true} onClose={() => {}}>
       <ValidationStep initialData={editableTableInitialData} />
-    </ModalWrapper>
   </Providers>
 )
