@@ -51,6 +51,9 @@ const MatchIconTheme: any = {
 }
 
 export const themeOverrides = {
+  fonts: {
+    body: `"Graphik", "Open Sans", "Helvetica Neue", Arial, sans-serif`
+  },
   colors: {
     textColor: "#2D3748",
     subtitleColor: "#718096",

@@ -1,5 +1,5 @@
 import type XLSX from "xlsx"
-import { Box, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
+import { Box, Heading, Text, useStyleConfig } from "@chakra-ui/react"
 import { DropZone } from "./components/DropZone"
 import { useRsi } from "../../hooks/useRsi"
 import { ExampleTable } from "./components/ExampleTable"
@@ -24,15 +24,15 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
     [onContinue],
   )
   return (
-    <ModalBody>
+    <div id={"uploader"}>
       <Heading sx={styles.heading}>{translations.uploadStep.title}</Heading>
       <Text sx={styles.title}>{translations.uploadStep.manifestTitle}</Text>
       <Text sx={styles.subtitle}>{translations.uploadStep.manifestDescription}</Text>
-      <Box sx={styles.tableWrapper}>
+      <Box sx={styles.tableWrapper} className={"example-wrapper"}>
         <ExampleTable fields={fields} />
         <FadingOverlay />
       </Box>
       <DropZone onContinue={handleOnContinue} isLoading={isLoading} />
-    </ModalBody>
+    </div>
   )
 }

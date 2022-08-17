@@ -16,13 +16,11 @@ export const Steps = () => {
 
   return (
     <>
-      <ModalHeader display={["none", "none", "block"]}>
-        <Stepper activeStep={activeStep} checkIcon={CheckIcon}>
-          {steps.map((key) => (
-            <Step label={translations[key].title} key={key} />
-          ))}
-        </Stepper>
-      </ModalHeader>
+        {/*<Stepper activeStep={activeStep} checkIcon={CheckIcon}>*/}
+        {/*  {steps.map((key) => (*/}
+        {/*    <Step label={translations[key].title} key={key} />*/}
+        {/*  ))}*/}
+        {/*</Stepper>*/}
       <UploadFlow nextStep={nextStep} />
     </>
   )

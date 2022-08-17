@@ -6,6 +6,7 @@ import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useRsi } from "../../../hooks/useRsi"
 import { readFileAsync } from "../utils/readFilesAsync"
 import type { themeOverrides } from "../../../theme"
+import { toast } from "react-toastify"
 
 type DropZoneProps = {
   onContinue: (data: XLSX.WorkBook) => void
@@ -15,7 +16,6 @@ type DropZoneProps = {
 export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
   const { translations, maxFileSize, dateFormat, parseRaw } = useRsi()
   const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
-  const toast = useToast()
   const [loading, setLoading] = useState(false)
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     noClick: true,
@@ -26,14 +26,7 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
     onDropRejected: (fileRejections) => {
       setLoading(false)
       fileRejections.forEach((fileRejection) => {
-        toast({
-          status: "error",
-          variant: "left-accent",
-          position: "bottom-left",
-          title: `${fileRejection.file.name} ${translations.uploadStep.dropzone.errorToastDescription}`,
-          description: fileRejection.errors[0].message,
-          isClosable: true,
-        })
+        toast.error(fileRejection.errors[0].message)
       })
     },
     onDrop: async ([file]) => {
@@ -55,6 +48,7 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
       alignItems="center"
       flexDirection="column"
       flex={1}
+      className={"file-uploader"}
     >
       <input {...getInputProps()} data-testid="rsi-dropzone" />
       {isDragActive ? (

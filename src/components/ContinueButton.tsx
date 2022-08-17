@@ -7,9 +7,9 @@ type ContinueButtonProps = {
 }
 
 export const ContinueButton = ({ onContinue, title, isLoading }: ContinueButtonProps) => (
-  <ModalFooter>
-    <Button size="lg" w="21rem" onClick={onContinue} isLoading={isLoading}>
+  <div>
+    <Button size="lg" w="21rem" onClick={onContinue} isLoading={isLoading} className={"continue-button"}>
       {title}
     </Button>
-  </ModalFooter>
+  </div>
 )

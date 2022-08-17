@@ -1,4 +1,4 @@
-import { Heading, ModalBody, Radio, RadioGroup, Stack, useStyleConfig, Text } from "@chakra-ui/react"
+import { Heading, Radio, RadioGroup, Stack, useStyleConfig, Text } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
@@ -27,7 +27,7 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
 
   return (
     <>
-      <ModalBody alignItems="center" justifyContent="center" p={8} flex={1}>
+      <div >
         <Heading {...styles.heading}>{translations.uploadStep.selectSheet.title}</Heading>
         <RadioGroup onChange={(value) => setValue(value)} value={value}>
           <Stack spacing={8}>
@@ -38,7 +38,7 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
             ))}
           </Stack>
         </RadioGroup>
-      </ModalBody>
+      </div>
       <ContinueButton
         isLoading={isLoading}
         onContinue={() => handleOnContinue(value)}

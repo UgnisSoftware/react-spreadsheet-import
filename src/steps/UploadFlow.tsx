@@ -10,6 +10,7 @@ import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
 import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
 import type { RawData } from "../types"
+import { toast } from "react-toastify"
 
 export enum StepType {
   upload = "upload",
@@ -48,20 +49,6 @@ export const UploadFlow = ({ nextStep }: Props) => {
   const { initialStepState } = useRsi()
   const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
   const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
-  const toast = useToast()
-  const errorToast = useCallback(
-    (description: string) => {
-      toast({
-        status: "error",
-        variant: "left-accent",
-        position: "bottom-left",
-        title: `${translations.alerts.toast.error}`,
-        description,
-        isClosable: true,
-      })
-    },
-    [toast, translations],
-  )
 
   switch (state.type) {
     case StepType.upload:
@@ -71,7 +58,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
             const isSingleSheet = workbook.SheetNames.length === 1
             if (isSingleSheet) {
               if (maxRecords && exceedsMaxRecords(workbook.Sheets[workbook.SheetNames[0]], maxRecords)) {
-                errorToast(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
+                toast.error(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
                 return
               }
               try {
@@ -82,7 +69,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
                 })
                 nextStep()
               } catch (e) {
-                errorToast((e as Error).message)
+                toast.error((e as Error).message)
               }
             } else {
               setState({ type: StepType.selectSheet, workbook })
@@ -96,7 +83,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
           sheetNames={state.workbook.SheetNames}
           onContinue={async (sheetName) => {
             if (maxRecords && exceedsMaxRecords(state.workbook.Sheets[sheetName], maxRecords)) {
-              errorToast(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
+              toast.error(translations.uploadStep.maxRecordsExceeded(maxRecords.toString()))
               return
             }
             try {
@@ -107,7 +94,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
               })
               nextStep()
             } catch (e) {
-              errorToast((e as Error).message)
+              toast.error((e as Error).message)
             }
           }}
         />
@@ -126,7 +113,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
               })
               nextStep()
             } catch (e) {
-              errorToast((e as Error).message)
+              toast.error((e as Error).message)
             }
           }}
         />
@@ -145,7 +132,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
               })
               nextStep()
             } catch (e) {
-              errorToast((e as Error).message)
+              toast.error((e as Error).message)
             }
           }}
         />

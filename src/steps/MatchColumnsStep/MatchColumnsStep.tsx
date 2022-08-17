@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { useToast } from "@chakra-ui/react"
 import { UserTableColumn } from "./components/UserTableColumn"
 import { useRsi } from "../../hooks/useRsi"
 import { TemplateColumn } from "./components/TemplateColumn"
@@ -12,6 +11,7 @@ import type { Field, RawData } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
+import { toast } from "react-toastify"
 
 export type MatchColumnsProps<T extends string> = {
   data: RawData[]
@@ -63,7 +63,6 @@ export type Column<T extends string> =
 export type Columns<T extends string> = Column<T>[]
 
 export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps<T>) => {
-  const toast = useToast()
   const dataExample = data.slice(0, 2)
   const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
@@ -83,14 +82,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
           if (columnIndex === index) {
             return setColumn(column, field, data)
           } else if (index === existingFieldIndex) {
-            toast({
-              status: "warning",
-              variant: "left-accent",
-              position: "bottom-left",
-              title: translations.matchColumnsStep.duplicateColumnWarningTitle,
-              description: translations.matchColumnsStep.duplicateColumnWarningDescription,
-              isClosable: true,
-            })
+            toast.warn(translations.matchColumnsStep.duplicateColumnWarningDescription)
             return setColumn(column)
           } else {
             return column
@@ -98,14 +90,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
         }),
       )
     },
-    [
-      columns,
-      data,
-      fields,
-      toast,
-      translations.matchColumnsStep.duplicateColumnWarningDescription,
-      translations.matchColumnsStep.duplicateColumnWarningTitle,
-    ],
+    [columns, data, fields, translations.matchColumnsStep.duplicateColumnWarningDescription],
   )
 
   const onIgnore = useCallback(

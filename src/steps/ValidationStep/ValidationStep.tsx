@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react"
-import { Box, Button, Heading, ModalBody, Switch, useStyleConfig } from "@chakra-ui/react"
+import { Box, Button, Heading, Switch, useStyleConfig } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
@@ -112,11 +112,11 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
           submitData()
         }}
       />
-      <ModalBody pb={0}>
+      <div>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem" flexWrap="wrap" gap="8px">
           <Heading sx={styles.heading}>{translations.validationStep.title}</Heading>
           <Box display="flex" gap="16px" alignItems="center" flexWrap="wrap">
-            <Button variant="outline" size="sm" onClick={deleteSelectedRows}>
+            <Button variant="outline" size="sm" onClick={deleteSelectedRows} className={"discard-button"}>
               {translations.validationStep.discardButtonTitle}
             </Button>
             <Switch
@@ -129,7 +129,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
             </Switch>
           </Box>
         </Box>
-        <Box h={0} flexGrow={1}>
+        <Box h={0} flexGrow={1} className={"validate-step"}>
           <Table
             rowKeyGetter={rowKeyGetter}
             rows={tableData}
@@ -148,7 +148,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
             }}
           />
         </Box>
-      </ModalBody>
+      </div>
       <ContinueButton onContinue={onContinue} title={translations.validationStep.nextButtonTitle} />
     </>
   )

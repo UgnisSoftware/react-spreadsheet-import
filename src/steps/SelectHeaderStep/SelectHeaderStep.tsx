@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import { Heading, ModalBody, useStyleConfig, Box } from "@chakra-ui/react"
+import { Heading, useStyleConfig, Box } from "@chakra-ui/react"
 import { SelectHeaderTable } from "./components/SelectHeaderTable"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
@@ -30,12 +30,12 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
 
   return (
     <>
-      <ModalBody pb={0}>
+      <div>
         <Heading {...styles.heading}>{translations.selectHeaderStep.title}</Heading>
-        <Box h={0} flexGrow={1}>
+        <Box h={0} flexGrow={1} className={"select-header"}>
           <SelectHeaderTable data={data} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
         </Box>
-      </ModalBody>
+      </div>
       <ContinueButton
         onContinue={handleContinue}
         title={translations.selectHeaderStep.nextButtonTitle}

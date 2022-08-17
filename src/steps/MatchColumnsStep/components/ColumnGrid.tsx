@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Column, Columns } from "../MatchColumnsStep"
-import { Box, Flex, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
+import { Box, Flex, Heading, Text, useStyleConfig } from "@chakra-ui/react"
 import { FadingWrapper } from "../../../components/FadingWrapper"
 import { ContinueButton } from "../../../components/ContinueButton"
 import { useRsi } from "../../../hooks/useRsi"
@@ -28,7 +28,7 @@ export const ColumnGrid = <T extends string>({
 
   return (
     <>
-      <ModalBody flexDir="column" p={8} overflow="auto">
+      <div id="column-grid">
         <Heading sx={styles.heading}>{translations.matchColumnsStep.title}</Heading>
         <Flex
           flex={1}
@@ -62,7 +62,7 @@ export const ColumnGrid = <T extends string>({
             </Box>
           ))}
         </Flex>
-      </ModalBody>
+      </div>
       <ContinueButton
         isLoading={isLoading}
         onContinue={onContinue}

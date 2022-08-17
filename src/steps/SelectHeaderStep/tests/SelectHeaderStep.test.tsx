@@ -29,9 +29,7 @@ test("Select header row and click next", async () => {
   const onContinue = jest.fn()
   render(
     <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-      <ModalWrapper isOpen={true} onClose={() => {}}>
-        <SelectHeaderStep data={data} onContinue={onContinue} />
-      </ModalWrapper>
+      <SelectHeaderStep data={data} onContinue={onContinue} />
     </Providers>,
   )
 
@@ -153,20 +151,6 @@ test("dateFormat property should NOT be applied to dates read from csv files IF 
   expect(el).toBeInTheDocument()
 })
 
-test("dateFormat property should be applied to dates read from csv files IF parseRaw=false", async () => {
-  const file = new File([RAW_DATE], "test.csv", {
-    type: "text/csv",
-  })
-  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={false} />)
-
-  const uploader = screen.getByTestId("rsi-dropzone")
-  fireEvent.drop(uploader, {
-    target: { files: [file] },
-  })
-
-  const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 5000 })
-  expect(el).toBeInTheDocument()
-})
 
 test("dateFormat property should be applied to dates read from xlsx files", async () => {
   render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
