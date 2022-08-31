@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { Box, useTheme } from "@chakra-ui/react"
 import { usePopper } from "@chakra-ui/popper"
 import { rootId } from "../Providers"
+import { useRsi } from "../../hooks/useRsi"
 
 function createWrapperAndAppendToBody(wrapperId: string) {
   const wrapperElement = document.createElement("div")
@@ -20,6 +21,7 @@ interface PortalProps {
 
 const MenuPortal = (props: PortalProps) => {
   const theme = useTheme()
+  const { rtl } = useRsi()
   const { popperRef, referenceRef } = usePopper({
     strategy: "fixed",
     matchWidth: true,
@@ -51,6 +53,7 @@ const MenuPortal = (props: PortalProps) => {
 
   return ReactDOM.createPortal(
     <Box
+      dir={rtl ? "rtl" : "ltr"}
       ref={popperRef}
       zIndex={theme.zIndices.tooltip}
       sx={{

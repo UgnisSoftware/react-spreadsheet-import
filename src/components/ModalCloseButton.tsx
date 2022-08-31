@@ -30,6 +30,7 @@ export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
         top="20px"
         onClick={() => setShowModal(true)}
         zIndex="toast"
+        dir="ltr"
       />
     </>
   )

@@ -80,7 +80,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
             break
           default:
             component = (
-              <Box pl="0.5rem">
+              <Box paddingInlineStart="0.5rem">
                 <Input
                   ref={autoFocusAndSelect}
                   variant="unstyled"
