@@ -43,6 +43,8 @@ export type RsiProps<T extends string> = {
   dateFormat?: string
   // Sets SheetJS "raw" option. If true, parsing will only be applied to xlsx date fields.
   parseRaw?: boolean
+  // Use for right-to-left (RTL) support
+  rtl?: boolean
 }
 
 export type RawData = Array<string | undefined>

@@ -16,12 +16,12 @@
     "ts": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "prebuild": "rimraf dist && rimraf dist-commonjs && rimraf types",
+    "prebuild": "npm run clean",
     "build": "rollup -c rollup.config.ts",
     "build-storybook": "build-storybook -o docs-build",
     "release:minor": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version patch && git add -A && git push && git push --tags && npm publish",
     "release:major": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version major && git add -A && git push && git push --tags && npm publish",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist dist-commonjs types"
   },
   "repository": {
     "type": "git",
