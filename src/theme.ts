@@ -309,7 +309,7 @@ export const themeOverrides = {
           valueContainer: (provided) => ({
             ...provided,
             p: 0,
-            pl: 2,
+            paddingInlineStart: 2,
             color: "gray.400",
           }),
           menu: (provided) => ({
@@ -428,9 +428,20 @@ export const themeOverrides = {
       ".rdg-row:last-child .rdg-cell:last-child": {
         borderBottomRightRadius: "lg",
       },
+      ".rdg[dir='rtl']": {
+        ".rdg-row:last-child .rdg-cell:first-of-type": {
+          borderBottomRightRadius: "lg",
+          borderBottomLeftRadius: "none",
+        },
+        ".rdg-row:last-child .rdg-cell:last-child": {
+          borderBottomLeftRadius: "lg",
+          borderBottomRightRadius: "none",
+        },
+      },
       ".rdg-cell": {
         contain: "size layout style paint",
         borderRight: "none",
+        borderInlineEnd: "none",
         borderBottom: "1px solid var(--rdg-border-color)",
         whiteSpace: "nowrap",
         overflow: "hidden",
@@ -439,10 +450,10 @@ export const themeOverrides = {
           boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
         },
         "&:first-of-type": {
-          borderLeft: "1px solid var(--rdg-border-color)",
+          borderInlineStart: "1px solid var(--rdg-border-color)",
         },
         "&:last-child": {
-          borderRight: "1px solid var(--rdg-border-color)",
+          borderInlineEnd: "1px solid var(--rdg-border-color)",
         },
       },
       ".rdg-cell-error": {
@@ -476,6 +487,18 @@ export const themeOverrides = {
         "--rdg-selection-color": "none",
         display: "flex",
         alignItems: "center",
+      },
+    },
+  },
+} as const
+
+export const rtlThemeSupport = {
+  components: {
+    Modal: {
+      baseStyle: {
+        dialog: {
+          direction: "rtl",
+        },
       },
     },
   },

@@ -1,6 +1,7 @@
 import type React from "react"
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react"
 import { ModalCloseButton } from "./ModalCloseButton"
+import { useRsi } from "../hooks/useRsi"
 
 type Props = {
   children: React.ReactNode
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export const ModalWrapper = ({ children, isOpen, onClose }: Props) => {
+  const { rtl } = useRsi()
   return (
     <Modal
       isOpen={isOpen}
@@ -19,9 +21,11 @@ export const ModalWrapper = ({ children, isOpen, onClose }: Props) => {
       closeOnOverlayClick={false}
       scrollBehavior="inside"
     >
-      <ModalOverlay />
-      <ModalCloseButton onClose={onClose} />
-      <ModalContent>{children}</ModalContent>
+      <div dir={rtl ? "rtl" : "ltr"}>
+        <ModalOverlay />
+        <ModalCloseButton onClose={onClose} />
+        <ModalContent>{children}</ModalContent>
+      </div>
     </Modal>
   )
 }

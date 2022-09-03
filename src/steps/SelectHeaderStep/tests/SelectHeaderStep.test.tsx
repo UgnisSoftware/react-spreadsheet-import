@@ -14,6 +14,7 @@ const CONTINUE_BUTTON = "Next"
 const ERROR_MESSAGE = "Something happened"
 const RAW_DATE = "2020-03-03"
 const FORMATTED_DATE = "2020/03/03"
+const TRAILING_CELL = "trailingcell"
 
 test("Select header row and click next", async () => {
   const data = [
@@ -137,11 +138,26 @@ test("Should show error toast if error is thrown in selectHeaderStepHook", async
   })
 })
 
-test("dateFormat property should be applied to dates read from csv files", async () => {
+test("dateFormat property should NOT be applied to dates read from csv files IF parseRaw=true", async () => {
   const file = new File([RAW_DATE], "test.csv", {
     type: "text/csv",
   })
-  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={true} />)
+
+  const uploader = screen.getByTestId("rsi-dropzone")
+  fireEvent.drop(uploader, {
+    target: { files: [file] },
+  })
+
+  const el = await screen.findByText(RAW_DATE, undefined, { timeout: 5000 })
+  expect(el).toBeInTheDocument()
+})
+
+test("dateFormat property should be applied to dates read from csv files IF parseRaw=false", async () => {
+  const file = new File([RAW_DATE], "test.csv", {
+    type: "text/csv",
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={false} />)
 
   const uploader = screen.getByTestId("rsi-dropzone")
   fireEvent.drop(uploader, {
@@ -168,3 +184,33 @@ test("dateFormat property should be applied to dates read from xlsx files", asyn
   const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 10000 })
   expect(el).toBeInTheDocument()
 })
+
+test(
+  "trailing (not under a header) cells should be rendered in SelectHeaderStep table, " +
+    "but not in MatchColumnStep if a shorter row is selected as a header",
+  async () => {
+    const selectHeaderStepHook = jest.fn(async (headerValues, data) => {
+      return { headerValues, data }
+    })
+    render(<ReactSpreadsheetImport {...mockRsiValues} selectHeaderStepHook={selectHeaderStepHook} />)
+    const uploader = screen.getByTestId("rsi-dropzone")
+    const data = readFileSync(__dirname + "/../../../../static/TrailingCellsWorkbook.xlsx")
+    fireEvent.drop(uploader, {
+      target: {
+        files: [
+          new File([data], "testFile.xlsx", {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          }),
+        ],
+      },
+    })
+    const trailingCell = await screen.findByText(TRAILING_CELL, undefined, { timeout: 10000 })
+    expect(trailingCell).toBeInTheDocument()
+    const nextButton = screen.getByRole("button", {
+      name: "Next",
+    })
+    userEvent.click(nextButton)
+    const trailingCellNextPage = await screen.findByText(TRAILING_CELL, undefined, { timeout: 10000 })
+    expect(trailingCellNextPage).not.toBeInTheDocument()
+  },
+)

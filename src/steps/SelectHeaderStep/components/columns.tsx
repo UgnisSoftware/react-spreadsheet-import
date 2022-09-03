@@ -35,12 +35,13 @@ export const SelectColumn: Column<any, any> = {
   formatter: SelectFormatter,
 }
 
-export const generateSelectionColumns = (data: RawData[]) => [
-  SelectColumn,
-  ...data?.[0].map(
-    (value, index): Column<any, any> => ({
+export const generateSelectionColumns = (data: RawData[]) => {
+  const longestRowLength = data.reduce((acc, curr) => (acc > curr.length ? acc : curr.length), 0)
+  return [
+    SelectColumn,
+    ...Array.from(Array(longestRowLength), (_, index) => ({
       key: index.toString(),
       name: "",
-    }),
-  ),
-]
+    })),
+  ]
+}

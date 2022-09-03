@@ -1,7 +1,7 @@
 import merge from "lodash/merge"
 
 import { Steps } from "./steps/Steps"
-import { themeOverrides } from "./theme"
+import { rtlThemeSupport, themeOverrides } from "./theme"
 import { Providers } from "./components/Providers"
 import type { RsiProps } from "./types"
 import { ModalWrapper } from "./components/ModalWrapper"
@@ -17,13 +17,16 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   uploadStepHook: async (value) => value,
   selectHeaderStepHook: async (headerValues, data) => ({ headerValues, data }),
   matchColumnsStepHook: async (table) => table,
-  dateFormat: "yyyy-mm-dd", // ISO 8601
+  dateFormat: "yyyy-mm-dd", // ISO 8601,
+  parseRaw: true,
 } as const
 
 export const ReactSpreadsheetImport = <T extends string>(props: RsiProps<T>) => {
   const mergedTranslations =
     props.translations !== translations ? merge(translations, props.translations) : translations
-  const mergedThemes = merge(defaultTheme, props.customTheme)
+  const mergedThemes = props.rtl
+    ? merge(defaultTheme, rtlThemeSupport, props.customTheme)
+    : merge(defaultTheme, props.customTheme)
 
   return (
     <Providers theme={mergedThemes} rsiValues={{ ...props, translations: mergedTranslations }}>
