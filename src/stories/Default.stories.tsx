@@ -1,5 +1,5 @@
 import { ReactSpreadsheetImport } from "../ReactSpreadsheetImport"
-import { Box, Link, Code, Button, useDisclosure } from "@chakra-ui/react"
+import { Box, Link, Code, Button, useDisclosure, ChakraProvider } from "@chakra-ui/react"
 import { mockRsiValues } from "./mockRsiValues"
 import { useState } from "react"
 
@@ -11,8 +11,8 @@ export const Basic = () => {
   const [data, setData] = useState<any>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
-    <>
-      <Box py={20} display="flex" gap="8px" alignItems="center">
+    <ChakraProvider>
+      <Box py={6} display="flex" gap="8px" alignItems="center">
         <Button onClick={onOpen} border="2px solid #7069FA" p="8px" borderRadius="8px">
           Open Flow
         </Button>
@@ -23,7 +23,7 @@ export const Basic = () => {
       </Link>
       <ReactSpreadsheetImport {...mockRsiValues} isOpen={isOpen} onClose={onClose} onSubmit={setData} />
       {data && (
-        <Box pt={64} display="flex" gap="8px" flexDirection="column">
+        <Box pt={8} display="flex" gap="8px" flexDirection="column">
           <b>Returned data:</b>
           <Code
             display="flex"
@@ -32,12 +32,12 @@ export const Basic = () => {
             fontSize="12px"
             background="#4A5568"
             color="white"
-            p={32}
+            p={6}
           >
             <pre>{JSON.stringify(data, undefined, 4)}</pre>
           </Code>
         </Box>
       )}
-    </>
+    </ChakraProvider>
   )
 }
