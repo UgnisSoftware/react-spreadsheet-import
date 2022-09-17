@@ -2,6 +2,7 @@ import { ReactSpreadsheetImport } from "../ReactSpreadsheetImport"
 import { Box, Link, Code, Button, useDisclosure, ChakraProvider } from "@chakra-ui/react"
 import { mockRsiValues } from "./mockRsiValues"
 import { useState } from "react"
+import { StepType } from "../steps/UploadFlow"
 
 export default {
   title: "React spreadsheet import",
