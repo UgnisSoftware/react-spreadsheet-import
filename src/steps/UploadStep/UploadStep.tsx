@@ -16,7 +16,7 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
   const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
   const { translations, fields } = useRsi()
   const handleOnContinue = useCallback(
-    async (data) => {
+    async (data: XLSX.WorkBook) => {
       setIsLoading(true)
       await onContinue(data)
       setIsLoading(false)

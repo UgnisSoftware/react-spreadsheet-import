@@ -22,7 +22,11 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
     noKeyboard: true,
     maxFiles: 1,
     maxSize: maxFileSize,
-    accept: ".xls, .csv, .xlsx",
+    accept: {
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "text/csv": [".csv"],
+    },
     onDropRejected: (fileRejections) => {
       setLoading(false)
       fileRejections.forEach((fileRejection) => {

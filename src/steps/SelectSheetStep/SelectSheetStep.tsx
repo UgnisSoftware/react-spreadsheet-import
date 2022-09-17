@@ -17,7 +17,7 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
     "SelectSheetStep",
   ) as typeof themeOverrides["components"]["SelectSheetStep"]["baseStyle"]
   const handleOnContinue = useCallback(
-    async (data) => {
+    async (data: typeof value) => {
       setIsLoading(true)
       await onContinue(data)
       setIsLoading(false)

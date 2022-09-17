@@ -19,7 +19,8 @@
     "prebuild": "npm run clean",
     "build": "rollup -c rollup.config.ts",
     "build-storybook": "build-storybook -o docs-build",
-    "release:minor": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version patch && git add -A && git push && git push --tags && npm publish",
+    "release:patch": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version patch && git add -A && git push && git push --tags && npm publish",
+    "release:minor": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version minor && git add -A && git push && git push --tags && npm publish",
     "release:major": "git checkout master && git pull && npm run test && npm run ts && npm run build && npm version major && git add -A && git push && git push --tags && npm publish",
     "clean": "rimraf dist dist-commonjs types"
   },
@@ -71,7 +72,7 @@
     "@storybook/react": "6.5.10",
     "@testing-library/dom": "8.17.1",
     "@testing-library/jest-dom": "5.16.5",
-    "@testing-library/react": "13.4.0",
+    "@testing-library/react": "13.3.0",
     "@testing-library/user-event": "14.4.3",
     "@types/jest": "29.0.0",
     "@types/js-levenshtein": "1.1.1",
