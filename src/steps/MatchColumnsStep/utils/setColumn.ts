@@ -13,7 +13,10 @@ export const setColumn = <T extends string>(
         ...oldColumn,
         type: ColumnType.matchedSelect,
         value: field.key,
-        matchedOptions: uniqueEntries(data || [], oldColumn.index),
+        matchedOptions: uniqueEntries(data || [], oldColumn.index)?.map(option => {
+          const value = options.find(o => o.value == option.value || o.label == option.entry)?.value
+          return value ? {...option, value} as MatchedOptions<T>  : option as MatchedOptions<T>
+        }),
       }
     case "checkbox":
       return { index: oldColumn.index, type: ColumnType.matchedCheckbox, value: field.key, header: oldColumn.header }
