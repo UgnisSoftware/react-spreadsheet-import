@@ -317,13 +317,13 @@ Flatfile vs react-spreadsheet-import and Dromo vs react-spreadsheet-import:
 | Price                          | Free           | Paid        | Paid        |
 | Support                        | Github Issues  | Enterprise  | Enterprise  |
 | Self-host                      | Yes            | Paid        | Paid        |
-| Hosted solution                | In development | Yes         | No          |
+| Hosted solution                | In development | Yes         | Yes         |
 | On-prem deployment             | N/A            | Yes         | Yes         |
 | Hooks                          | Yes            | Yes         | Yes         |
 | Automatic header matching      | Yes            | Yes         | Yes         |
 | Data validation                | Yes            | Yes         | Yes         |
 | Custom styling                 | Yes            | Yes         | Yes         |
-| Translations                   | Yes            | Yes         | No          |
+| Translations                   | Yes            | Yes         | Yes         |
 | Trademarked words `Data Hooks` | No             | Yes         | No          |
 
 React-spreadsheet-import can be used as a free and open-source alternative to Flatfile and Dromo.
