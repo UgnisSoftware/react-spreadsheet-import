@@ -1,9 +1,8 @@
-name: Create Github Release
-
+name: 'Create github release'
 on:
   push:
     tags:
-      - "*"
+      - '*'
 
 jobs:
   release:
@@ -11,22 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Build Changelog
+      - name: "Build Changelog"
         id: github_release
-        uses: mikepenz/release-changelog-builder-action@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: mikepenz/release-changelog-builder-action@v3
         with:
           configuration: ".github/config/configuration.json"
-          commitMode: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
-        uses: actions/create-release@v1
+        uses: mikepenz/action-gh-release@v0.2.0
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
           body: ${{steps.github_release.outputs.changelog}}
+          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-b') || contains(github.ref, '-a') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
