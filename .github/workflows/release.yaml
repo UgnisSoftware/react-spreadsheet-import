@@ -1,8 +1,8 @@
-name: 'Create github release'
+name: Create github release
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   release:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: "Build Changelog"
+      - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v3
         with:
