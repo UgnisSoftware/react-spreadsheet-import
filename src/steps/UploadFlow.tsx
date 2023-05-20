@@ -47,6 +47,7 @@ interface Props {
 export const UploadFlow = ({ nextStep }: Props) => {
   const { initialStepState } = useRsi()
   const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
   const errorToast = useCallback(
@@ -67,7 +68,8 @@ export const UploadFlow = ({ nextStep }: Props) => {
     case StepType.upload:
       return (
         <UploadStep
-          onContinue={async (workbook) => {
+          onContinue={async (workbook, file) => {
+            setUploadedFile(file)
             const isSingleSheet = workbook.SheetNames.length === 1
             if (isSingleSheet) {
               if (maxRecords && exceedsMaxRecords(workbook.Sheets[workbook.SheetNames[0]], maxRecords)) {
@@ -151,7 +153,7 @@ export const UploadFlow = ({ nextStep }: Props) => {
         />
       )
     case StepType.validateData:
-      return <ValidationStep initialData={state.data} />
+      return <ValidationStep initialData={state.data} file={uploadedFile!} />
     default:
       return <Progress isIndeterminate />
   }

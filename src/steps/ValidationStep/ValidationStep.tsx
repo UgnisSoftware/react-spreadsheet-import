@@ -13,9 +13,10 @@ import type { RowsChangeData } from "react-data-grid"
 
 type Props<T extends string> = {
   initialData: Data<T>[]
+  file: File
 }
 
-export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
+export const ValidationStep = <T extends string>({ initialData, file }: Props<T>) => {
   const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
   const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
 
@@ -85,7 +86,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
       return true
     })
     const invalidData = all.filter((value) => !validData.includes(value))
-    onSubmit({ validData, invalidData, all: data })
+    onSubmit({ validData, invalidData, all: data }, file)
     onClose()
   }
   const onContinue = () => {
