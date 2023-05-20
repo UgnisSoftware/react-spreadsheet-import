@@ -21,7 +21,22 @@ export const Basic = () => {
       <Link href="./exampleFile.csv" border="2px solid #718096" p="8px" borderRadius="8px" download="exampleCSV">
         Download example file
       </Link>
-      <ReactSpreadsheetImport {...mockRsiValues} isOpen={isOpen} onClose={onClose} onSubmit={setData} />
+      <ReactSpreadsheetImport
+        {...mockRsiValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={async (data, file) => {
+          const form = new FormData()
+          form.append("file", file, file.name)
+          await fetch("http://localhost:3000/upload", {
+            method: "POST",
+            body: form,
+            // Disabling CORS because frontend and backend runs on different ports, should not be needed in production
+            mode: "no-cors",
+          })
+          setData(data)
+        }}
+      />
       {data && (
         <Box pt={64} display="flex" gap="8px" flexDirection="column">
           <b>Returned data:</b>
