@@ -19,13 +19,15 @@ const getFilterSwitch = () =>
     name: "Show only rows with errors",
   })
 
+const file = new File([""], "file.csv")
+
 describe("Validation step tests", () => {
   test("Submit data", async () => {
     const onSubmit = jest.fn()
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit: onSubmit }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={[]} />
+          <ValidationStep initialData={[]} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -37,7 +39,7 @@ describe("Validation step tests", () => {
     userEvent.click(finishButton)
 
     await waitFor(() => {
-      expect(onSubmit).toBeCalled()
+      expect(onSubmit).toBeCalledWith({ all: [], invalidData: [], validData: [] }, file)
     })
   })
 
@@ -69,7 +71,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -123,7 +125,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields, onSubmit }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -197,7 +199,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -244,7 +246,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -288,7 +290,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -345,7 +347,7 @@ describe("Validation step tests", () => {
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -430,7 +432,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -589,7 +591,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -650,7 +652,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -712,7 +714,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -775,7 +777,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} />
+          <ValidationStep initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
