@@ -2,13 +2,14 @@ import { ReactSpreadsheetImport } from "../ReactSpreadsheetImport"
 import { Box, Link, Code, Button, useDisclosure } from "@chakra-ui/react"
 import { mockRsiValues } from "./mockRsiValues"
 import { useState } from "react"
+import type { Result } from "src/types"
 
 export default {
   title: "React spreadsheet import",
 }
 
 export const Basic = () => {
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<Result<any> | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -22,9 +23,9 @@ export const Basic = () => {
         Download example file
       </Link>
       <ReactSpreadsheetImport {...mockRsiValues} isOpen={isOpen} onClose={onClose} onSubmit={setData} />
-      {data && (
+      {!!data && (
         <Box pt={64} display="flex" gap="8px" flexDirection="column">
-          <b>Returned data:</b>
+          <b>Returned data (showing first 100 rows):</b>
           <Code
             display="flex"
             alignItems="center"
@@ -34,7 +35,17 @@ export const Basic = () => {
             color="white"
             p={32}
           >
-            <pre>{JSON.stringify(data, undefined, 4)}</pre>
+            <pre>
+              {JSON.stringify(
+                {
+                  validData: data.validData.slice(0, 100),
+                  invalidData: data.invalidData.slice(0, 100),
+                  all: data.all.slice(0, 100),
+                },
+                undefined,
+                4,
+              )}
+            </pre>
           </Code>
         </Box>
       )}

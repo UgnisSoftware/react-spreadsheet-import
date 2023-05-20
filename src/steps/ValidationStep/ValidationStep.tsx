@@ -75,17 +75,25 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
 
   const rowKeyGetter = useCallback((row: Data<T> & Meta) => row.__index, [])
 
-  const submitData = () => {
-    const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as Data<T>[]
-    const validData = all.filter((value, index) => {
-      const originalValue = data[index]
-      if (originalValue?.__errors) {
-        return !Object.values(originalValue.__errors)?.filter((err) => err.level === "error").length
-      }
-      return true
-    })
-    const invalidData = all.filter((value) => !validData.includes(value))
-    onSubmit({ validData, invalidData, all: data })
+  const submitData = async () => {
+    const calculatedData = data.reduce(
+      (acc, value) => {
+        if (value?.__errors) {
+          for (const key in value?.__errors) {
+            if (value?.__errors[key].level === "error") {
+              acc.invalidData.push(value)
+              return acc
+            }
+          }
+        }
+        const { __index, __errors, ...valid } = value
+        acc.validData.push(valid as unknown as Data<T>)
+        return acc
+      },
+      { validData: [] as Data<T>[], invalidData: [] as typeof data, all: data },
+    )
+    onSubmit(calculatedData)
+    setShowSubmitAlert(false)
     onClose()
   }
   const onContinue = () => {
@@ -104,14 +112,7 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
 
   return (
     <>
-      <SubmitDataAlert
-        isOpen={showSubmitAlert}
-        onClose={() => setShowSubmitAlert(false)}
-        onConfirm={() => {
-          setShowSubmitAlert(false)
-          submitData()
-        }}
-      />
+      <SubmitDataAlert isOpen={showSubmitAlert} onClose={() => setShowSubmitAlert(false)} onConfirm={submitData} />
       <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem" flexWrap="wrap" gap="8px">
           <Heading sx={styles.heading}>{translations.validationStep.title}</Heading>
