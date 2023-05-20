@@ -78,19 +78,19 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
   const submitData = async () => {
     const calculatedData = data.reduce(
       (acc, value) => {
+        const { __index, __errors, ...values } = value
         if (value?.__errors) {
           for (const key in value?.__errors) {
             if (value?.__errors[key].level === "error") {
-              acc.invalidData.push(value)
+              acc.invalidData.push(values as unknown as Data<T>)
               return acc
             }
           }
         }
-        const { __index, __errors, ...valid } = value
-        acc.validData.push(valid as unknown as Data<T>)
+        acc.validData.push(values as unknown as Data<T>)
         return acc
       },
-      { validData: [] as Data<T>[], invalidData: [] as typeof data, all: data },
+      { validData: [] as Data<T>[], invalidData: [] as Data<T>[], all: data },
     )
     onSubmit(calculatedData)
     setShowSubmitAlert(false)
