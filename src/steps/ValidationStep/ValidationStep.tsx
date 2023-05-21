@@ -79,9 +79,9 @@ export const ValidationStep = <T extends string>({ initialData }: Props<T>) => {
     const calculatedData = data.reduce(
       (acc, value) => {
         const { __index, __errors, ...values } = value
-        if (value?.__errors) {
-          for (const key in value?.__errors) {
-            if (value?.__errors[key].level === "error") {
+        if (__errors) {
+          for (const key in __errors) {
+            if (__errors[key].level === "error") {
               acc.invalidData.push(values as unknown as Data<T>)
               return acc
             }
