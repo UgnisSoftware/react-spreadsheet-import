@@ -8,7 +8,7 @@ import { FadingOverlay } from "./components/FadingOverlay"
 import type { themeOverrides } from "../../theme"
 
 type UploadProps = {
-  onContinue: (data: XLSX.WorkBook) => Promise<void>
+  onContinue: (data: XLSX.WorkBook, file: File) => Promise<void>
 }
 
 export const UploadStep = ({ onContinue }: UploadProps) => {
@@ -16,9 +16,9 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
   const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
   const { translations, fields } = useRsi()
   const handleOnContinue = useCallback(
-    async (data) => {
+    async (data, file) => {
       setIsLoading(true)
-      await onContinue(data)
+      await onContinue(data, file)
       setIsLoading(false)
     },
     [onContinue],

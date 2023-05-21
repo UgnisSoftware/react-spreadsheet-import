@@ -22,7 +22,7 @@ export type RsiProps<T extends string> = {
   // Runs after column matching and on entry change
   tableHook?: TableHook<T>
   // Function called after user finishes the flow
-  onSubmit: (data: Result<T>) => void
+  onSubmit: (data: Result<T>, file: File) => void
   // Allows submitting with errors. Default: true
   allowInvalidSubmit?: boolean
   // Translations for each text

@@ -11,10 +11,12 @@ export default {
   },
 }
 
+const file = new File([""], "file.csv")
+
 export const Basic = () => (
   <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
     <ModalWrapper isOpen={true} onClose={() => {}}>
-      <ValidationStep initialData={editableTableInitialData} />
+      <ValidationStep initialData={editableTableInitialData} file={file} />
     </ModalWrapper>
   </Providers>
 )
