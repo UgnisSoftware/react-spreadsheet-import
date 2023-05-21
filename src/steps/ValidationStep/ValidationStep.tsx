@@ -76,17 +76,25 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
 
   const rowKeyGetter = useCallback((row: Data<T> & Meta) => row.__index, [])
 
-  const submitData = () => {
-    const all = data.map(({ __index, __errors, ...value }) => ({ ...value })) as unknown as Data<T>[]
-    const validData = all.filter((value, index) => {
-      const originalValue = data[index]
-      if (originalValue?.__errors) {
-        return !Object.values(originalValue.__errors)?.filter((err) => err.level === "error").length
-      }
-      return true
-    })
-    const invalidData = all.filter((value) => !validData.includes(value))
-    onSubmit({ validData, invalidData, all: data }, file)
+  const submitData = async () => {
+    const calculatedData = data.reduce(
+      (acc, value) => {
+        const { __index, __errors, ...values } = value
+        if (__errors) {
+          for (const key in __errors) {
+            if (__errors[key].level === "error") {
+              acc.invalidData.push(values as unknown as Data<T>)
+              return acc
+            }
+          }
+        }
+        acc.validData.push(values as unknown as Data<T>)
+        return acc
+      },
+      { validData: [] as Data<T>[], invalidData: [] as Data<T>[], all: data },
+    )
+    onSubmit(calculatedData, file)
+    setShowSubmitAlert(false)
     onClose()
   }
   const onContinue = () => {
@@ -105,14 +113,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
 
   return (
     <>
-      <SubmitDataAlert
-        isOpen={showSubmitAlert}
-        onClose={() => setShowSubmitAlert(false)}
-        onConfirm={() => {
-          setShowSubmitAlert(false)
-          submitData()
-        }}
-      />
+      <SubmitDataAlert isOpen={showSubmitAlert} onClose={() => setShowSubmitAlert(false)} onConfirm={submitData} />
       <ModalBody pb={0}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb="2rem" flexWrap="wrap" gap="8px">
           <Heading sx={styles.heading}>{translations.validationStep.title}</Heading>
