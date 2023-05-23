@@ -36,12 +36,19 @@ const StepsComponent: typeof StepsTheme = {
 const MatchIconTheme: any = {
   baseStyle: (props: any) => {
     return {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       borderRadius: "50%",
       borderWidth: "2px",
       bg: "background",
       borderColor: "yellow.500",
       color: "background",
       transitionDuration: "ultra-fast",
+      _highlighted: {
+        bg: "green.500",
+        borderColor: "green.500",
+      },
     }
   },
   defaultProps: {
