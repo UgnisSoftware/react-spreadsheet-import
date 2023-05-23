@@ -446,11 +446,11 @@ export const themeOverrides = {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
         "&[aria-selected='true']": {
           boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
         },
         "&:first-of-type": {
+          boxShadow: "none",
           borderInlineStart: "1px solid var(--rdg-border-color)",
         },
         "&:last-child": {
