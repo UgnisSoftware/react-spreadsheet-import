@@ -12,5 +12,6 @@ export const ExampleTable = <T extends string>({ fields }: Props<T>) => {
   const data = useMemo(() => generateExampleRow(fields), [fields])
   const columns = useMemo(() => generateColumns(fields), [fields])
 
+  console.log(data, columns)
   return <Table rows={data} columns={columns} className={"rdg-example"} />
 }

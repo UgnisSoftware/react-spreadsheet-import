@@ -14,7 +14,7 @@ type DropZoneProps = {
 
 export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
   const { translations, maxFileSize, dateFormat, parseRaw } = useRsi()
-  const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
+  const styles = useStyleConfig("UploadStep") as (typeof themeOverrides)["components"]["UploadStep"]["baseStyle"]
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
@@ -22,7 +22,11 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
     noKeyboard: true,
     maxFiles: 1,
     maxSize: maxFileSize,
-    accept: ".xls, .csv, .xlsx",
+    accept: {
+      "application/vnd.ms-excel": [".xls"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+      "text/csv": [".csv"],
+    },
     onDropRejected: (fileRejections) => {
       setLoading(false)
       fileRejections.forEach((fileRejection) => {
