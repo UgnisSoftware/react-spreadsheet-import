@@ -36,7 +36,7 @@ const StepsComponent: typeof StepsTheme = {
 const MatchIconTheme: any = {
   baseStyle: (props: any) => {
     return {
-      ...StepsTheme.baseStyle(props).stepIconContainer,
+      borderRadius: "50%",
       borderWidth: "2px",
       bg: "background",
       borderColor: "yellow.500",
