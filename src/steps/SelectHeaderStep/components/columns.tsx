@@ -14,7 +14,6 @@ function SelectFormatter(props: FormatterProps<unknown>) {
       isChecked={isRowSelected}
       onChange={(event) => {
         onRowSelectionChange({
-          type: "ROW",
           row: props.row,
           checked: Boolean(event.target.checked),
           isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,

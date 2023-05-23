@@ -141,7 +141,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
             columns={columns}
             selectedRows={selectedRows}
             onSelectedRowsChange={setSelectedRows}
-            renderers={{
+            components={{
               noRowsFallback: (
                 <Box display="flex" justifyContent="center" gridColumn="1/-1" mt="32px">
                   {filterByErrors

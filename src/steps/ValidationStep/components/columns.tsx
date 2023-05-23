@@ -33,7 +33,6 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
           isChecked={isRowSelected}
           onChange={(event) => {
             onRowSelectionChange({
-              type: "ROW",
               row: props.row,
               checked: Boolean(event.target.checked),
               isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,
