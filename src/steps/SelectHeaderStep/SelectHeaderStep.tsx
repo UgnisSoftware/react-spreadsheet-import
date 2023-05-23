@@ -14,7 +14,7 @@ type SelectHeaderProps = {
 export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
   const styles = useStyleConfig(
     "SelectHeaderStep",
-  ) as typeof themeOverrides["components"]["SelectHeaderStep"]["baseStyle"]
+  ) as (typeof themeOverrides)["components"]["SelectHeaderStep"]["baseStyle"]
   const { translations } = useRsi()
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set([0]))
   const [isLoading, setIsLoading] = useState(false)

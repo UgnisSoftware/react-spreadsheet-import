@@ -14,7 +14,7 @@ type ColumnGridProps<T extends string> = {
   isLoading: boolean
 }
 
-export type Styles = typeof themeOverrides["components"]["MatchColumnsStep"]["baseStyle"]
+export type Styles = (typeof themeOverrides)["components"]["MatchColumnsStep"]["baseStyle"]
 
 export const ColumnGrid = <T extends string>({
   columns,
