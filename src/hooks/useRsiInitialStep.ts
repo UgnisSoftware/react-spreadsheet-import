@@ -1,11 +1,11 @@
-import { useCallback } from "react"
+import { useMemo } from "react"
 import { StepType } from "../steps/UploadFlow"
 
-export const useRsiInitialStep = (step: StepType) => {
+export const useRsiInitialStep = (initialStep?: StepType) => {
   const steps = ["uploadStep", "selectHeaderStep", "matchColumnsStep", "validationStep"] as const
 
-  const getInitialStep = useCallback((step: StepType) => {
-    switch (step) {
+  const initialStepNumber = useMemo(() => {
+    switch (initialStep) {
       case StepType.upload:
         return 0
       case StepType.selectSheet:
@@ -21,5 +21,5 @@ export const useRsiInitialStep = (step: StepType) => {
     }
   }, [])
 
-  return { steps, initialStep: getInitialStep(step) }
+  return { steps, initialStep: initialStepNumber }
 }
