@@ -1,6 +1,6 @@
 import { Box, Button, Text, useStyleConfig, useToast } from "@chakra-ui/react"
 import { useDropzone } from "react-dropzone"
-import * as XLSX from "xlsx"
+import * as XLSX from "xlsx-ugnis"
 import { useState } from "react"
 import { getDropZoneBorder } from "../utils/getDropZoneBorder"
 import { useRsi } from "../../../hooks/useRsi"
@@ -14,7 +14,7 @@ type DropZoneProps = {
 
 export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
   const { translations, maxFileSize, dateFormat, parseRaw } = useRsi()
-  const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
+  const styles = useStyleConfig("UploadStep") as (typeof themeOverrides)["components"]["UploadStep"]["baseStyle"]
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({

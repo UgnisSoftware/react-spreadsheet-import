@@ -1,4 +1,4 @@
-import type XLSX from "xlsx"
+import type XLSX from "xlsx-ugnis"
 import { Box, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
 import { DropZone } from "./components/DropZone"
 import { useRsi } from "../../hooks/useRsi"
@@ -13,7 +13,7 @@ type UploadProps = {
 
 export const UploadStep = ({ onContinue }: UploadProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  const styles = useStyleConfig("UploadStep") as typeof themeOverrides["components"]["UploadStep"]["baseStyle"]
+  const styles = useStyleConfig("UploadStep") as (typeof themeOverrides)["components"]["UploadStep"]["baseStyle"]
   const { translations, fields } = useRsi()
   const handleOnContinue = useCallback(
     async (data, file) => {
