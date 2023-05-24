@@ -1,4 +1,4 @@
-import type XLSX from "xlsx"
+import type XLSX from "xlsx-ugnis"
 import { Box, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
 import { DropZone } from "./components/DropZone"
 import { useRsi } from "../../hooks/useRsi"

@@ -62,7 +62,7 @@
     "react-dropzone": "14.2.3",
     "react-icons": "4.8.0",
     "uuid": "^9.0.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
+    "xlsx-ugnis": "0.19.3"
   },
   "devDependencies": {
     "@babel/core": "7.21.8",

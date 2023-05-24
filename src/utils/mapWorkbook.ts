@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx"
+import * as XLSX from "xlsx-ugnis"
 
 export const mapWorkbook = (workbook: XLSX.WorkBook, sheetName?: string) => {
   const worksheet = workbook.Sheets[sheetName || workbook.SheetNames[0]]

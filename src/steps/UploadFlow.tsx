@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 import { Progress, useToast } from "@chakra-ui/react"
-import type XLSX from "xlsx"
+import type XLSX from "xlsx-ugnis"
 import { UploadStep } from "./UploadStep/UploadStep"
 import { SelectHeaderStep } from "./SelectHeaderStep/SelectHeaderStep"
 import { SelectSheetStep } from "./SelectSheetStep/SelectSheetStep"
