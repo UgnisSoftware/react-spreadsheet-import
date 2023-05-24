@@ -19,7 +19,7 @@ export const useRsiInitialStep = (initialStep?: StepType) => {
       default:
         return 0
     }
-  }, [])
+  }, [initialStep])
 
   return { steps, initialStep: initialStepNumber }
 }
