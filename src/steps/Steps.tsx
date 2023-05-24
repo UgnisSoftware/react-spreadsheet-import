@@ -3,15 +3,17 @@ import { ModalHeader } from "@chakra-ui/react"
 import { useSteps, Step, Steps as Stepper } from "chakra-ui-steps"
 import { CgCheck } from "react-icons/cg"
 import { useRsi } from "../hooks/useRsi"
+import { useRsiInitialStep } from "../hooks/useRsiInitialStep"
 
 const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
 
-const steps = ["uploadStep", "selectHeaderStep", "matchColumnsStep", "validationStep"] as const
-
 export const Steps = () => {
-  const { translations } = useRsi()
+  const { initialStepState, translations } = useRsi()
+
+  const { steps, initialStep } = useRsiInitialStep(initialStepState?.type)
+
   const { nextStep, activeStep } = useSteps({
-    initialStep: 0,
+    initialStep,
   })
 
   return (
