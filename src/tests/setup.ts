@@ -30,6 +30,34 @@ if (typeof window !== "undefined") {
   })
 
   Element.prototype.setPointerCapture ??= () => {}
+
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  })
+
+  Object.defineProperty(global, "ResizeObserver", {
+    writable: true,
+    value: jest.fn().mockImplementation(() => ({
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    })),
+  })
+
+  Object.defineProperty(window.HTMLElement.prototype, "scrollIntoView", {
+    writable: true,
+    value: jest.fn(),
+  })
 }
 
 jest.setTimeout(30000)

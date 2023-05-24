@@ -11,7 +11,9 @@ interface Props {
 }
 
 export const TableSelect = ({ onChange, value, options }: Props) => {
-  const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
+  const styles = useStyleConfig(
+    "ValidationStep",
+  ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
   return (
     <Select<SelectOption, false>
       autoFocus

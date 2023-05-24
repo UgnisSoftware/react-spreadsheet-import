@@ -1,27 +1,13 @@
-const path = require("path")
-
-const toPath = (_path: string) => path.join(process.cwd(), _path)
-
-module.exports = {
-  stories: ["../src/**/stories/*.stories.tsx"],
-  webpackFinal: async (config: any) => {
-    config.module.rules.push({
-      test: /\.mjs$/,
-      include: /node_modules/,
-      type: "javascript/auto",
-    })
-    return {
-      ...config,
-      devtool: "inline-source-map",
-      resolve: {
-        ...config.resolve,
-        alias: {
-          ...config.resolve.alias,
-          "@emotion/core": toPath("node_modules/@emotion/react"),
-          "emotion-theming": toPath("node_modules/@emotion/react"),
-        },
-      },
-    }
+import type { StorybookConfig } from "@storybook/react-webpack5"
+const config: StorybookConfig = {
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
+  framework: {
+    name: "@storybook/react-webpack5",
+    options: {},
   },
-  staticDirs: ["../src/stories/static"],
+  docs: {
+    autodocs: "tag",
+  },
 }
+export default config

@@ -71,13 +71,13 @@ test("Select sheet and click next", async () => {
 
   const firstRadio = screen.getByLabelText(sheetNames[selectSheetIndex])
 
-  userEvent.click(firstRadio)
+  await userEvent.click(firstRadio)
 
   const nextButton = screen.getByRole("button", {
     name: "Next",
   })
 
-  userEvent.click(nextButton)
+  await userEvent.click(nextButton)
 
   await waitFor(() => {
     expect(onContinue).toBeCalled()
@@ -111,8 +111,8 @@ test("Should show error toast if error is thrown in uploadStepHook", async () =>
     { timeout: 5000 },
   )
 
-  userEvent.click(nextButton)
+  await userEvent.click(nextButton)
 
-  const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
-  expect(errorToast).toBeInTheDocument()
+  const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+  expect(errorToast?.[0]).toBeInTheDocument()
 })

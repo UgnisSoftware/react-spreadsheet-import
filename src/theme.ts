@@ -1,4 +1,4 @@
-import { StepsStyleConfig } from "chakra-ui-steps"
+import { StepsTheme } from "chakra-ui-steps"
 import { darken } from "@chakra-ui/theme-tools"
 import type { CSSObject } from "@chakra-ui/react"
 import type { DeepPartial } from "ts-essentials"
@@ -7,27 +7,27 @@ import type { SelectOption } from "./types"
 
 type CSSObjectWithActiveStep = CSSObject & { _activeStep: CSSObject }
 
-const StepsTheme: typeof StepsStyleConfig = {
-  ...StepsStyleConfig,
+const StepsComponent: typeof StepsTheme = {
+  ...StepsTheme,
   baseStyle: (props: any) => {
     return {
-      ...StepsStyleConfig.baseStyle(props),
+      ...StepsTheme.baseStyle(props),
       connector: {
-        ...StepsStyleConfig.baseStyle(props).connector,
+        ...StepsTheme.baseStyle(props).connector,
         borderColor: "background",
       },
       label: {
-        ...StepsStyleConfig.baseStyle(props).label,
+        ...StepsTheme.baseStyle(props).label,
         color: "textColor",
       },
       stepIconContainer: {
-        ...StepsStyleConfig.baseStyle(props).stepIconContainer,
+        ...StepsTheme.baseStyle(props).stepIconContainer,
         bg: "background",
         borderColor: "background",
-        _activeStep: {
-          ...(StepsStyleConfig.baseStyle(props).stepIconContainer! as CSSObjectWithActiveStep)._activeStep,
-          bg: darken("background", 0.5),
-        },
+        // _activeStep: {
+        //   ...(StepsTheme.baseStyle(props).stepIconContainer! as CSSObjectWithActiveStep)._activeStep,
+        //   bg: darken("background", 0.5),
+        // },
       },
     }
   },
@@ -36,12 +36,19 @@ const StepsTheme: typeof StepsStyleConfig = {
 const MatchIconTheme: any = {
   baseStyle: (props: any) => {
     return {
-      ...StepsStyleConfig.baseStyle(props).stepIconContainer,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: "50%",
       borderWidth: "2px",
       bg: "background",
       borderColor: "yellow.500",
       color: "background",
       transitionDuration: "ultra-fast",
+      _highlighted: {
+        bg: "green.500",
+        borderColor: "green.500",
+      },
     }
   },
   defaultProps: {
@@ -334,7 +341,7 @@ export const themeOverrides = {
       },
     },
     MatchIcon: MatchIconTheme,
-    Steps: StepsTheme,
+    Steps: StepsComponent,
     Modal: {
       baseStyle: {
         dialog: {
@@ -450,6 +457,7 @@ export const themeOverrides = {
           boxShadow: "inset 0 0 0 1px var(--rdg-selection-color)",
         },
         "&:first-of-type": {
+          boxShadow: "none",
           borderInlineStart: "1px solid var(--rdg-border-color)",
         },
         "&:last-child": {

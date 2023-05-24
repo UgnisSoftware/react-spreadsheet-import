@@ -7,7 +7,7 @@ import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 
 const MUTATED_RAW_DATA = "Bye"
-const ERROR_MESSAGE = "Something happened"
+const ERROR_MESSAGE = "Something happened while uploading"
 
 test("Upload a file", async () => {
   const file = new File(["Hello, Hello, Hello, Hello"], "test.csv", { type: "text/csv" })
@@ -81,6 +81,6 @@ test("Should show error toast if error is thrown in uploadStepHook", async () =>
     target: { files: [file] },
   })
 
-  const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
-  expect(errorToast).toBeInTheDocument()
+  const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+  expect(errorToast?.[0]).toBeInTheDocument()
 })

@@ -19,6 +19,7 @@ type MatchIconProps = {
 
 export const MatchIcon = (props: MatchIconProps) => {
   const style = useStyleConfig("MatchIcon", props)
+
   return (
     <chakra.div
       __css={style}

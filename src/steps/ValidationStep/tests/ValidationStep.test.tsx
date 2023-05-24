@@ -5,6 +5,7 @@ import { defaultRSIProps, defaultTheme } from "../../../ReactSpreadsheetImport"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
+import { translations } from "../../../translationsRSIProps"
 
 const mockValues = {
   ...defaultRSIProps,
@@ -16,7 +17,7 @@ const mockValues = {
 
 const getFilterSwitch = () =>
   screen.getByRole("checkbox", {
-    name: "Show only rows with errors",
+    name: translations.validationStep.filterSwitchTitle,
   })
 
 const file = new File([""], "file.csv")
@@ -36,7 +37,7 @@ describe("Validation step tests", () => {
       name: "Confirm",
     })
 
-    userEvent.click(finishButton)
+    await userEvent.click(finishButton)
 
     await waitFor(() => {
       expect(onSubmit).toBeCalledWith({ all: [], invalidData: [], validData: [] }, file)
@@ -84,7 +85,7 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
@@ -138,21 +139,21 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
 
     // don't really know another way to select an empty cell
     const emptyCell = screen.getAllByRole("gridcell", { name: undefined })[1]
-    userEvent.click(emptyCell)
+    await userEvent.click(emptyCell)
 
     await userEvent.keyboard(FINAL_NAME + "{enter}")
 
     const filteredRowsNoErrorsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsNoErrorsWithHeader).toHaveLength(1)
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     const allRowsFixedWithHeader = await screen.findAllByRole("row")
     expect(allRowsFixedWithHeader).toHaveLength(4)
@@ -161,7 +162,7 @@ describe("Validation step tests", () => {
       name: "Confirm",
     })
 
-    userEvent.click(finishButton)
+    await userEvent.click(finishButton)
 
     await waitFor(() => {
       expect(onSubmit).toBeCalled()
@@ -209,7 +210,7 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(3)
@@ -256,7 +257,7 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
@@ -302,14 +303,14 @@ describe("Validation step tests", () => {
       name: "Select",
     })
 
-    userEvent.click(switchFilters[0])
-    userEvent.click(switchFilters[1])
+    await userEvent.click(switchFilters[0])
+    await userEvent.click(switchFilters[1])
 
     const discardButton = screen.getByRole("button", {
       name: "Discard selected rows",
     })
 
-    userEvent.click(discardButton)
+    await userEvent.click(discardButton)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
@@ -359,14 +360,14 @@ describe("Validation step tests", () => {
       name: "Select",
     })
 
-    userEvent.click(switchFilters[0])
-    userEvent.click(switchFilters[1])
+    await userEvent.click(switchFilters[0])
+    await userEvent.click(switchFilters[1])
 
     const discardButton = screen.getByRole("button", {
       name: "Discard selected rows",
     })
 
-    userEvent.click(discardButton)
+    await userEvent.click(discardButton)
 
     const filteredRowsWithHeader = await screen.findAllByRole("row")
     expect(filteredRowsWithHeader).toHaveLength(2)
@@ -375,7 +376,7 @@ describe("Validation step tests", () => {
       name: THIRD,
     })
 
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
 
     screen.getByRole<HTMLInputElement>("textbox")
     await userEvent.keyboard(THIRD_CHANGED + "{enter}")
@@ -442,7 +443,7 @@ describe("Validation step tests", () => {
       name: NAME,
     })
 
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
 
     const input: HTMLInputElement | null = screen.getByRole<HTMLInputElement>("textbox")
 
@@ -463,12 +464,12 @@ describe("Validation step tests", () => {
     const lastNameCell = screen.getByRole("gridcell", {
       name: OPTIONS[0].label,
     })
-    userEvent.click(lastNameCell)
+    await userEvent.click(lastNameCell)
 
     const newOption = screen.getByRole("button", {
       name: OPTIONS[1].label,
     })
-    userEvent.click(newOption)
+    await userEvent.click(newOption)
     expect(newOption).not.toBeInTheDocument()
 
     const newLastName = screen.getByRole("gridcell", {
@@ -483,7 +484,7 @@ describe("Validation step tests", () => {
 
     expect(checkbox).not.toBeChecked()
 
-    userEvent.click(checkbox)
+    await userEvent.click(checkbox)
 
     expect(checkbox).toBeChecked()
   })
@@ -606,7 +607,7 @@ describe("Validation step tests", () => {
     expect(lastNameCell).toBeInTheDocument()
 
     // activate input
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
 
     await userEvent.keyboard(NEW_NAME + " " + NEW_LASTNAME + "{enter}")
 
@@ -661,7 +662,7 @@ describe("Validation step tests", () => {
 
     await expect(await screen.findAllByRole("row")).toHaveLength(2)
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     await expect(await screen.findAllByRole("row")).toHaveLength(2)
 
@@ -670,7 +671,7 @@ describe("Validation step tests", () => {
     })
     expect(nameCell).toBeInTheDocument()
 
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
     screen.getByRole<HTMLInputElement>("textbox")
 
     await userEvent.keyboard(RIGHT_NAME + "{enter}")
@@ -729,7 +730,7 @@ describe("Validation step tests", () => {
     expect(lastNameCell).toBeInTheDocument()
 
     // activate input
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
 
     await userEvent.keyboard(NEW_NAME + "{enter}")
 
@@ -786,7 +787,7 @@ describe("Validation step tests", () => {
 
     await expect(await screen.findAllByRole("row")).toHaveLength(3)
 
-    userEvent.click(switchFilter)
+    await userEvent.click(switchFilter)
 
     await expect(await screen.findAllByRole("row")).toHaveLength(3)
 
@@ -794,7 +795,7 @@ describe("Validation step tests", () => {
       name: WRONG_NAME,
     })[0]
 
-    userEvent.click(nameCell)
+    await userEvent.click(nameCell)
     screen.getByRole<HTMLInputElement>("textbox")
 
     await userEvent.keyboard(RIGHT_NAME + "{enter}")

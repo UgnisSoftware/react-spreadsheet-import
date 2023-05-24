@@ -109,21 +109,21 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
   )
 
   const onIgnore = useCallback(
-    (columnIndex) => {
+    (columnIndex: number) => {
       setColumns(columns.map((column, index) => (columnIndex === index ? setIgnoreColumn<T>(column) : column)))
     },
     [columns, setColumns],
   )
 
   const onRevertIgnore = useCallback(
-    (columnIndex) => {
+    (columnIndex: number) => {
       setColumns(columns.map((column, index) => (columnIndex === index ? setColumn(column) : column)))
     },
     [columns, setColumns],
   )
 
   const onSubChange = useCallback(
-    (value, columnIndex, entry) => {
+    (value: string, columnIndex: number, entry: string) => {
       setColumns(
         columns.map((column, index) =>
           columnIndex === index && "matchedOptions" in column ? setSubColumn(column, entry, value) : column,

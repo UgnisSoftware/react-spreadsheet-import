@@ -18,7 +18,9 @@ type Props<T extends string> = {
 
 export const ValidationStep = <T extends string>({ initialData, file }: Props<T>) => {
   const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
-  const styles = useStyleConfig("ValidationStep") as typeof themeOverrides["components"]["ValidationStep"]["baseStyle"]
+  const styles = useStyleConfig(
+    "ValidationStep",
+  ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(
     useMemo(
@@ -47,13 +49,13 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
   }
 
   const updateRow = useCallback(
-    (rows: typeof data, changedData?: RowsChangeData<typeof data[number]>) => {
+    (rows: typeof data, changedData?: RowsChangeData<(typeof data)[number]>) => {
       const changes = changedData?.indexes.reduce((acc, index) => {
         // when data is filtered val !== actual index in data
         const realIndex = data.findIndex((value) => value.__index === rows[index].__index)
         acc[realIndex] = rows[index]
         return acc
-      }, {} as Record<number, typeof data[number]>)
+      }, {} as Record<number, (typeof data)[number]>)
       const newData = Object.assign([], data, changes)
       updateData(newData)
     },

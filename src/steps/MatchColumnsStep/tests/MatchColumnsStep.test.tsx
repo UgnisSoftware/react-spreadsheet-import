@@ -67,7 +67,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -98,7 +98,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -129,7 +129,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -172,7 +172,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -211,7 +211,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -251,7 +251,7 @@ describe("Match Columns automatic matching", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -331,7 +331,7 @@ describe("Match Columns general tests", () => {
 
     const firstSelect = screen.getByLabelText(header[0])
 
-    userEvent.click(firstSelect)
+    await userEvent.click(firstSelect)
 
     fields.forEach((field) => {
       expect(screen.queryByText(field.label)).toBeInTheDocument()
@@ -365,7 +365,7 @@ describe("Match Columns general tests", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -455,7 +455,7 @@ describe("Match Columns general tests", () => {
 
     expect(screen.queryByTestId("accordion-button")).toBeInTheDocument()
 
-    userEvent.click(screen.getByTestId("accordion-button"))
+    await userEvent.click(screen.getByTestId("accordion-button"))
 
     await selectEvent.select(screen.getByLabelText(data[0][0]), options[0].label, {
       container: document.getElementById(SELECT_DROPDOWN_ID)!,
@@ -469,7 +469,7 @@ describe("Match Columns general tests", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -498,7 +498,7 @@ describe("Match Columns general tests", () => {
 
     expect(screen.queryByText(translations.matchColumnsStep.ignoredColumnText)).not.toBeInTheDocument()
 
-    userEvent.click(ignoreButton)
+    await userEvent.click(ignoreButton)
 
     expect(screen.queryByText(translations.matchColumnsStep.ignoredColumnText)).toBeInTheDocument()
   })
@@ -541,7 +541,7 @@ describe("Match Columns general tests", () => {
       name: "Next",
     })
 
-    userEvent.click(nextButton)
+    await userEvent.click(nextButton)
 
     expect(onContinue).not.toBeCalled()
     expect(screen.queryByText(translations.alerts.unmatchedRequiredFields.bodyText)).toBeInTheDocument()
@@ -550,7 +550,7 @@ describe("Match Columns general tests", () => {
       name: "Continue",
     })
 
-    userEvent.click(continueButton)
+    await userEvent.click(continueButton)
 
     await waitFor(() => {
       expect(onContinue).toBeCalled()
@@ -582,7 +582,9 @@ describe("Match Columns general tests", () => {
       container: document.getElementById(SELECT_DROPDOWN_ID)!,
     })
 
-    expect(screen.queryByText(translations.matchColumnsStep.duplicateColumnWarningDescription)).toBeInTheDocument()
+    const toasts = await screen.queryAllByText(translations.matchColumnsStep.duplicateColumnWarningDescription)
+
+    expect(toasts?.[0]).toBeInTheDocument()
   })
 
   test("matchColumnsStepHook should be called after columns are matched", async () => {
@@ -608,7 +610,7 @@ describe("Match Columns general tests", () => {
     )
 
     const continueButton = screen.getByText(CONTINUE_BUTTON)
-    userEvent.click(continueButton)
+    await userEvent.click(continueButton)
 
     await waitFor(() => {
       expect(matchColumnsStepHook).toBeCalled()
@@ -640,7 +642,7 @@ describe("Match Columns general tests", () => {
     )
 
     const continueButton = screen.getByText(CONTINUE_BUTTON)
-    userEvent.click(continueButton)
+    await userEvent.click(continueButton)
 
     const mutatedEntry = await screen.findByText(MUTATED_ENTRY)
     expect(mutatedEntry).toBeInTheDocument()
@@ -674,9 +676,9 @@ describe("Match Columns general tests", () => {
     )
 
     const continueButton = screen.getByText(CONTINUE_BUTTON)
-    userEvent.click(continueButton)
+    await userEvent.click(continueButton)
 
-    const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
-    expect(errorToast).toBeInTheDocument()
+    const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+    expect(errorToast?.[0]).toBeInTheDocument()
   })
 })

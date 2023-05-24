@@ -15,11 +15,11 @@ test("Close modal", async () => {
 
   const closeButton = getByLabelText("Close modal")
 
-  userEvent.click(closeButton)
+  await userEvent.click(closeButton)
 
   const confirmButton = getByText("Exit flow")
 
-  userEvent.click(confirmButton)
+  await userEvent.click(confirmButton)
   expect(onClose).toBeCalled()
 })
 
