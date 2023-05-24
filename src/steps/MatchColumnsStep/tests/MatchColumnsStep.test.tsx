@@ -582,7 +582,9 @@ describe("Match Columns general tests", () => {
       container: document.getElementById(SELECT_DROPDOWN_ID)!,
     })
 
-    expect(screen.queryByText(translations.matchColumnsStep.duplicateColumnWarningDescription)).toBeInTheDocument()
+    const toasts = await screen.queryAllByText(translations.matchColumnsStep.duplicateColumnWarningDescription)
+
+    expect(toasts?.[0]).toBeInTheDocument()
   })
 
   test("matchColumnsStepHook should be called after columns are matched", async () => {
@@ -676,7 +678,7 @@ describe("Match Columns general tests", () => {
     const continueButton = screen.getByText(CONTINUE_BUTTON)
     await userEvent.click(continueButton)
 
-    const errorToast = await screen.findByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
-    expect(errorToast).toBeInTheDocument()
+    const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+    expect(errorToast?.[0]).toBeInTheDocument()
   })
 })

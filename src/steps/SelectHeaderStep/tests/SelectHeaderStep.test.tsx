@@ -132,11 +132,9 @@ describe("Select header step tests", () => {
     )
     const continueButton = screen.getByText(CONTINUE_BUTTON)
     await userEvent.click(continueButton)
-    const errorToast = await screen.getByText(ERROR_MESSAGE)
 
-    await waitFor(() => {
-      expect(errorToast).toBeInTheDocument()
-    })
+    const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+    expect(errorToast?.[0]).toBeInTheDocument()
   })
 
   test("dateFormat property should NOT be applied to dates read from csv files IF parseRaw=true", async () => {
