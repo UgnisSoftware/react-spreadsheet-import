@@ -56,7 +56,7 @@ import { ReactSpreadsheetImport } from "react-spreadsheet-import";
   // Called when flow is closed without reaching submit.
   onClose: () => void
   // Called after user completes the flow. Provides data array, where data keys matches your field keys.
-  onSubmit: (data) => void
+  onSubmit: (data, file) => void
 ```
 
 ### Fields
