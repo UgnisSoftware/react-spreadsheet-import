@@ -1,5 +1,4 @@
 import { StepsTheme } from "chakra-ui-steps"
-import { darken } from "@chakra-ui/theme-tools"
 import type { CSSObject } from "@chakra-ui/react"
 import type { DeepPartial } from "ts-essentials"
 import type { ChakraStylesConfig } from "chakra-react-select"
@@ -12,24 +11,28 @@ const StepsComponent: typeof StepsTheme = {
   baseStyle: (props: any) => {
     return {
       ...StepsTheme.baseStyle(props),
-      connector: {
-        ...StepsTheme.baseStyle(props).connector,
-        borderColor: "background",
-      },
       label: {
         ...StepsTheme.baseStyle(props).label,
         color: "textColor",
       },
+    }
+  },
+  variants: {
+    circles: (props: any) => ({
+      ...StepsTheme.variants.circles(props),
+      step: {
+        ...StepsTheme.variants.circles(props).step,
+        "&:not(:last-child):after": {
+          ...StepsTheme.variants.circles(props).step["&:not(:last-child):after"],
+          backgroundColor: "background",
+        },
+      },
       stepIconContainer: {
-        ...StepsTheme.baseStyle(props).stepIconContainer,
+        ...StepsTheme.variants.circles(props).stepIconContainer,
         bg: "background",
         borderColor: "background",
-        // _activeStep: {
-        //   ...(StepsTheme.baseStyle(props).stepIconContainer! as CSSObjectWithActiveStep)._activeStep,
-        //   bg: darken("background", 0.5),
-        // },
       },
-    }
+    }),
   },
 }
 
