@@ -32,7 +32,7 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
     <>
       <ModalBody pb={0}>
         <Heading {...styles.heading}>{translations.selectHeaderStep.title}</Heading>
-        <Box h={0} flexGrow={1}>
+        <Box flexGrow={1}>
           <SelectHeaderTable data={data} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
         </Box>
       </ModalBody>
