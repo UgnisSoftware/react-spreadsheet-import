@@ -288,48 +288,18 @@ export const themeOverrides = {
           fontSize: "3xl",
         },
         select: {
-          dropdownIndicator: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-            w: "40px",
-          }),
-          control: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-            _focus: undefined,
-          }),
-          input: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-          }),
-          indicatorSeparator: (provided) => ({
-            ...provided,
-            opacity: 0,
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            marginInlineStart: 0,
-          }),
           valueContainer: (provided) => ({
             ...provided,
-            p: 0,
-            paddingInlineStart: 2,
+            py: 0,
+            px: 1.5,
             color: "gray.400",
           }),
+          inputContainer: (provided) => ({ ...provided, py: 0 }),
+          control: (provided) => ({ ...provided, border: "none" }),
           menu: (provided) => ({
             ...provided,
             p: 0,
             mt: 0,
-          }),
-          menuList: (provided) => ({
-            ...provided,
-            minW: "initial",
           }),
           option: (provided, state) => ({
             ...provided,
