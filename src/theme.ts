@@ -217,44 +217,16 @@ export const themeOverrides = {
           },
         },
         select: {
-          dropdownIndicator: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-            w: "40px",
-            color: "textColor",
-          }),
           control: (provided) => ({
             ...provided,
-            background: "none",
-            borderRadius: "6px",
-            p: 0,
-            // _focus, _hover, _invalid, _readonly pseudoselectors can be used here for alternate border colors
-            _focus: undefined,
-          }),
-          input: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-          }),
-          indicatorSeparator: (provided) => ({
-            ...provided,
-            opacity: 0,
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            ml: 0,
-            mr: 0,
-          }),
-          placeholder: (provided) => ({
-            ...provided,
-            color: "inactiveColor",
-          }),
-          valueContainer: (provided) => ({
-            ...provided,
-            color: "textColor",
+            borderColor: "border",
+            _hover: {
+              borderColor: "border",
+            },
+            ["&[data-focus-visible]"]: {
+              borderColor: "border",
+              boxShadow: "none",
+            },
           }),
           menu: (provided) => ({
             ...provided,
@@ -264,12 +236,12 @@ export const themeOverrides = {
           menuList: (provided) => ({
             ...provided,
             bg: "background",
-            minW: "initial",
+            borderColor: "border",
           }),
           option: (provided, state) => ({
             ...provided,
             color: "textColor",
-            bg: state.isSelected || state.isFocused ? "highlight" : provided.bg,
+            bg: state.isSelected || state.isFocused ? "highlight" : "background",
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "block",
@@ -277,6 +249,14 @@ export const themeOverrides = {
             _hover: {
               bg: "highlight",
             },
+          }),
+          placeholder: (provided) => ({
+            ...provided,
+            color: "inactiveColor",
+          }),
+          noOptionsMessage: (provided) => ({
+            ...provided,
+            color: "inactiveColor",
           }),
         } as ChakraStylesConfig<SelectOption>,
       },
@@ -288,40 +268,14 @@ export const themeOverrides = {
           fontSize: "3xl",
         },
         select: {
-          dropdownIndicator: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-            w: "40px",
-          }),
-          control: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-            _focus: undefined,
-          }),
-          input: (provided) => ({
-            ...provided,
-            background: "none",
-            border: "none",
-            p: 0,
-          }),
-          indicatorSeparator: (provided) => ({
-            ...provided,
-            opacity: 0,
-          }),
-          singleValue: (provided) => ({
-            ...provided,
-            marginInlineStart: 0,
-          }),
           valueContainer: (provided) => ({
             ...provided,
-            p: 0,
-            paddingInlineStart: 2,
-            color: "gray.400",
+            py: 0,
+            px: 1.5,
           }),
+          inputContainer: (provided) => ({ ...provided, py: 0 }),
+          control: (provided) => ({ ...provided, border: "none" }),
+          input: (provided) => ({ ...provided, color: "textColor" }),
           menu: (provided) => ({
             ...provided,
             p: 0,
@@ -329,16 +283,21 @@ export const themeOverrides = {
           }),
           menuList: (provided) => ({
             ...provided,
-            minW: "initial",
+            bg: "background",
+            borderColor: "border",
           }),
           option: (provided, state) => ({
             ...provided,
-            color: state.isSelected ? "gray.900" : provided.color,
-            bg: state.isSelected || state.isFocused ? "secondaryBackground" : provided.bg,
+            color: "textColor",
+            bg: state.isSelected || state.isFocused ? "highlight" : "background",
             overflow: "hidden",
             textOverflow: "ellipsis",
             display: "block",
             whiteSpace: "nowrap",
+          }),
+          noOptionsMessage: (provided) => ({
+            ...provided,
+            color: "inactiveColor",
           }),
         } as ChakraStylesConfig<SelectOption>,
       },

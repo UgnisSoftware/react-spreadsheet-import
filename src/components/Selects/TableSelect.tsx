@@ -17,6 +17,7 @@ export const TableSelect = ({ onChange, value, options }: Props) => {
   return (
     <Select<SelectOption, false>
       autoFocus
+      useBasicStyles
       size="sm"
       value={value}
       onChange={onChange}
