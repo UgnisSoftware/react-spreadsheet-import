@@ -48,7 +48,7 @@ export const DropZone = ({ onContinue, isLoading }: DropZoneProps) => {
         dateNF: dateFormat,
         raw: parseRaw,
         dense: true,
-        codepage: 65001
+        codepage: 65001,
       })
       setLoading(false)
       onContinue(workbook, file)
