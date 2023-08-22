@@ -15,7 +15,7 @@ export const Basic = () => {
     <>
       <Box py={20} display="flex" gap="8px" alignItems="center">
         <Button onClick={onOpen} border="2px solid #7069FA" p="8px" borderRadius="8px">
-          Open Flow
+          HI
         </Button>
         (make sure you have a file to upload)
       </Box>
