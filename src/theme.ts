@@ -312,6 +312,7 @@ export const themeOverrides = {
           fontSize: "lg",
           color: "textColor",
         },
+        closeModalButton: {},
       },
       variants: {
         rsi: {
