@@ -609,11 +609,9 @@ describe("Validation step tests", () => {
     expect(lastNameCell).toBeInTheDocument()
 
     // activate input
-    await act(async () => {
-      await userEvent.click(nameCell)
+    await userEvent.click(nameCell)
 
-      await userEvent.keyboard(NEW_NAME + " " + NEW_LASTNAME + "{enter}")
-    })
+    await userEvent.keyboard(NEW_NAME + " " + NEW_LASTNAME + "{enter}")
 
     const newNameCell = screen.getByRole("gridcell", {
       name: NEW_NAME,
