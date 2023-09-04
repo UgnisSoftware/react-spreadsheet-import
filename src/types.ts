@@ -121,11 +121,11 @@ export type RowHook<T extends string> = (
   row: Data<T>,
   addError: (fieldKey: T, error: Info) => void,
   table: Data<T>[],
-) => Data<T>
+) => Data<T> | Promise<Data<T>>
 export type TableHook<T extends string> = (
   table: Data<T>[],
   addError: (rowIndex: number, fieldKey: T, error: Info) => void,
-) => Data<T>[]
+) => Data<T>[] | Promise<Data<T>[]>
 
 export type ErrorLevel = "info" | "warning" | "error"
 
