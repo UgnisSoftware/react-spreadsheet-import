@@ -24,7 +24,9 @@ export const addErrorsAndRunHooks = async <T extends string>(
 
   if (rowHook) {
     if (changedRowIndexes != null) {
-      changedRowIndexes.forEach((index) => rowHook(data[index], (...props) => addHookError(index, ...props), data))
+      for (const index of changedRowIndexes) {
+        data[index] = await rowHook(data[index], (...props) => addHookError(index, ...props), data)
+      }
     } else {
       data = await Promise.all(
         data.map(async (value, index) => rowHook(value, (...props) => addHookError(index, ...props), data)),
