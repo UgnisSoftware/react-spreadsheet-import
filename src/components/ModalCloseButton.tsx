@@ -1,7 +1,8 @@
-import { IconButton } from "@chakra-ui/react"
+import { IconButton, useStyleConfig } from "@chakra-ui/react"
 import { CgClose } from "react-icons/cg"
 import { ConfirmCloseAlert } from "./Alerts/ConfirmCloseAlert"
 import { useState } from "react"
+import { themeOverrides } from "../theme"
 
 type ModalCloseButtonProps = {
   onClose: () => void
@@ -9,6 +10,7 @@ type ModalCloseButtonProps = {
 
 export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
   const [showModal, setShowModal] = useState(false)
+  const styles = useStyleConfig("Modal") as (typeof themeOverrides)["components"]["Modal"]["baseStyle"]
   return (
     <>
       <ConfirmCloseAlert
@@ -20,14 +22,15 @@ export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
         }}
       />
       <IconButton
+        right="14px"
+        top="20px"
         variant="unstyled"
+        sx={styles.closeModalButton}
         aria-label="Close modal"
         icon={<CgClose />}
         color="white"
         position="absolute"
         transform="translate(50%, -50%)"
-        right="14px"
-        top="20px"
         onClick={() => setShowModal(true)}
         zIndex="toast"
         dir="ltr"
