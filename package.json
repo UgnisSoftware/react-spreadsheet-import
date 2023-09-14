@@ -11,7 +11,7 @@
     "types"
   ],
   "scripts": {
-    "start": "start-storybook -p 6006",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
     "test": "jest",
     "ts": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",

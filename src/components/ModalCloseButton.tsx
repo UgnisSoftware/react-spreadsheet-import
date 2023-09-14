@@ -10,7 +10,7 @@ type ModalCloseButtonProps = {
 
 export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
   const [showModal, setShowModal] = useState(false)
-  const styles = useStyleConfig("Modal") as (typeof themeOverrides)["components"]["Modal"]["baseStyle"]
+  const styles = useStyleConfig("Modal") as typeof themeOverrides["components"]["Modal"]["baseStyle"]
   return (
     <>
       <ConfirmCloseAlert
