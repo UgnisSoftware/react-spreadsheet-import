@@ -2,7 +2,7 @@ import { IconButton, useStyleConfig } from "@chakra-ui/react"
 import { CgClose } from "react-icons/cg"
 import { ConfirmCloseAlert } from "./Alerts/ConfirmCloseAlert"
 import { useState } from "react"
-import { themeOverrides } from "../theme"
+import type { themeOverrides } from "../theme"
 
 type ModalCloseButtonProps = {
   onClose: () => void
