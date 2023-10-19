@@ -156,7 +156,7 @@ export const editableTableInitialData = [
 
 export const headerSelectionTableFields = [
   ["text", "num", "select", "bool"],
-  ["Hello", "123", "one", "true"],
-  ["Hello", "123", "one", "true"],
-  ["Hello", "123", "one", "true"],
+  ["second", "123", "one", "true"],
+  ["third", "123", "one", "true"],
+  ["fourth", "123", "one", "true"],
 ]

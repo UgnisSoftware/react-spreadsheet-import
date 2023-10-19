@@ -39,7 +39,9 @@
     "automatic",
     "match"
   ],
-  "author": "Ugnis",
+  "author": {
+    "name": "Ugnis"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/UgnisSoftware/react-spreadsheet-import/issues"
@@ -71,6 +73,7 @@
     "@babel/preset-typescript": "7.21.5",
     "@emotion/jest": "11.11.0",
     "@jest/types": "27.5.1",
+    "@playwright/test": "^1.39.0",
     "@storybook/addon-essentials": "7.0.14",
     "@storybook/addon-interactions": "7.0.14",
     "@storybook/addon-links": "7.0.14",
@@ -85,6 +88,7 @@
     "@testing-library/user-event": "14.4.3",
     "@types/jest": "27.4.1",
     "@types/js-levenshtein": "1.1.1",
+    "@types/node": "^20.8.7",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@types/styled-system": "5.1.16",
@@ -92,6 +96,7 @@
     "@typescript-eslint/eslint-plugin": "5.59.7",
     "@typescript-eslint/parser": "5.59.7",
     "babel-loader": "9.1.2",
+    "chromatic": "^7.4.0",
     "eslint": "8.41.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-prettier": "4.2.1",
@@ -162,5 +167,7 @@
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
     ]
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "react-spreadsheet-import@4.1.3"
 }
