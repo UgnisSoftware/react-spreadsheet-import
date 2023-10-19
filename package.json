@@ -149,6 +149,7 @@
     "moduleNameMapper": {
       "~/(.*)": "<rootDir>/src/$1"
     },
+    "modulePathIgnorePatterns": ["<rootDir>/e2e/"],
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
     ],
