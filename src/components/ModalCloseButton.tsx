@@ -29,7 +29,7 @@ export const ModalCloseButton = ({ onClose }: ModalCloseButtonProps) => {
         aria-label="Close modal"
         icon={<CgClose />}
         color="white"
-        position="absolute"
+        position="fixed"
         transform="translate(50%, -50%)"
         onClick={() => setShowModal(true)}
         zIndex="toast"
