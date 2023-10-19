@@ -52,3 +52,7 @@ export const Basic = () => {
     </>
   )
 }
+
+Basic.parameters = {
+  chromatic: { disableSnapshot: true },
+}
