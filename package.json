@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "start": "storybook dev -p 6006",
-    "test": "jest",
+    "test:unit": "jest",
+    "test:e2e": "npx playwright test",
+    "test:chromatic": "npx chromatic ",
     "ts": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",

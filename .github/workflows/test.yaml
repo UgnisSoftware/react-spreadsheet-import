@@ -18,7 +18,7 @@ jobs:
         run: npm ci
       - run: npm run lint
       - run: npm run ts
-      - run: npm run test
+      - run: npm run test:unit
 
   e2e-tests:
     timeout-minutes: 60
