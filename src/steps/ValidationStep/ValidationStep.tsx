@@ -154,5 +154,3 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
     </>
   )
 }
-
-       
