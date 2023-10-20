@@ -2,12 +2,13 @@ import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
 import type { Meta, Errors } from "../types"
 import { v4 } from "uuid"
 
-export const addErrorsAndRunHooks = <T extends string>(
+export const addErrorsAndRunHooks = async <T extends string>(
   data: (Data<T> & Partial<Meta>)[],
   fields: Fields<T>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
-): (Data<T> & Meta)[] => {
+  changedRowIndexes?: number[],
+): Promise<(Data<T> & Meta)[]> => {
   const errors: Errors = {}
 
   const addHookError = (rowIndex: number, fieldKey: T, error: Info) => {
@@ -18,11 +19,19 @@ export const addErrorsAndRunHooks = <T extends string>(
   }
 
   if (tableHook) {
-    data = tableHook(data, addHookError)
+    data = await tableHook(data, addHookError)
   }
 
   if (rowHook) {
-    data = data.map((value, index) => rowHook(value, (...props) => addHookError(index, ...props), data))
+    if (changedRowIndexes != null) {
+      for (const index of changedRowIndexes) {
+        data[index] = await rowHook(data[index], (...props) => addHookError(index, ...props), data)
+      }
+    } else {
+      data = await Promise.all(
+        data.map(async (value, index) => rowHook(value, (...props) => addHookError(index, ...props), data)),
+      )
+    }
   }
 
   fields.forEach((field) => {

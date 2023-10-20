@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom"
-import { render, waitFor, screen } from "@testing-library/react"
+import { render, waitFor, screen, act } from "@testing-library/react"
 import { ValidationStep } from "../ValidationStep"
 import { defaultRSIProps, defaultTheme } from "../../../ReactSpreadsheetImport"
 import { Providers } from "../../../components/Providers"
@@ -579,23 +579,25 @@ describe("Validation step tests", () => {
       },
     ] as const
 
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{
-          ...mockValues,
-          fields,
-          rowHook: (value) => ({
-            name: value.name?.toString()?.split(/(\s+)/)[0],
-            lastName: value.name?.toString()?.split(/(\s+)/)[2],
-          }),
-        }}
-      >
-        <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
-        </ModalWrapper>
-      </Providers>,
-    )
+    await act(async () => {
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            rowHook: (value) => ({
+              name: value.name?.toString()?.split(/(\s+)/)[0],
+              lastName: value.name?.toString()?.split(/(\s+)/)[2],
+            }),
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      )
+    })
 
     const nameCell = screen.getByRole("gridcell", {
       name: NAME,
@@ -620,6 +622,7 @@ describe("Validation step tests", () => {
     })
     expect(newLastNameCell).toBeInTheDocument()
   })
+
   test("Row hook raises error", async () => {
     const WRONG_NAME = "Johnny"
     const RIGHT_NAME = "Jonathan"
@@ -638,24 +641,26 @@ describe("Validation step tests", () => {
       },
     ] as const
 
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{
-          ...mockValues,
-          fields,
-          rowHook: (value, setError) => {
-            if (value.name === WRONG_NAME) {
-              setError(fields[0].key, { message: "Wrong name", level: "error" })
-            }
-            return value
-          },
-        }}
-      >
-        <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
-        </ModalWrapper>
-      </Providers>,
+    await act(async () =>
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            rowHook: (value, setError) => {
+              if (value.name === WRONG_NAME) {
+                setError(fields[0].key, { message: "Wrong name", level: "error" })
+              }
+              return value
+            },
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      ),
     )
 
     const switchFilter = getFilterSwitch()
@@ -702,23 +707,25 @@ describe("Validation step tests", () => {
       },
     ] as const
 
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{
-          ...mockValues,
-          fields,
-          tableHook: (data) =>
-            data.map((value) => ({
-              name: value.name + ADDITION,
-            })),
-        }}
-      >
-        <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
-        </ModalWrapper>
-      </Providers>,
-    )
+    await act(async () => {
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            tableHook: (data) =>
+              data.map((value) => ({
+                name: value.name + ADDITION,
+              })),
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      )
+    })
 
     const nameCell = screen.getByRole("gridcell", {
       name: NAME + ADDITION,
