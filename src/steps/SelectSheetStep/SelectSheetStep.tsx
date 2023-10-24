@@ -7,7 +7,7 @@ import type { themeOverrides } from "../../theme"
 type SelectSheetProps = {
   sheetNames: string[]
   onContinue: (sheetName: string) => Promise<void>
-  onBack: () => void
+  onBack?: () => void
 }
 
 export const SelectSheetStep = ({ sheetNames, onContinue, onBack }: SelectSheetProps) => {

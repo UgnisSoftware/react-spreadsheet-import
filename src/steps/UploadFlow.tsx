@@ -43,7 +43,7 @@ export type StepState =
 interface Props {
   state: StepState
   onNext: (v: StepState) => void
-  onBack: () => void
+  onBack?: () => void
 }
 
 export const UploadFlow = ({ state, onNext, onBack }: Props) => {

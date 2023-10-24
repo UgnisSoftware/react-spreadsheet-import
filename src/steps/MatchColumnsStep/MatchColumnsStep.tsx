@@ -17,7 +17,7 @@ export type MatchColumnsProps<T extends string> = {
   data: RawData[]
   headerValues: RawData
   onContinue: (data: any[], rawData: RawData[], columns: Columns<T>) => void
-  onBack: () => void
+  onBack?: () => void
 }
 
 export enum ColumnType {

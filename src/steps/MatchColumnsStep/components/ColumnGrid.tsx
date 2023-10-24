@@ -11,7 +11,7 @@ type ColumnGridProps<T extends string> = {
   userColumn: (column: Column<T>) => React.ReactNode
   templateColumn: (column: Column<T>) => React.ReactNode
   onContinue: (val: Record<string, string>[]) => void
-  onBack: () => void
+  onBack?: () => void
   isLoading: boolean
 }
 
