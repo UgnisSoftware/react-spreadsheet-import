@@ -17,6 +17,7 @@ export type MatchColumnsProps<T extends string> = {
   data: RawData[]
   headerValues: RawData
   onContinue: (data: any[], rawData: RawData[], columns: Columns<T>) => void
+  onBack: () => void
 }
 
 export enum ColumnType {
@@ -62,7 +63,12 @@ export type Column<T extends string> =
 
 export type Columns<T extends string> = Column<T>[]
 
-export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps<T>) => {
+export const MatchColumnsStep = <T extends string>({
+  data,
+  headerValues,
+  onContinue,
+  onBack,
+}: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
   const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
@@ -169,6 +175,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       <ColumnGrid
         columns={columns}
         onContinue={handleOnContinue}
+        onBack={onBack}
         isLoading={isLoading}
         userColumn={(column) => (
           <UserTableColumn

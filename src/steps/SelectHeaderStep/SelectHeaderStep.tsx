@@ -9,9 +9,10 @@ import type { RawData } from "../../types"
 type SelectHeaderProps = {
   data: RawData[]
   onContinue: (headerValues: RawData, data: RawData[]) => Promise<void>
+  onBack: () => void
 }
 
-export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
+export const SelectHeaderStep = ({ data, onContinue, onBack }: SelectHeaderProps) => {
   const styles = useStyleConfig(
     "SelectHeaderStep",
   ) as (typeof themeOverrides)["components"]["SelectHeaderStep"]["baseStyle"]
@@ -36,7 +37,9 @@ export const SelectHeaderStep = ({ data, onContinue }: SelectHeaderProps) => {
       </ModalBody>
       <ContinueButton
         onContinue={handleContinue}
+        onBack={onBack}
         title={translations.selectHeaderStep.nextButtonTitle}
+        backTitle={translations.selectHeaderStep.backButtonTitle}
         isLoading={isLoading}
       />
     </>

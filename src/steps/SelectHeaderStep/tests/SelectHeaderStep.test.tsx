@@ -28,10 +28,11 @@ describe("Select header step tests", () => {
     const selectRowIndex = 2
 
     const onContinue = jest.fn()
+    const onBack = jest.fn()
     render(
       <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <SelectHeaderStep data={data} onContinue={onContinue} />
+          <SelectHeaderStep data={data} onContinue={onContinue} onBack={onBack} />
         </ModalWrapper>
       </Providers>,
     )

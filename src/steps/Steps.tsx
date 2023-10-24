@@ -1,31 +1,57 @@
-import { UploadFlow } from "./UploadFlow"
+import { StepState, StepType, UploadFlow } from "./UploadFlow"
 import { ModalHeader } from "@chakra-ui/react"
 import { useSteps, Step, Steps as Stepper } from "chakra-ui-steps"
 import { CgCheck } from "react-icons/cg"
+
 import { useRsi } from "../hooks/useRsi"
-import { useRsiInitialStep } from "../hooks/useRsiInitialStep"
+import { useRef, useState } from "react"
+import { steps, stepTypeToStepIndex, stepIndexToStepType } from "../utils/steps"
 
 const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
 
 export const Steps = () => {
   const { initialStepState, translations } = useRsi()
 
-  const { steps, initialStep } = useRsiInitialStep(initialStepState?.type)
+  const initialStep = stepTypeToStepIndex(initialStepState?.type)
 
-  const { nextStep, activeStep } = useSteps({
+  const { nextStep, activeStep, setStep } = useSteps({
     initialStep,
   })
+
+  const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
+
+  const history = useRef<StepState[]>([])
+
+  const onClickStep = (stepIndex: number) => {
+    const type = stepIndexToStepType(stepIndex)
+    const historyIdx = history.current.findIndex((v) => v.type === type)
+    if (historyIdx === -1) return
+    const nextHistory = history.current.slice(0, historyIdx + 1)
+    history.current = nextHistory
+    setState(nextHistory[nextHistory.length - 1])
+    setStep(stepIndex)
+  }
+
+  const onBack = () => {
+    onClickStep(activeStep - 1)
+  }
+
+  const onNext = (v: StepState) => {
+    history.current.push(state)
+    setState(v)
+    v.type !== StepType.selectSheet && nextStep()
+  }
 
   return (
     <>
       <ModalHeader display={["none", "none", "block"]}>
-        <Stepper activeStep={activeStep} checkIcon={CheckIcon}>
+        <Stepper activeStep={activeStep} checkIcon={CheckIcon} onClickStep={onClickStep}>
           {steps.map((key) => (
             <Step label={translations[key].title} key={key} />
           ))}
         </Stepper>
       </ModalHeader>
-      <UploadFlow nextStep={nextStep} />
+      <UploadFlow state={state} onNext={onNext} onBack={onBack} />
     </>
   )
 }
