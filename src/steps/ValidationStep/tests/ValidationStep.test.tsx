@@ -6,6 +6,10 @@ import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
 import { translations } from "../../../translationsRSIProps"
+import { addErrorsAndRunHooks } from "../utils/dataMutations"
+import { Fields, RowHook, TableHook } from "../../../types"
+
+type fieldKeys<T extends Fields<string>> = T[number]["key"]
 
 const mockValues = {
   ...defaultRSIProps,
@@ -46,14 +50,6 @@ describe("Validation step tests", () => {
 
   test("Filters rows with required errors", async () => {
     const UNIQUE_NAME = "very unique name"
-    const initialData = [
-      {
-        name: UNIQUE_NAME,
-      },
-      {
-        name: undefined,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -69,10 +65,21 @@ describe("Validation step tests", () => {
         ],
       },
     ] as const
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: UNIQUE_NAME,
+        },
+        {
+          name: undefined,
+        },
+      ],
+      fields,
+    )
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -95,17 +102,7 @@ describe("Validation step tests", () => {
     const UNIQUE_NAME = "very unique name"
     const SECOND_UNIQUE_NAME = "another unique name"
     const FINAL_NAME = "just name"
-    const initialData = [
-      {
-        name: UNIQUE_NAME,
-      },
-      {
-        name: undefined,
-      },
-      {
-        name: SECOND_UNIQUE_NAME,
-      },
-    ]
+
     const fields = [
       {
         label: "Name",
@@ -121,12 +118,25 @@ describe("Validation step tests", () => {
         ],
       },
     ] as const
-
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: UNIQUE_NAME,
+        },
+        {
+          name: undefined,
+        },
+        {
+          name: SECOND_UNIQUE_NAME,
+        },
+      ],
+      fields,
+    )
     const onSubmit = jest.fn()
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields, onSubmit }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -171,17 +181,6 @@ describe("Validation step tests", () => {
 
   test("Filters rows with unique errors", async () => {
     const NON_UNIQUE_NAME = "very unique name"
-    const initialData = [
-      {
-        name: NON_UNIQUE_NAME,
-      },
-      {
-        name: NON_UNIQUE_NAME,
-      },
-      {
-        name: "I am fine",
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -197,10 +196,24 @@ describe("Validation step tests", () => {
         ],
       },
     ] as const
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NON_UNIQUE_NAME,
+        },
+        {
+          name: NON_UNIQUE_NAME,
+        },
+        {
+          name: "I am fine",
+        },
+      ],
+      fields,
+    )
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -217,17 +230,6 @@ describe("Validation step tests", () => {
   })
   test("Filters rows with regex errors", async () => {
     const NOT_A_NUMBER = "not a number"
-    const initialData = [
-      {
-        name: NOT_A_NUMBER,
-      },
-      {
-        name: "1234",
-      },
-      {
-        name: "9999999",
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -244,10 +246,24 @@ describe("Validation step tests", () => {
         ],
       },
     ] as const
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NOT_A_NUMBER,
+        },
+        {
+          name: "1234",
+        },
+        {
+          name: "9999999",
+        },
+      ],
+      fields,
+    )
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -268,17 +284,6 @@ describe("Validation step tests", () => {
     const SECOND_DELETE = "second"
     const THIRD = "third"
 
-    const initialData = [
-      {
-        name: FIRST_DELETE,
-      },
-      {
-        name: SECOND_DELETE,
-      },
-      {
-        name: THIRD,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -288,10 +293,24 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: FIRST_DELETE,
+        },
+        {
+          name: SECOND_DELETE,
+        },
+        {
+          name: THIRD,
+        },
+      ],
+      fields,
+    )
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -325,17 +344,6 @@ describe("Validation step tests", () => {
     const THIRD = "third"
     const THIRD_CHANGED = "third_changed"
 
-    const initialData = [
-      {
-        name: FIRST_DELETE,
-      },
-      {
-        name: SECOND_DELETE,
-      },
-      {
-        name: THIRD,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -345,10 +353,24 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: FIRST_DELETE,
+        },
+        {
+          name: SECOND_DELETE,
+        },
+        {
+          name: THIRD,
+        },
+      ],
+      fields,
+    )
     render(
       <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -392,13 +414,6 @@ describe("Validation step tests", () => {
       { value: "one", label: "ONE" },
       { value: "two", label: "TWO" },
     ] as const
-    const initialData = [
-      {
-        name: NAME,
-        lastName: OPTIONS[0].value,
-        is_cool: false,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -423,7 +438,16 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME,
+          lastName: OPTIONS[0].value,
+          is_cool: false,
+        },
+      ],
+      fields,
+    )
     render(
       <Providers
         theme={defaultTheme}
@@ -433,7 +457,7 @@ describe("Validation step tests", () => {
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )
@@ -556,12 +580,7 @@ describe("Validation step tests", () => {
     const LASTNAME = "Doe"
     const NEW_NAME = "Johnny"
     const NEW_LASTNAME = "CENA"
-    const initialData = [
-      {
-        name: NAME + " " + LASTNAME,
-        lastName: undefined,
-      },
-    ]
+
     const fields = [
       {
         label: "Name",
@@ -578,7 +597,20 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-
+    const rowHook: RowHook<fieldKeys<typeof fields>> = (value) => ({
+      name: value.name?.toString()?.split(/(\s+)/)[0],
+      lastName: value.name?.toString()?.split(/(\s+)/)[2],
+    })
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME + " " + LASTNAME,
+          lastName: undefined,
+        },
+      ],
+      fields,
+      rowHook,
+    )
     await act(async () => {
       render(
         <Providers
@@ -586,14 +618,11 @@ describe("Validation step tests", () => {
           rsiValues={{
             ...mockValues,
             fields,
-            rowHook: (value) => ({
-              name: value.name?.toString()?.split(/(\s+)/)[0],
-              lastName: value.name?.toString()?.split(/(\s+)/)[2],
-            }),
+            rowHook,
           }}
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
-            <ValidationStep initialData={initialData} file={file} />
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
           </ModalWrapper>
         </Providers>,
       )
@@ -627,16 +656,6 @@ describe("Validation step tests", () => {
     const NAME = "John"
     const NEW_NAME = "Kate"
     const LAST_NAME = "Doe"
-    const initialData = [
-      {
-        name: NAME,
-        lastName: LAST_NAME,
-      },
-      {
-        name: "Johnny",
-        lastName: "Doeson",
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -653,8 +672,21 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-
     const mockedHook = jest.fn((a) => a)
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME,
+          lastName: LAST_NAME,
+        },
+        {
+          name: "Johnny",
+          lastName: "Doeson",
+        },
+      ],
+      fields,
+      mockedHook,
+    )
     await act(async () => {
       render(
         <Providers
@@ -666,7 +698,7 @@ describe("Validation step tests", () => {
           }}
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
-            <ValidationStep initialData={initialData} file={file} />
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
           </ModalWrapper>
         </Providers>,
       )
@@ -692,11 +724,6 @@ describe("Validation step tests", () => {
   test("Row hook raises error", async () => {
     const WRONG_NAME = "Johnny"
     const RIGHT_NAME = "Jonathan"
-    const initialData = [
-      {
-        name: WRONG_NAME,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -707,6 +734,21 @@ describe("Validation step tests", () => {
       },
     ] as const
 
+    const rowHook: RowHook<fieldKeys<typeof fields>> = (value, setError) => {
+      if (value.name === WRONG_NAME) {
+        setError(fields[0].key, { message: "Wrong name", level: "error" })
+      }
+      return value
+    }
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: WRONG_NAME,
+        },
+      ],
+      fields,
+      rowHook,
+    )
     await act(async () =>
       render(
         <Providers
@@ -714,16 +756,11 @@ describe("Validation step tests", () => {
           rsiValues={{
             ...mockValues,
             fields,
-            rowHook: (value, setError) => {
-              if (value.name === WRONG_NAME) {
-                setError(fields[0].key, { message: "Wrong name", level: "error" })
-              }
-              return value
-            },
+            rowHook,
           }}
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
-            <ValidationStep initialData={initialData} file={file} />
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
           </ModalWrapper>
         </Providers>,
       ),
@@ -755,14 +792,6 @@ describe("Validation step tests", () => {
     const SECOND_NAME = "Doe"
     const NEW_NAME = "Jakee"
     const ADDITION = "last"
-    const initialData = [
-      {
-        name: NAME,
-      },
-      {
-        name: SECOND_NAME,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -772,7 +801,23 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-
+    const tableHook: TableHook<fieldKeys<typeof fields>> = (data) =>
+      data.map((value) => ({
+        name: value.name + ADDITION,
+      }))
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME,
+        },
+        {
+          name: SECOND_NAME,
+        },
+      ],
+      fields,
+      undefined,
+      tableHook,
+    )
     await act(async () => {
       render(
         <Providers
@@ -780,14 +825,11 @@ describe("Validation step tests", () => {
           rsiValues={{
             ...mockValues,
             fields,
-            tableHook: (data) =>
-              data.map((value) => ({
-                name: value.name + ADDITION,
-              })),
+            tableHook,
           }}
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
-            <ValidationStep initialData={initialData} file={file} />
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
           </ModalWrapper>
         </Providers>,
       )
@@ -815,14 +857,6 @@ describe("Validation step tests", () => {
   test("Table hook raises error", async () => {
     const WRONG_NAME = "Johnny"
     const RIGHT_NAME = "Jonathan"
-    const initialData = [
-      {
-        name: WRONG_NAME,
-      },
-      {
-        name: WRONG_NAME,
-      },
-    ]
     const fields = [
       {
         label: "Name",
@@ -832,26 +866,39 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-
+    const tableHook: TableHook<fieldKeys<typeof fields>> = (data, setError) => {
+      data.forEach((value, index) => {
+        if (value.name === WRONG_NAME) {
+          setError(index, fields[0].key, { message: "Wrong name", level: "error" })
+        }
+        return value
+      })
+      return data
+    }
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: WRONG_NAME,
+        },
+        {
+          name: WRONG_NAME,
+        },
+      ],
+      fields,
+      undefined,
+      tableHook,
+    )
     render(
       <Providers
         theme={defaultTheme}
         rsiValues={{
           ...mockValues,
           fields,
-          tableHook: (data, setError) => {
-            data.forEach((value, index) => {
-              if (value.name === WRONG_NAME) {
-                setError(index, fields[0].key, { message: "Wrong name", level: "error" })
-              }
-              return value
-            })
-            return data
-          },
+          tableHook,
         }}
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
-          <ValidationStep initialData={initialData} file={file} />
+          <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
       </Providers>,
     )

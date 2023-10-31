@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useEffect } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { Box, Button, Heading, ModalBody, Switch, useStyleConfig } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
@@ -12,7 +12,7 @@ import type { themeOverrides } from "../../theme"
 import type { RowsChangeData } from "react-data-grid"
 
 type Props<T extends string> = {
-  initialData: Data<T>[]
+  initialData: (Data<T> & Meta)[]
   file: File
 }
 
@@ -22,10 +22,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
     "ValidationStep",
   ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
 
-  const [data, setData] = useState<(Data<T> & Meta)[]>(initialData as (Data<T> & Meta)[])
-  useEffect(() => {
-    addErrorsAndRunHooks<T>(initialData, fields, rowHook, tableHook).then((data) => setData(data))
-  }, [initialData, fields, rowHook, tableHook])
+  const [data, setData] = useState<(Data<T> & Meta)[]>(initialData)
 
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
@@ -33,9 +30,9 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
 
   const updateData = useCallback(
     async (rows: typeof data, indexes?: number[]) => {
-      setData(await addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, indexes))
+      addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, indexes).then((data) => setData(data))
     },
-    [setData, rowHook, tableHook, fields],
+    [rowHook, tableHook, fields],
   )
 
   const deleteSelectedRows = () => {

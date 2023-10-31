@@ -6,6 +6,7 @@ import { SelectHeaderStep } from "./SelectHeaderStep/SelectHeaderStep"
 import { SelectSheetStep } from "./SelectSheetStep/SelectSheetStep"
 import { mapWorkbook } from "../utils/mapWorkbook"
 import { ValidationStep } from "./ValidationStep/ValidationStep"
+import { addErrorsAndRunHooks } from "./ValidationStep/utils/dataMutations"
 import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
 import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
@@ -45,10 +46,19 @@ interface Props {
 }
 
 export const UploadFlow = ({ nextStep }: Props) => {
-  const { initialStepState } = useRsi()
+  const {
+    initialStepState,
+    maxRecords,
+    translations,
+    uploadStepHook,
+    selectHeaderStepHook,
+    matchColumnsStepHook,
+    fields,
+    rowHook,
+    tableHook,
+  } = useRsi()
   const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-  const { maxRecords, translations, uploadStepHook, selectHeaderStepHook, matchColumnsStepHook } = useRsi()
   const toast = useToast()
   const errorToast = useCallback(
     (description: string) => {
@@ -141,9 +151,10 @@ export const UploadFlow = ({ nextStep }: Props) => {
           onContinue={async (values, rawData, columns) => {
             try {
               const data = await matchColumnsStepHook(values, rawData, columns)
+              const dataWithMeta = await addErrorsAndRunHooks(data, fields, rowHook, tableHook)
               setState({
                 type: StepType.validateData,
-                data,
+                data: dataWithMeta,
               })
               nextStep()
             } catch (e) {
