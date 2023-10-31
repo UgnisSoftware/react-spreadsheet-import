@@ -623,6 +623,72 @@ describe("Validation step tests", () => {
     expect(newLastNameCell).toBeInTheDocument()
   })
 
+  test("Row hook only runs on a single row", async () => {
+    const NAME = "John"
+    const NEW_NAME = "Kate"
+    const LAST_NAME = "Doe"
+    const initialData = [
+      {
+        name: NAME,
+        lastName: LAST_NAME,
+      },
+      {
+        name: "Johnny",
+        lastName: "Doeson",
+      },
+    ]
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+      {
+        label: "lastName",
+        key: "lastName",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+
+    const mockedHook = jest.fn((a) => a)
+    await act(async () => {
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            rowHook: mockedHook,
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      )
+    })
+
+    // initially row hook is called for each row
+    expect(mockedHook.mock.calls.length).toBe(2)
+
+    const nameCell = screen.getByRole("gridcell", {
+      name: NAME,
+    })
+    expect(nameCell).toBeInTheDocument()
+
+    // activate input
+    await userEvent.click(nameCell)
+
+    await userEvent.keyboard(NEW_NAME + "{enter}")
+
+    expect(mockedHook.mock.calls[2][0]?.name).toBe(NEW_NAME)
+    expect(mockedHook.mock.calls.length).toBe(3)
+  })
+
   test("Row hook raises error", async () => {
     const WRONG_NAME = "Johnny"
     const RIGHT_NAME = "Jonathan"
