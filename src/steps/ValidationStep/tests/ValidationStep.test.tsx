@@ -513,68 +513,6 @@ describe("Validation step tests", () => {
     expect(checkbox).toBeChecked()
   })
 
-  // test("Init hook transforms data", async () => {
-  //   const NAME = "John"
-  //   const LASTNAME = "Doe"
-  //   const initialData = [
-  //     {
-  //       name: NAME + " " + LASTNAME,
-  //       lastName: undefined,
-  //     },
-  //   ]
-  //   const fields = [
-  //     {
-  //       label: "heyo",
-  //       key: "heyo",
-  //       fieldType: {
-  //         type: "input",
-  //       },
-  //     },
-  //     {
-  //       label: "Name",
-  //       key: "name",
-  //       fieldType: {
-  //         type: "input",
-  //       },
-  //     },
-  //     {
-  //       label: "lastName",
-  //       key: "lastName",
-  //       fieldType: {
-  //         type: "input",
-  //       },
-  //     },
-  //   ] as const
-  //
-  //   render(
-  //     <Providers
-  //       theme={defaultTheme}
-  //       rsiValues={{
-  //         ...mockValues,
-  //         fields,
-  //         validationStepHook: async (data) =>
-  //           data.map((value) => ({
-  //             name: value.name?.toString()?.split(/(\s+)/)[0],
-  //             lastName: value.name?.toString()?.split(/(\s+)/)[2],
-  //           })),
-  //       }}
-  //     >
-  //       <ModalWrapper isOpen={true} onClose={() => {}}>
-  //         <ValidationStep initialData={initialData} />
-  //       </ModalWrapper>
-  //     </Providers>,
-  //   )
-  //
-  //   const nameCell = screen.getByRole("gridcell", {
-  //     name: NAME,
-  //   })
-  //   expect(nameCell).toBeInTheDocument()
-  //   const lastNameCell = screen.getByRole("gridcell", {
-  //     name: LASTNAME,
-  //   })
-  //   expect(lastNameCell).toBeInTheDocument()
-  // })
-
   test("Row hook transforms data", async () => {
     const NAME = "John"
     const LASTNAME = "Doe"
@@ -719,6 +657,201 @@ describe("Validation step tests", () => {
 
     expect(mockedHook.mock.calls[2][0]?.name).toBe(NEW_NAME)
     expect(mockedHook.mock.calls.length).toBe(3)
+  })
+
+  test("Async row hook", async () => {
+    const NAME = "John"
+    const LASTNAME = "Doe"
+    const NEW_NAME = "Johnny"
+    const NEW_LASTNAME = "CENA"
+    const TIMEOUT = 200
+
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+      {
+        label: "lastName",
+        key: "lastName",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+    const tableHook: TableHook<fieldKeys<typeof fields>> = async (rows) => {
+      await new Promise((resolve) => setTimeout(resolve, TIMEOUT))
+
+      return rows.map((value) => ({
+        name: value.name?.toString()?.split(/(\s+)/)[0],
+        lastName: value.name?.toString()?.split(/(\s+)/)[2],
+      }))
+    }
+
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME + " " + LASTNAME,
+          lastName: undefined,
+        },
+      ],
+      fields,
+      undefined,
+      tableHook,
+    )
+    await act(async () => {
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            tableHook,
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      )
+    })
+
+    const nameCell = screen.getByRole("gridcell", {
+      name: NAME,
+    })
+    expect(nameCell).toBeInTheDocument()
+    const lastNameCell = screen.getByRole("gridcell", {
+      name: LASTNAME,
+    })
+    expect(lastNameCell).toBeInTheDocument()
+
+    const NEW_FIRST_NAME_BEFORE_HOOK_RUNS = NEW_NAME + " " + NEW_LASTNAME
+
+    // activate input
+    await userEvent.click(nameCell)
+
+    await userEvent.keyboard(NEW_FIRST_NAME_BEFORE_HOOK_RUNS + "{enter}")
+    // check that the value is updated before the hook runs
+    await waitFor(() =>
+      expect(
+        screen.getByRole("gridcell", {
+          name: NEW_FIRST_NAME_BEFORE_HOOK_RUNS,
+        }),
+      ).toBeInTheDocument(),
+    )
+    // check that the value is updated after the hook runs
+    await waitFor(() =>
+      expect(
+        screen.getByRole("gridcell", {
+          name: NEW_NAME,
+        }),
+      ).toBeInTheDocument(),
+    )
+
+    const newLastNameCell = screen.getByRole("gridcell", {
+      name: NEW_LASTNAME,
+    })
+    expect(newLastNameCell).toBeInTheDocument()
+  })
+
+  test("Async table hook", async () => {
+    const NAME = "John"
+    const LASTNAME = "Doe"
+    const NEW_NAME = "Johnny"
+    const NEW_LASTNAME = "CENA"
+    const TIMEOUT = 200
+
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+      {
+        label: "lastName",
+        key: "lastName",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+    const rowHook: RowHook<fieldKeys<typeof fields>> = async (value) => {
+      await new Promise((resolve) => setTimeout(resolve, TIMEOUT))
+
+      return {
+        name: value.name?.toString()?.split(/(\s+)/)[0],
+        lastName: value.name?.toString()?.split(/(\s+)/)[2],
+      }
+    }
+
+    const initialData = await addErrorsAndRunHooks(
+      [
+        {
+          name: NAME + " " + LASTNAME,
+          lastName: undefined,
+        },
+      ],
+      fields,
+      rowHook,
+    )
+    await act(async () => {
+      render(
+        <Providers
+          theme={defaultTheme}
+          rsiValues={{
+            ...mockValues,
+            fields,
+            rowHook,
+          }}
+        >
+          <ModalWrapper isOpen={true} onClose={() => {}}>
+            <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
+          </ModalWrapper>
+        </Providers>,
+      )
+    })
+
+    const nameCell = screen.getByRole("gridcell", {
+      name: NAME,
+    })
+    expect(nameCell).toBeInTheDocument()
+    const lastNameCell = screen.getByRole("gridcell", {
+      name: LASTNAME,
+    })
+    expect(lastNameCell).toBeInTheDocument()
+
+    const NEW_FIRST_NAME_BEFORE_HOOK_RUNS = NEW_NAME + " " + NEW_LASTNAME
+
+    // activate input
+    await userEvent.click(nameCell)
+
+    await userEvent.keyboard(NEW_FIRST_NAME_BEFORE_HOOK_RUNS + "{enter}")
+    // check that the value is updated before the hook runs
+    await waitFor(() =>
+      expect(
+        screen.getByRole("gridcell", {
+          name: NEW_FIRST_NAME_BEFORE_HOOK_RUNS,
+        }),
+      ).toBeInTheDocument(),
+    )
+    // check that the value is updated after the hook runs
+    await waitFor(() =>
+      expect(
+        screen.getByRole("gridcell", {
+          name: NEW_NAME,
+        }),
+      ).toBeInTheDocument(),
+    )
+
+    const newLastNameCell = screen.getByRole("gridcell", {
+      name: NEW_LASTNAME,
+    })
+    expect(newLastNameCell).toBeInTheDocument()
   })
 
   test("Row hook raises error", async () => {
