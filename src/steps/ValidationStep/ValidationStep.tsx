@@ -30,6 +30,10 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
 
   const updateData = useCallback(
     async (rows: typeof data, indexes?: number[]) => {
+      // Check if hooks are async - if they are we want to apply changes optimistically for better UX
+      if (rowHook?.constructor.name === "AsyncFunction" || tableHook?.constructor.name === "AsyncFunction") {
+        setData(rows)
+      }
       addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, indexes).then((data) => setData(data))
     },
     [rowHook, tableHook, fields],
