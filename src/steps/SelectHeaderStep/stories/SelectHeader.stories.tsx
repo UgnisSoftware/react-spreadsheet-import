@@ -1,4 +1,4 @@
-import { headerSelectionTableFields, mockRsiValues } from "../../../stories/mockRsiValues"
+import { headerSelectionTableFields, mockRsiValues } from "../../../stories/mockRsiValues.js"
 import { SelectHeaderStep } from "../SelectHeaderStep"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"

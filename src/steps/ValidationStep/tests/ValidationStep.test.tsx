@@ -5,7 +5,7 @@ import { defaultRSIProps, defaultTheme } from "../../../ReactSpreadsheetImport"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
-import { translations } from "../../../translationsRSIProps"
+import { translations } from "../../../translationsRSIProps.js"
 
 const mockValues = {
   ...defaultRSIProps,

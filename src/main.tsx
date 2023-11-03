@@ -1,14 +1,11 @@
-import { ReactSpreadsheetImport } from "../ReactSpreadsheetImport"
-import { Box, Link, Code, Button, useDisclosure } from "@chakra-ui/react"
-import { mockRsiValues } from "./mockRsiValues.js"
-import { useState } from "react"
-import type { Result } from "../types.js"
+import React, { useState } from "react"
+import ReactDOM from "react-dom/client"
+import { Box, Button, Code, Link, useDisclosure } from "@chakra-ui/react"
+import { ReactSpreadsheetImport } from "./ReactSpreadsheetImport.js"
+import { mockRsiValues } from "./stories/mockRsiValues.js"
+import { Result } from "./types.js"
 
-export default {
-  title: "React spreadsheet import",
-}
-
-export const Basic = () => {
+export const App = () => {
   const [data, setData] = useState<Result<any> | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
@@ -53,6 +50,8 @@ export const Basic = () => {
   )
 }
 
-Basic.parameters = {
-  chromatic: { disableSnapshot: true },
-}
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)

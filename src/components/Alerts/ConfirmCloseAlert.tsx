@@ -8,7 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react"
 import { useRef } from "react"
-import { useRsi } from "../../hooks/useRsi"
+import { useRsi } from "../../hooks/useRsi.ts"
 
 interface Props {
   isOpen: boolean

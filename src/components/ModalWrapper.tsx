@@ -1,7 +1,7 @@
 import type React from "react"
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react"
 import { ModalCloseButton } from "./ModalCloseButton"
-import { useRsi } from "../hooks/useRsi"
+import { useRsi } from "../hooks/useRsi.js"
 
 type Props = {
   children: React.ReactNode

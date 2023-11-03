@@ -1,4 +1,4 @@
-import type { RsiProps } from "../types"
+import type { RsiProps } from "../types.js"
 import { defaultRSIProps } from "../ReactSpreadsheetImport"
 
 const fields = [

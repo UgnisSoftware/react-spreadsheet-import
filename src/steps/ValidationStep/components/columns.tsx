@@ -1,8 +1,8 @@
 import { Column, useRowSelection } from "react-data-grid"
 import { Box, Checkbox, Input, Switch, Tooltip } from "@chakra-ui/react"
-import type { Data, Fields } from "../../../types"
+import type { Data, Fields } from "../../../types.js"
 import type { ChangeEvent } from "react"
-import type { Meta } from "../types"
+import type { Meta } from "../types.js"
 import { CgInfo } from "react-icons/cg"
 import { TableSelect } from "../../../components/Selects/TableSelect"
 

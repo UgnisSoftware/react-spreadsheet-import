@@ -1,5 +1,5 @@
-import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
-import type { Meta, Errors } from "../types"
+import type { Data, Fields, Info, RowHook, TableHook } from "../../../types.js"
+import type { Meta, Errors } from "../types.js"
 import { v4 } from "uuid"
 
 export const addErrorsAndRunHooks = <T extends string>(

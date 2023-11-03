@@ -1,4 +1,4 @@
-import { editableTableInitialData, mockRsiValues } from "../../../stories/mockRsiValues"
+import { editableTableInitialData, mockRsiValues } from "../../../stories/mockRsiValues.js"
 import { ValidationStep } from "../ValidationStep"
 import { Providers } from "../../../components/Providers"
 import { defaultTheme } from "../../../ReactSpreadsheetImport"

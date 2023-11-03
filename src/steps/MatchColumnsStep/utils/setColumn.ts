@@ -1,6 +1,6 @@
-import type { Field } from "../../../types"
+import type { Field } from "../../../types.js"
 import { Column, ColumnType, MatchColumnsProps } from "../MatchColumnsStep"
-import { uniqueEntries } from "./uniqueEntries"
+import { uniqueEntries } from "./uniqueEntries.js"
 
 export const setColumn = <T extends string>(
   oldColumn: Column<T>,

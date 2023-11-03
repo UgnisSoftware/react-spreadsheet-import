@@ -1,5 +1,5 @@
 import DataGrid, { DataGridProps } from "react-data-grid"
-import { useRsi } from "../hooks/useRsi"
+import { useRsi } from "../hooks/useRsi.js"
 
 interface Props<Data> extends DataGridProps<Data> {
   rowHeight?: number

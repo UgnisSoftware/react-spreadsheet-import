@@ -1,7 +1,7 @@
 import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { MatchColumnsStep } from "../MatchColumnsStep"
 import { Providers } from "../../../components/Providers"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
+import { mockRsiValues } from "../../../stories/mockRsiValues.js"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 
 export default {

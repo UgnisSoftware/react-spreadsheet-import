@@ -1,6 +1,6 @@
-import type { Meta } from "./steps/ValidationStep/types"
+import type { Meta } from "./steps/ValidationStep/types.js"
 import type { DeepReadonly } from "ts-essentials"
-import type { TranslationsRSIProps } from "./translationsRSIProps"
+import type { TranslationsRSIProps } from "./translationsRSIProps.js"
 import type { Columns } from "./steps/MatchColumnsStep/MatchColumnsStep"
 import type { StepState } from "./steps/UploadFlow"
 

@@ -1,6 +1,6 @@
 import { defaultTheme } from "../../../ReactSpreadsheetImport"
 import { SelectSheetStep } from "../SelectSheetStep"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
+import { mockRsiValues } from "../../../stories/mockRsiValues.js"
 import { Providers } from "../../../components/Providers"
 import { ModalWrapper } from "../../../components/ModalWrapper"
 

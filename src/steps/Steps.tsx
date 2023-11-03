@@ -2,8 +2,8 @@ import { UploadFlow } from "./UploadFlow"
 import { ModalHeader } from "@chakra-ui/react"
 import { useSteps, Step, Steps as Stepper } from "chakra-ui-steps"
 import { CgCheck } from "react-icons/cg"
-import { useRsi } from "../hooks/useRsi"
-import { useRsiInitialStep } from "../hooks/useRsiInitialStep"
+import { useRsi } from "../hooks/useRsi.js"
+import { useRsiInitialStep } from "../hooks/useRsiInitialStep.js"
 
 const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
 
