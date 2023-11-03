@@ -26,6 +26,8 @@ const getFilterSwitch = () =>
 
 const file = new File([""], "file.csv")
 
+jest.useFakeTimers()
+
 describe("Validation step tests", () => {
   test("Submit data", async () => {
     const onSubmit = jest.fn()
@@ -664,7 +666,7 @@ describe("Validation step tests", () => {
     const LASTNAME = "Doe"
     const NEW_NAME = "Johnny"
     const NEW_LASTNAME = "CENA"
-    const TIMEOUT = 200
+    const TIMEOUT = 1000
 
     const fields = [
       {
@@ -742,6 +744,9 @@ describe("Validation step tests", () => {
         }),
       ).toBeInTheDocument(),
     )
+
+    jest.runAllTimers()
+
     // check that the value is updated after the hook runs
     await waitFor(() =>
       expect(
@@ -762,7 +767,7 @@ describe("Validation step tests", () => {
     const LASTNAME = "Doe"
     const NEW_NAME = "Johnny"
     const NEW_LASTNAME = "CENA"
-    const TIMEOUT = 200
+    const TIMEOUT = 1000
 
     const fields = [
       {
@@ -839,6 +844,8 @@ describe("Validation step tests", () => {
         }),
       ).toBeInTheDocument(),
     )
+
+    jest.runAllTimers()
     // check that the value is updated after the hook runs
     await waitFor(() =>
       expect(
