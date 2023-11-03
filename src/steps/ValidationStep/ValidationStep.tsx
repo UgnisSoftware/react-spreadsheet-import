@@ -12,7 +12,7 @@ import type { themeOverrides } from "../../theme"
 import type { RowsChangeData } from "react-data-grid"
 
 type Props<T extends string> = {
-  initialData: Data<T>[]
+  initialData: (Data<T> & Meta)[]
   file: File
 }
 
@@ -22,22 +22,21 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
     "ValidationStep",
   ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
 
-  const [data, setData] = useState<(Data<T> & Meta)[]>(
-    useMemo(
-      () => addErrorsAndRunHooks<T>(initialData, fields, rowHook, tableHook),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [],
-    ),
-  )
+  const [data, setData] = useState<(Data<T> & Meta)[]>(initialData)
+
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
   const [showSubmitAlert, setShowSubmitAlert] = useState(false)
 
   const updateData = useCallback(
-    (rows: typeof data) => {
-      setData(addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook))
+    async (rows: typeof data, indexes?: number[]) => {
+      // Check if hooks are async - if they are we want to apply changes optimistically for better UX
+      if (rowHook?.constructor.name === "AsyncFunction" || tableHook?.constructor.name === "AsyncFunction") {
+        setData(rows)
+      }
+      addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, indexes).then((data) => setData(data))
     },
-    [setData, rowHook, tableHook, fields],
+    [rowHook, tableHook, fields],
   )
 
   const deleteSelectedRows = () => {
@@ -48,7 +47,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
     }
   }
 
-  const updateRow = useCallback(
+  const updateRows = useCallback(
     (rows: typeof data, changedData?: RowsChangeData<(typeof data)[number]>) => {
       const changes = changedData?.indexes.reduce((acc, index) => {
         // when data is filtered val !== actual index in data
@@ -56,8 +55,9 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
         acc[realIndex] = rows[index]
         return acc
       }, {} as Record<number, (typeof data)[number]>)
+      const realIndexes = changes && Object.keys(changes).map((index) => Number(index))
       const newData = Object.assign([], data, changes)
-      updateData(newData)
+      updateData(newData, realIndexes)
     },
     [data, updateData],
   )
@@ -136,7 +136,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
         <Table
           rowKeyGetter={rowKeyGetter}
           rows={tableData}
-          onRowsChange={updateRow}
+          onRowsChange={updateRows}
           columns={columns}
           selectedRows={selectedRows}
           onSelectedRowsChange={setSelectedRows}

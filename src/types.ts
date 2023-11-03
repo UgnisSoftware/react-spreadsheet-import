@@ -121,17 +121,32 @@ export type RowHook<T extends string> = (
   row: Data<T>,
   addError: (fieldKey: T, error: Info) => void,
   table: Data<T>[],
-) => Data<T>
+) => Data<T> | Promise<Data<T>>
 export type TableHook<T extends string> = (
   table: Data<T>[],
   addError: (rowIndex: number, fieldKey: T, error: Info) => void,
-) => Data<T>[]
+) => Data<T>[] | Promise<Data<T>[]>
 
 export type ErrorLevel = "info" | "warning" | "error"
 
 export type Info = {
   message: string
   level: ErrorLevel
+}
+
+export enum ErrorSources {
+  Table = "table",
+  Row = "row",
+}
+
+/*
+   Source determines whether the error is from the full table or row validation
+   Table validation is tableHook and "unique" validation
+   Row validation is rowHook and all other validations
+   it is used to determine if row.__errors should be updated or not depending on different validations
+*/
+export type InfoWithSource = Info & {
+  source: ErrorSources
 }
 
 export type Result<T extends string> = {
