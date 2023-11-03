@@ -55,7 +55,7 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
         acc[realIndex] = rows[index]
         return acc
       }, {} as Record<number, (typeof data)[number]>)
-      const realIndexes = changes == null ? undefined : Object.keys(changes).map((index) => Number(index))
+      const realIndexes = changes && Object.keys(changes).map((index) => Number(index))
       const newData = Object.assign([], data, changes)
       updateData(newData, realIndexes)
     },
