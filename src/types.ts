@@ -25,6 +25,8 @@ export type RsiProps<T extends string> = {
   onSubmit: (data: Result<T>, file: File) => void
   // Allows submitting with errors. Default: true
   allowInvalidSubmit?: boolean
+  // Enable navigation in stepper component and show back button. Default: false
+  isNavigationEnabled?: boolean
   // Translations for each text
   translations?: TranslationsRSIProps
   // Theme configuration passed to underlying Chakra-UI

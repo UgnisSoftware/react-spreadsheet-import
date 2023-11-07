@@ -205,6 +205,8 @@ Common date-time formats can be viewed [here](https://docs.sheetjs.com/docs/csf/
   autoMapHeaders?: boolean
   // Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
   autoMapDistance?: number
+  // Enable navigation in stepper component and show back button. Default: false
+  isNavigationEnabled?: boolean
 ```
 
 ## Customisation

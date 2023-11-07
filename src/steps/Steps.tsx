@@ -10,7 +10,7 @@ import { steps, stepTypeToStepIndex, stepIndexToStepType } from "../utils/steps"
 const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
 
 export const Steps = () => {
-  const { initialStepState, translations } = useRsi()
+  const { initialStepState, translations, isNavigationEnabled } = useRsi()
 
   const initialStep = stepTypeToStepIndex(initialStepState?.type)
 
@@ -45,13 +45,17 @@ export const Steps = () => {
   return (
     <>
       <ModalHeader display={["none", "none", "block"]}>
-        <Stepper activeStep={activeStep} checkIcon={CheckIcon} onClickStep={onClickStep}>
+        <Stepper
+          activeStep={activeStep}
+          checkIcon={CheckIcon}
+          onClickStep={isNavigationEnabled ? onClickStep : undefined}
+        >
           {steps.map((key) => (
             <Step label={translations[key].title} key={key} />
           ))}
         </Stepper>
       </ModalHeader>
-      <UploadFlow state={state} onNext={onNext} onBack={onBack} />
+      <UploadFlow state={state} onNext={onNext} onBack={isNavigationEnabled ? onBack : undefined} />
     </>
   )
 }
