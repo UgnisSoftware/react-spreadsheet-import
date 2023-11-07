@@ -33,7 +33,7 @@ export const Steps = () => {
   }
 
   const onBack = () => {
-    onClickStep(activeStep - 1)
+    onClickStep(Math.max(activeStep - 1, 0))
   }
 
   const onNext = (v: StepState) => {
