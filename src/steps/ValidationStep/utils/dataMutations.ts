@@ -1,28 +1,40 @@
 import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
-import type { Meta, Errors } from "../types"
+import type { Meta, Error, Errors } from "../types"
 import { v4 } from "uuid"
+import { ErrorSources } from "../../../types"
 
-export const addErrorsAndRunHooks = <T extends string>(
+export const addErrorsAndRunHooks = async <T extends string>(
   data: (Data<T> & Partial<Meta>)[],
   fields: Fields<T>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
-): (Data<T> & Meta)[] => {
+  changedRowIndexes?: number[],
+): Promise<(Data<T> & Meta)[]> => {
   const errors: Errors = {}
 
-  const addHookError = (rowIndex: number, fieldKey: T, error: Info) => {
+  const addError = (source: ErrorSources, rowIndex: number, fieldKey: T, error: Info) => {
     errors[rowIndex] = {
       ...errors[rowIndex],
-      [fieldKey]: error,
+      [fieldKey]: { ...error, source },
     }
   }
 
   if (tableHook) {
-    data = tableHook(data, addHookError)
+    data = await tableHook(data, (...props) => addError(ErrorSources.Table, ...props))
   }
 
   if (rowHook) {
-    data = data.map((value, index) => rowHook(value, (...props) => addHookError(index, ...props), data))
+    if (changedRowIndexes) {
+      for (const index of changedRowIndexes) {
+        data[index] = await rowHook(data[index], (...props) => addError(ErrorSources.Row, index, ...props), data)
+      }
+    } else {
+      data = await Promise.all(
+        data.map(async (value, index) =>
+          rowHook(value, (...props) => addError(ErrorSources.Row, index, ...props), data),
+        ),
+      )
+    }
   }
 
   fields.forEach((field) => {
@@ -49,47 +61,43 @@ export const addErrorsAndRunHooks = <T extends string>(
 
           values.forEach((value, index) => {
             if (duplicates.has(value)) {
-              errors[index] = {
-                ...errors[index],
-                [field.key]: {
-                  level: validation.level || "error",
-                  message: validation.errorMessage || "Field must be unique",
-                },
-              }
+              addError(ErrorSources.Table, index, field.key as T, {
+                level: validation.level || "error",
+                message: validation.errorMessage || "Field must be unique",
+              })
             }
           })
           break
         }
         case "required": {
-          data.forEach((entry, index) => {
+          const dataToValidate = changedRowIndexes ? changedRowIndexes.map((index) => data[index]) : data
+          dataToValidate.forEach((entry, index) => {
+            const realIndex = changedRowIndexes ? changedRowIndexes[index] : index
             if (entry[field.key as T] === null || entry[field.key as T] === undefined || entry[field.key as T] === "") {
-              errors[index] = {
-                ...errors[index],
-                [field.key]: {
-                  level: validation.level || "error",
-                  message: validation.errorMessage || "Field is required",
-                },
-              }
+              addError(ErrorSources.Row, realIndex, field.key as T, {
+                level: validation.level || "error",
+                message: validation.errorMessage || "Field is required",
+              })
             }
           })
+
           break
         }
         case "regex": {
+          const dataToValidate = changedRowIndexes ? changedRowIndexes.map((index) => data[index]) : data
           const regex = new RegExp(validation.value, validation.flags)
-          data.forEach((entry, index) => {
+          dataToValidate.forEach((entry, index) => {
+            const realIndex = changedRowIndexes ? changedRowIndexes[index] : index
             const value = entry[field.key]?.toString() ?? ""
             if (!value.match(regex)) {
-              errors[index] = {
-                ...errors[index],
-                [field.key]: {
-                  level: validation.level || "error",
-                  message:
-                    validation.errorMessage ||
-                    `Field did not match the regex /${validation.value}/${validation.flags} `,
-                },
-              }
+              addError(ErrorSources.Row, realIndex, field.key as T, {
+                level: validation.level || "error",
+                message:
+                  validation.errorMessage || `Field did not match the regex /${validation.value}/${validation.flags} `,
+              })
             }
           })
+
           break
         }
       }
@@ -103,12 +111,41 @@ export const addErrorsAndRunHooks = <T extends string>(
     }
     const newValue = value as Data<T> & Meta
 
-    if (errors[index]) {
-      return { ...newValue, __errors: errors[index] }
+    // If we are validating all indexes, or we did full validation on this row - apply all errors
+    if (!changedRowIndexes || changedRowIndexes.includes(index)) {
+      if (errors[index]) {
+        return { ...newValue, __errors: errors[index] }
+      }
+
+      if (!errors[index] && value?.__errors) {
+        return { ...newValue, __errors: null }
+      }
     }
-    if (!errors[index] && value?.__errors) {
-      return { ...newValue, __errors: null }
+    // if we have not validated this row, keep it's row errors but apply global error changes
+    else {
+      // at this point errors[index] contains only table source errors, previous row and table errors are in value.__errors
+      const hasRowErrors =
+        value.__errors && Object.values(value.__errors).some((error) => error.source === ErrorSources.Row)
+
+      if (!hasRowErrors) {
+        if (errors[index]) {
+          return { ...newValue, __errors: errors[index] }
+        }
+        return newValue
+      }
+
+      const errorsWithoutTableError = Object.entries(value.__errors!).reduce((acc, [key, value]) => {
+        if (value.source === ErrorSources.Row) {
+          acc[key] = value
+        }
+        return acc
+      }, {} as Error)
+
+      const newErrors = { ...errorsWithoutTableError, ...errors[index] }
+
+      return { ...newValue, __errors: newErrors }
     }
+
     return newValue
   })
 }
