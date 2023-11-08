@@ -187,23 +187,20 @@ describe("Match Columns automatic matching", () => {
     const OPTION_RESULT_TWO = "Dane"
     const OPTION_RESULT_TWO_VALUE = "2"
     const OPTION_RESULT_THREE = "Kane"
-    const OPTION_RESULT_THREE_VALUE = "3"
     const data = [
+      // match by option label
       [OPTION_RESULT_ONE, "123", "j@j.com"],
-      [OPTION_RESULT_TWO, "333", "dane@bane.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
       [OPTION_RESULT_THREE, "534", "kane@linch.com"],
     ]
     const options = [
       { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
       { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
-      { label: OPTION_RESULT_THREE, value: OPTION_RESULT_THREE_VALUE },
     ]
     // finds only names with automatic matching
-    const result = [
-      { name: OPTION_RESULT_ONE_VALUE },
-      { name: OPTION_RESULT_TWO_VALUE },
-      { name: OPTION_RESULT_THREE_VALUE },
-    ]
+    const result = [{ name: OPTION_RESULT_ONE_VALUE }, { name: OPTION_RESULT_TWO_VALUE }, { name: undefined }]
 
     const alternativeFields = [
       {
@@ -230,7 +227,7 @@ describe("Match Columns automatic matching", () => {
       </Providers>,
     )
 
-    expect(screen.getByText(/0 Unmatched/)).toBeInTheDocument()
+    expect(screen.getByText(/1 Unmatched/)).toBeInTheDocument()
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
@@ -251,16 +248,17 @@ describe("Match Columns automatic matching", () => {
     const OPTION_RESULT_TWO = "Dane"
     const OPTION_RESULT_TWO_VALUE = "2"
     const OPTION_RESULT_THREE = "Kane"
-    const OPTION_RESULT_THREE_VALUE = "3"
     const data = [
+      // match by option label
       [OPTION_RESULT_ONE, "123", "j@j.com"],
-      [OPTION_RESULT_TWO, "333", "dane@bane.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
       [OPTION_RESULT_THREE, "534", "kane@linch.com"],
     ]
     const options = [
       { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
       { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
-      { label: OPTION_RESULT_THREE, value: OPTION_RESULT_THREE_VALUE },
     ]
     const result = [{ name: undefined }, { name: undefined }, { name: undefined }]
 
@@ -310,23 +308,20 @@ describe("Match Columns automatic matching", () => {
     const OPTION_RESULT_TWO = "Dane"
     const OPTION_RESULT_TWO_VALUE = "2"
     const OPTION_RESULT_THREE = "Kane"
-    const OPTION_RESULT_THREE_VALUE = "3"
     const data = [
+      // match by option label
       [OPTION_RESULT_ONE, "123", "j@j.com"],
-      [OPTION_RESULT_TWO, "333", "dane@bane.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
       [OPTION_RESULT_THREE, "534", "kane@linch.com"],
     ]
     const options = [
       { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
       { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
-      { label: OPTION_RESULT_THREE, value: OPTION_RESULT_THREE_VALUE },
     ]
     // finds only names with automatic matching
-    const result = [
-      { name: OPTION_RESULT_ONE_VALUE },
-      { name: OPTION_RESULT_TWO_VALUE },
-      { name: OPTION_RESULT_THREE_VALUE },
-    ]
+    const result = [{ name: OPTION_RESULT_ONE_VALUE }, { name: OPTION_RESULT_TWO_VALUE }, { name: undefined }]
 
     const alternativeFields = [
       {
@@ -357,7 +352,7 @@ describe("Match Columns automatic matching", () => {
       container: document.getElementById(SELECT_DROPDOWN_ID)!,
     })
 
-    expect(screen.getByText(/0 Unmatched/)).toBeInTheDocument()
+    expect(screen.getByText(/1 Unmatched/)).toBeInTheDocument()
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
