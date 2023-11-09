@@ -10,14 +10,14 @@ export const setColumn = <T extends string>(
 ): Column<T> => {
   switch (field?.fieldType.type) {
     case "select":
-      const options = field.fieldType.options
+      const fieldOptions = field.fieldType.options
       const uniqueData = uniqueEntries(data || [], oldColumn.index) as MatchedOptions<T>[]
       const matchedOptions = autoMapSelectValues
-        ? uniqueData.map((option) => {
-            const value = options.find(
-              (fieldOption) => fieldOption.value === option.entry || fieldOption.label === option.entry,
+        ? uniqueData.map((record) => {
+            const value = fieldOptions.find(
+              (fieldOption) => fieldOption.value === record.entry || fieldOption.label === record.entry,
             )?.value
-            return value ? ({ ...option, value } as MatchedOptions<T>) : (option as MatchedOptions<T>)
+            return value ? ({ ...record, value } as MatchedOptions<T>) : (record as MatchedOptions<T>)
           })
         : uniqueData
       const allMatched = matchedOptions.filter((o) => o.value).length == uniqueData?.length
