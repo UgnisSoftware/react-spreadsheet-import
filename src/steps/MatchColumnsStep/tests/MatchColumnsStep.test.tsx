@@ -180,6 +180,192 @@ describe("Match Columns automatic matching", () => {
     expect(onContinue.mock.calls[0][0]).toEqual(result)
   })
 
+  test("AutoMatches select values on mount", async () => {
+    const header = ["first name", "count", "Email"]
+    const OPTION_RESULT_ONE = "John"
+    const OPTION_RESULT_ONE_VALUE = "1"
+    const OPTION_RESULT_TWO = "Dane"
+    const OPTION_RESULT_TWO_VALUE = "2"
+    const OPTION_RESULT_THREE = "Kane"
+    const data = [
+      // match by option label
+      [OPTION_RESULT_ONE, "123", "j@j.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
+      [OPTION_RESULT_THREE, "534", "kane@linch.com"],
+    ]
+    const options = [
+      { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
+      { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
+    ]
+    // finds only names with automatic matching
+    const result = [{ name: OPTION_RESULT_ONE_VALUE }, { name: OPTION_RESULT_TWO_VALUE }, { name: undefined }]
+
+    const alternativeFields = [
+      {
+        label: "Name",
+        key: "name",
+        alternateMatches: ["first name"],
+        fieldType: {
+          type: "select",
+          options,
+        },
+        example: "Stephanie",
+      },
+    ] as const
+
+    const onContinue = jest.fn()
+    render(
+      <Providers
+        theme={defaultTheme}
+        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}
+      >
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    expect(screen.getByText(/1 Unmatched/)).toBeInTheDocument()
+
+    const nextButton = screen.getByRole("button", {
+      name: "Next",
+    })
+
+    await userEvent.click(nextButton)
+
+    await waitFor(() => {
+      expect(onContinue).toBeCalled()
+    })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
+  })
+
+  test("Does not auto match select values when autoMapSelectValues:false", async () => {
+    const header = ["first name", "count", "Email"]
+    const OPTION_RESULT_ONE = "John"
+    const OPTION_RESULT_ONE_VALUE = "1"
+    const OPTION_RESULT_TWO = "Dane"
+    const OPTION_RESULT_TWO_VALUE = "2"
+    const OPTION_RESULT_THREE = "Kane"
+    const data = [
+      // match by option label
+      [OPTION_RESULT_ONE, "123", "j@j.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
+      [OPTION_RESULT_THREE, "534", "kane@linch.com"],
+    ]
+    const options = [
+      { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
+      { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
+    ]
+    const result = [{ name: undefined }, { name: undefined }, { name: undefined }]
+
+    const alternativeFields = [
+      {
+        label: "Name",
+        key: "name",
+        alternateMatches: ["first name"],
+        fieldType: {
+          type: "select",
+          options,
+        },
+        example: "Stephanie",
+      },
+    ] as const
+
+    const onContinue = jest.fn()
+    render(
+      <Providers
+        theme={defaultTheme}
+        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: false }}
+      >
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    expect(screen.getByText(/3 Unmatched/)).toBeInTheDocument()
+
+    const nextButton = screen.getByRole("button", {
+      name: "Next",
+    })
+
+    await userEvent.click(nextButton)
+
+    await waitFor(() => {
+      expect(onContinue).toBeCalled()
+    })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
+  })
+
+  test("AutoMatches select values on select", async () => {
+    const header = ["first name", "count", "Email"]
+    const OPTION_RESULT_ONE = "John"
+    const OPTION_RESULT_ONE_VALUE = "1"
+    const OPTION_RESULT_TWO = "Dane"
+    const OPTION_RESULT_TWO_VALUE = "2"
+    const OPTION_RESULT_THREE = "Kane"
+    const data = [
+      // match by option label
+      [OPTION_RESULT_ONE, "123", "j@j.com"],
+      // match by option value
+      [OPTION_RESULT_TWO_VALUE, "333", "dane@bane.com"],
+      // do not match
+      [OPTION_RESULT_THREE, "534", "kane@linch.com"],
+    ]
+    const options = [
+      { label: OPTION_RESULT_ONE, value: OPTION_RESULT_ONE_VALUE },
+      { label: OPTION_RESULT_TWO, value: OPTION_RESULT_TWO_VALUE },
+    ]
+    // finds only names with automatic matching
+    const result = [{ name: OPTION_RESULT_ONE_VALUE }, { name: OPTION_RESULT_TWO_VALUE }, { name: undefined }]
+
+    const alternativeFields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "select",
+          options,
+        },
+        example: "Stephanie",
+      },
+    ] as const
+
+    const onContinue = jest.fn()
+    render(
+      <Providers
+        theme={defaultTheme}
+        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}
+      >
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
+          <div id={SELECT_DROPDOWN_ID} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    await selectEvent.select(screen.getByLabelText(header[0]), alternativeFields[0].label, {
+      container: document.getElementById(SELECT_DROPDOWN_ID)!,
+    })
+
+    expect(screen.getByText(/1 Unmatched/)).toBeInTheDocument()
+
+    const nextButton = screen.getByRole("button", {
+      name: "Next",
+    })
+
+    await userEvent.click(nextButton)
+
+    await waitFor(() => {
+      expect(onContinue).toBeCalled()
+    })
+    expect(onContinue.mock.calls[0][0]).toEqual(result)
+  })
+
   test("Boolean-like values are returned as Booleans", async () => {
     const header = ["namezz", "is_cool", "Email"]
     const data = [

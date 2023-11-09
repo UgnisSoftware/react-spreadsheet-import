@@ -65,7 +65,7 @@ export type Columns<T extends string> = Column<T>[]
 export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
-  const { fields, autoMapHeaders, autoMapDistance, translations } = useRsi<T>()
+  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
@@ -81,7 +81,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
         columns.map<Column<T>>((column, index) => {
           columnIndex === index ? setColumn(column, field, data) : column
           if (columnIndex === index) {
-            return setColumn(column, field, data)
+            return setColumn(column, field, data, autoMapSelectValues)
           } else if (index === existingFieldIndex) {
             toast({
               status: "warning",
@@ -99,6 +99,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       )
     },
     [
+      autoMapSelectValues,
       columns,
       data,
       fields,
@@ -151,12 +152,15 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
     setIsLoading(false)
   }, [onContinue, columns, data, fields])
 
-  useEffect(() => {
-    if (autoMapHeaders) {
-      setColumns(getMatchedColumns(columns, fields, data, autoMapDistance))
-    }
+  useEffect(
+    () => {
+      if (autoMapHeaders) {
+        setColumns(getMatchedColumns(columns, fields, data, autoMapDistance, autoMapSelectValues))
+      }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    [],
+  )
 
   return (
     <>

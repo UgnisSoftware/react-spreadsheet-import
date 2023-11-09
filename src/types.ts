@@ -35,6 +35,8 @@ export type RsiProps<T extends string> = {
   maxFileSize?: number
   // Automatically map imported headers to specified fields if possible. Default: true
   autoMapHeaders?: boolean
+  // When field type is "select", automatically match values if possible. Default: false
+  autoMapSelectValues?: boolean
   // Headers matching accuracy: 1 for strict and up for more flexible matching
   autoMapDistance?: number
   // Initial Step state to be rendered on load

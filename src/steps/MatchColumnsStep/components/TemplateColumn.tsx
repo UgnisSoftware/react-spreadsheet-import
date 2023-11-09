@@ -22,7 +22,7 @@ import type { Styles } from "./ColumnGrid"
 const getAccordionTitle = <T extends string>(fields: Fields<T>, column: Column<T>, translations: Translations) => {
   const fieldLabel = fields.find((field) => "value" in column && field.key === column.value)!.label
   return `${translations.matchColumnsStep.matchDropdownTitle} ${fieldLabel} (${
-    "matchedOptions" in column && column.matchedOptions.length
+    "matchedOptions" in column && column.matchedOptions.filter((option) => !option.value).length
   } ${translations.matchColumnsStep.unmatched})`
 }
 
