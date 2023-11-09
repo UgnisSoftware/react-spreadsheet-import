@@ -203,7 +203,7 @@ Common date-time formats can be viewed [here](https://docs.sheetjs.com/docs/csf/
   maxFileSize?: number
   // Automatically map imported headers to specified fields if possible. Default: true
   autoMapHeaders?: boolean
-  // When field type is "select", automatically match values if possible. Default: true
+  // When field type is "select", automatically match values if possible. Default: false
   autoMapSelectValues?: boolean
   // Headers matching accuracy: 1 for strict and up for more flexible matching. Default: 2
   autoMapDistance?: number
