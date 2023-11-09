@@ -99,6 +99,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       )
     },
     [
+      autoMapSelectValues,
       columns,
       data,
       fields,
@@ -151,12 +152,15 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
     setIsLoading(false)
   }, [onContinue, columns, data, fields])
 
-  useEffect(() => {
-    if (autoMapHeaders) {
-      setColumns(getMatchedColumns(columns, fields, data, autoMapDistance, autoMapSelectValues))
-    }
+  useEffect(
+    () => {
+      if (autoMapHeaders) {
+        setColumns(getMatchedColumns(columns, fields, data, autoMapDistance, autoMapSelectValues))
+      }
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    [],
+  )
 
   return (
     <>
