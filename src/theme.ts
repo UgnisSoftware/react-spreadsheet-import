@@ -338,8 +338,8 @@ export const themeOverrides = {
           },
           dialog: {
             outline: "unset",
-            minH: "calc(100vh - 4rem)",
-            maxW: "calc(100vw - 4rem)",
+            minH: "calc(var(--chakra-vh) - 4rem)",
+            maxW: "calc(var(--chakra-vw) - 4rem)",
             my: "2rem",
             borderRadius: "3xl",
             overflow: "hidden",
@@ -355,6 +355,17 @@ export const themeOverrides = {
   },
   styles: {
     global: {
+      // supporting older browsers but avoiding fill-available CSS as it doesn't work https://github.com/chakra-ui/chakra-ui/blob/073bbcd21a9caa830d71b61d6302f47aaa5c154d/packages/components/css-reset/src/css-reset.tsx#L5
+      ":root": {
+        "--chakra-vh": "100vh",
+        "--chakra-vw": "100vw",
+      },
+      "@supports (height: 100dvh) and (width: 100dvw) ": {
+        ":root": {
+          "--chakra-vh": "100dvh",
+          "--chakra-vw": "100dvw",
+        },
+      },
       ".rdg": {
         contain: "size layout style paint",
         borderRadius: "lg",
