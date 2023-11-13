@@ -12,9 +12,9 @@ type ContinueButtonProps = {
 export const ContinueButton = ({ onContinue, onBack, title, backTitle, isLoading }: ContinueButtonProps) => {
   const styles = useStyleConfig("Modal") as (typeof themeOverrides)["components"]["Modal"]["baseStyle"]
   return (
-    <ModalFooter justifyContent={onBack && "space-between"}>
+    <ModalFooter>
       {onBack && (
-        <Button size="lg" w="21rem" sx={styles.backButton} onClick={onBack} isLoading={isLoading}>
+        <Button size="md" sx={styles.backButton} onClick={onBack} isLoading={isLoading} variant="link">
           {backTitle}
         </Button>
       )}

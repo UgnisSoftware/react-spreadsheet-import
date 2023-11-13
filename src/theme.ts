@@ -312,8 +312,16 @@ export const themeOverrides = {
           fontSize: "lg",
           color: "textColor",
         },
+        footer: {
+          position: "relative",
+        },
         closeModalButton: {},
-        backButton: {},
+        backButton: {
+          position: "absolute",
+          left: "2rem",
+          top: "0",
+          bottom: "0",
+        },
         continueButton: {},
       },
       variants: {
