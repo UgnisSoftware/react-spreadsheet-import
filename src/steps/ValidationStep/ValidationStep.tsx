@@ -14,9 +14,10 @@ import type { RowsChangeData } from "react-data-grid"
 type Props<T extends string> = {
   initialData: (Data<T> & Meta)[]
   file: File
+  onBack?: () => void
 }
 
-export const ValidationStep = <T extends string>({ initialData, file }: Props<T>) => {
+export const ValidationStep = <T extends string>({ initialData, file, onBack }: Props<T>) => {
   const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
   const styles = useStyleConfig(
     "ValidationStep",
@@ -151,7 +152,12 @@ export const ValidationStep = <T extends string>({ initialData, file }: Props<T>
           }}
         />
       </ModalBody>
-      <ContinueButton onContinue={onContinue} title={translations.validationStep.nextButtonTitle} />
+      <ContinueButton
+        onContinue={onContinue}
+        onBack={onBack}
+        title={translations.validationStep.nextButtonTitle}
+        backTitle={translations.validationStep.backButtonTitle}
+      />
     </>
   )
 }

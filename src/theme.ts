@@ -313,6 +313,8 @@ export const themeOverrides = {
           color: "textColor",
         },
         closeModalButton: {},
+        backButton: {},
+        continueButton: {},
       },
       variants: {
         rsi: {

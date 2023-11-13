@@ -7,9 +7,10 @@ import type { themeOverrides } from "../../theme"
 type SelectSheetProps = {
   sheetNames: string[]
   onContinue: (sheetName: string) => Promise<void>
+  onBack?: () => void
 }
 
-export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) => {
+export const SelectSheetStep = ({ sheetNames, onContinue, onBack }: SelectSheetProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const { translations } = useRsi()
   const [value, setValue] = useState(sheetNames[0])
@@ -42,7 +43,9 @@ export const SelectSheetStep = ({ sheetNames, onContinue }: SelectSheetProps) =>
       <ContinueButton
         isLoading={isLoading}
         onContinue={() => handleOnContinue(value)}
+        onBack={onBack}
         title={translations.uploadStep.selectSheet.nextButtonTitle}
+        backTitle={translations.uploadStep.selectSheet.backButtonTitle}
       />
     </>
   )
