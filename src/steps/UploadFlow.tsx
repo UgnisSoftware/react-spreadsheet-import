@@ -10,7 +10,7 @@ import { addErrorsAndRunHooks } from "./ValidationStep/utils/dataMutations"
 import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
 import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
 import { useRsi } from "../hooks/useRsi"
-import type { RawData } from "../types"
+import type { Fields, RawData } from "../types"
 
 export enum StepType {
   upload = "upload",
@@ -39,6 +39,8 @@ export type StepState =
   | {
       type: StepType.validateData
       data: any[]
+      // RsiProps.fields + custom fields
+      fields?: Fields<string>
     }
 
 interface Props {
@@ -148,13 +150,14 @@ export const UploadFlow = ({ nextStep }: Props) => {
         <MatchColumnsStep
           data={state.data}
           headerValues={state.headerValues}
-          onContinue={async (values, rawData, columns) => {
+          onContinue={async (values, rawData, columns, fields) => {
             try {
               const data = await matchColumnsStepHook(values, rawData, columns)
               const dataWithMeta = await addErrorsAndRunHooks(data, fields, rowHook, tableHook)
               setState({
                 type: StepType.validateData,
                 data: dataWithMeta,
+                fields,
               })
               nextStep()
             } catch (e) {
@@ -164,7 +167,13 @@ export const UploadFlow = ({ nextStep }: Props) => {
         />
       )
     case StepType.validateData:
-      return <ValidationStep initialData={state.data} file={uploadedFile!} />
+      return (
+        <ValidationStep
+          initialData={state.data}
+          file={uploadedFile!}
+          fields={(state.fields || fields) as Fields<string>}
+        />
+      )
     default:
       return <Progress isIndeterminate />
   }

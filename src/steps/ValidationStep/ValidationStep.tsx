@@ -7,17 +7,20 @@ import { addErrorsAndRunHooks } from "./utils/dataMutations"
 import { generateColumns } from "./components/columns"
 import { Table } from "../../components/Table"
 import { SubmitDataAlert } from "../../components/Alerts/SubmitDataAlert"
-import type { Data } from "../../types"
+import type { Data, Fields } from "../../types"
 import type { themeOverrides } from "../../theme"
 import type { RowsChangeData } from "react-data-grid"
 
 type Props<T extends string> = {
+  fields?: Fields<T>
   initialData: (Data<T> & Meta)[]
   file: File
 }
 
-export const ValidationStep = <T extends string>({ initialData, file }: Props<T>) => {
-  const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
+export const ValidationStep = <T extends string>({ initialData, file, fields: mergedFields }: Props<T>) => {
+  const { translations, onClose, onSubmit, rowHook, tableHook, fields: originalFields } = useRsi<T>()
+  // override original fields with fields from props
+  const fields = mergedFields ?? originalFields
   const styles = useStyleConfig(
     "ValidationStep",
   ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]

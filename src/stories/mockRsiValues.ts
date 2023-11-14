@@ -92,6 +92,27 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
   },
   isOpen: true,
   onClose: () => {},
+  customFieldsHook: (c) => {
+    return [
+      {
+        dropDownLabel: `(+)CF boolean`,
+        key: `${c.header} - key boolean`,
+        label: `${c.header} - label`,
+        fieldType: {
+          type: "checkbox",
+        },
+      },
+      {
+        dropDownLabel: `(+)CF string`,
+        key: `${c.header} - key string`,
+        label: `${c.header} - label`,
+        fieldType: {
+          type: "input",
+        },
+        alternateMatches: c.header === "custom_f_F2" ? ["custom_f_F2"] : undefined,
+      },
+    ]
+  },
   // uploadStepHook: async (data) => {
   //   await new Promise((resolve) => {
   //     setTimeout(() => resolve(data), 4000)

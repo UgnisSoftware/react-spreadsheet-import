@@ -1,7 +1,7 @@
 import type { Meta } from "./steps/ValidationStep/types"
 import type { DeepReadonly } from "ts-essentials"
 import type { TranslationsRSIProps } from "./translationsRSIProps"
-import type { Columns } from "./steps/MatchColumnsStep/MatchColumnsStep"
+import type { Columns, Column } from "./steps/MatchColumnsStep/MatchColumnsStep"
 import type { StepState } from "./steps/UploadFlow"
 
 export type RsiProps<T extends string> = {
@@ -11,6 +11,9 @@ export type RsiProps<T extends string> = {
   onClose: () => void
   // Field description for requested data
   fields: Fields<T>
+  // Runs on Match Columns step for each column when their state did change.
+  // Used to define custom fields with keys that are can be generated only from csv column header.
+  customFieldsHook?: CustomFieldsHook
   // Runs after file upload step, receives and returns raw sheet data
   uploadStepHook?: (data: RawData[]) => Promise<RawData[]>
   // Runs after header selection step, receives and returns raw sheet data
@@ -59,6 +62,8 @@ export type Fields<T extends string> = DeepReadonly<Field<T>[]>
 export type Field<T extends string> = {
   // UI-facing field label
   label: string
+  // UI-facing label for dropdown option
+  dropDownLabel?: string
   // Field's unique identifier
   key: T
   // UI-facing additional information displayed via tooltip and ? icon
@@ -128,6 +133,7 @@ export type TableHook<T extends string> = (
   table: Data<T>[],
   addError: (rowIndex: number, fieldKey: T, error: Info) => void,
 ) => Data<T>[] | Promise<Data<T>[]>
+export type CustomFieldsHook = (column: Column<string>) => Field<string>[]
 
 export type ErrorLevel = "info" | "warning" | "error"
 

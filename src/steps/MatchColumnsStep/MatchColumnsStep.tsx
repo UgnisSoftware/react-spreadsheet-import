@@ -8,15 +8,16 @@ import { setColumn } from "./utils/setColumn"
 import { setIgnoreColumn } from "./utils/setIgnoreColumn"
 import { setSubColumn } from "./utils/setSubColumn"
 import { normalizeTableData } from "./utils/normalizeTableData"
-import type { Field, RawData } from "../../types"
+import type { Field, Fields, RawData } from "../../types"
 import { getMatchedColumns } from "./utils/getMatchedColumns"
 import { UnmatchedFieldsAlert } from "../../components/Alerts/UnmatchedFieldsAlert"
 import { findUnmatchedRequiredFields } from "./utils/findUnmatchedRequiredFields"
+import { createHeaderCustomFieldsMap, mergeCustomFields, selectColumnCustomFields } from "./utils/customFields"
 
 export type MatchColumnsProps<T extends string> = {
   data: RawData[]
   headerValues: RawData
-  onContinue: (data: any[], rawData: RawData[], columns: Columns<T>) => void
+  onContinue: (data: any[], rawData: RawData[], columns: Columns<T>, fields: Fields<T>) => void
 }
 
 export enum ColumnType {
@@ -61,25 +62,32 @@ export type Column<T extends string> =
   | MatchedSelectOptionsColumn<T>
 
 export type Columns<T extends string> = Column<T>[]
+export type HeaderCustomFieldsMap = Record<string, Field<string>[]>
 
 export const MatchColumnsStep = <T extends string>({ data, headerValues, onContinue }: MatchColumnsProps<T>) => {
   const toast = useToast()
   const dataExample = data.slice(0, 2)
-  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations } = useRsi<T>()
+  const { fields, autoMapHeaders, autoMapSelectValues, autoMapDistance, translations, customFieldsHook } = useRsi<T>()
   const [isLoading, setIsLoading] = useState(false)
   const [columns, setColumns] = useState<Columns<T>>(
     // Do not remove spread, it indexes empty array elements, otherwise map() skips over them
     ([...headerValues] as string[]).map((value, index) => ({ type: ColumnType.empty, index, header: value ?? "" })),
   )
+
+  const headerCustomFieldsMap = useMemo(
+    () => createHeaderCustomFieldsMap(columns, customFieldsHook),
+    [columns, customFieldsHook],
+  )
   const [showUnmatchedFieldsAlert, setShowUnmatchedFieldsAlert] = useState(false)
 
   const onChange = useCallback(
     (value: T, columnIndex: number) => {
-      const field = fields.find((field) => field.key === value) as unknown as Field<T>
+      const customFields = selectColumnCustomFields(columns[columnIndex], headerCustomFieldsMap)
+      const customField = customFields.find((field) => field.key === value)
+      const field = (customField || fields.find((field) => field.key === value)) as Field<T>
       const existingFieldIndex = columns.findIndex((column) => "value" in column && column.value === field.key)
       setColumns(
         columns.map<Column<T>>((column, index) => {
-          columnIndex === index ? setColumn(column, field, data) : column
           if (columnIndex === index) {
             return setColumn(column, field, data, autoMapSelectValues)
           } else if (index === existingFieldIndex) {
@@ -99,6 +107,7 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       )
     },
     [
+      headerCustomFieldsMap,
       autoMapSelectValues,
       columns,
       data,
@@ -140,22 +149,25 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
       setShowUnmatchedFieldsAlert(true)
     } else {
       setIsLoading(true)
-      await onContinue(normalizeTableData(columns, data, fields), data, columns)
+      const mergedFields = mergeCustomFields<T>(columns, fields, headerCustomFieldsMap)
+      await onContinue(normalizeTableData(columns, data, mergedFields), data, columns, mergedFields)
       setIsLoading(false)
     }
-  }, [unmatchedRequiredFields.length, onContinue, columns, data, fields])
+  }, [unmatchedRequiredFields.length, onContinue, columns, data, fields, headerCustomFieldsMap])
 
   const handleAlertOnContinue = useCallback(async () => {
     setShowUnmatchedFieldsAlert(false)
     setIsLoading(true)
-    await onContinue(normalizeTableData(columns, data, fields), data, columns)
+    const mergedFields = mergeCustomFields<T>(columns, fields, headerCustomFieldsMap)
+    await onContinue(normalizeTableData(columns, data, mergedFields), data, columns, mergedFields)
     setIsLoading(false)
-  }, [onContinue, columns, data, fields])
+  }, [onContinue, columns, data, fields, headerCustomFieldsMap])
 
   useEffect(
     () => {
       if (autoMapHeaders) {
-        setColumns(getMatchedColumns(columns, fields, data, autoMapDistance, autoMapSelectValues))
+        const mergedFields = [...fields, ...Object.values(headerCustomFieldsMap).flat()] as Fields<T>
+        setColumns(getMatchedColumns(columns, mergedFields, data, autoMapDistance, autoMapSelectValues))
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +194,14 @@ export const MatchColumnsStep = <T extends string>({ data, headerValues, onConti
             entries={dataExample.map((row) => row[column.index])}
           />
         )}
-        templateColumn={(column) => <TemplateColumn column={column} onChange={onChange} onSubChange={onSubChange} />}
+        templateColumn={(column) => (
+          <TemplateColumn
+            column={column}
+            onChange={onChange}
+            onSubChange={onSubChange}
+            headerCustomFieldsMap={headerCustomFieldsMap}
+          />
+        )}
       />
     </>
   )
