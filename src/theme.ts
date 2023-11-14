@@ -4,13 +4,16 @@ import type { DeepPartial } from "ts-essentials"
 import type { ChakraStylesConfig } from "chakra-react-select"
 import type { SelectOption } from "./types"
 
-type CSSObjectWithActiveStep = CSSObject & { _activeStep: CSSObject }
-
 const StepsComponent: typeof StepsTheme = {
   ...StepsTheme,
   baseStyle: (props: any) => {
+    const navigationEnabled = !!props.onClickStep
     return {
       ...StepsTheme.baseStyle(props),
+      stepContainer: {
+        ...StepsTheme.baseStyle(props).stepContainer,
+        cursor: navigationEnabled ? "pointer" : "initial",
+      },
       label: {
         ...StepsTheme.baseStyle(props).label,
         color: "textColor",
