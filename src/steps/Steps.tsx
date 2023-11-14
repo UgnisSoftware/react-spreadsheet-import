@@ -49,6 +49,7 @@ export const Steps = () => {
           activeStep={activeStep}
           checkIcon={CheckIcon}
           onClickStep={isNavigationEnabled ? onClickStep : undefined}
+          responsive={false}
         >
           {steps.map((key) => (
             <Step label={translations[key].title} key={key} />

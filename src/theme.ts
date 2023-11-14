@@ -32,6 +32,7 @@ const StepsComponent: typeof StepsTheme = {
       },
       stepIconContainer: {
         ...StepsTheme.variants.circles(props).stepIconContainer,
+        flex: "0 0 auto",
         bg: "background",
         borderColor: "background",
       },
