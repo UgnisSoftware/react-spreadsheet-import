@@ -22,13 +22,7 @@ export const Basic = () => {
       <Link href="./exampleFile.csv" border="2px solid #718096" p="8px" borderRadius="8px" download="exampleCSV">
         Download example file
       </Link>
-      <ReactSpreadsheetImport
-        {...mockRsiValues}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={setData}
-        isNavigationEnabled={true}
-      />
+      <ReactSpreadsheetImport {...mockRsiValues} isOpen={isOpen} onClose={onClose} onSubmit={setData} />
       {!!data && (
         <Box pt={64} display="flex" gap="8px" flexDirection="column">
           <b>Returned data (showing first 100 rows):</b>

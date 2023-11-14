@@ -11,6 +11,7 @@ type ContinueButtonProps = {
 
 export const ContinueButton = ({ onContinue, onBack, title, backTitle, isLoading }: ContinueButtonProps) => {
   const styles = useStyleConfig("Modal") as (typeof themeOverrides)["components"]["Modal"]["baseStyle"]
+  const nextButtonMobileWidth = onBack ? "8rem" : "100%"
   return (
     <ModalFooter>
       {onBack && (
@@ -18,7 +19,13 @@ export const ContinueButton = ({ onContinue, onBack, title, backTitle, isLoading
           {backTitle}
         </Button>
       )}
-      <Button size="lg" w="21rem" sx={styles.continueButton} onClick={onContinue} isLoading={isLoading}>
+      <Button
+        size="lg"
+        w={{ base: nextButtonMobileWidth, md: "21rem" }}
+        sx={styles.continueButton}
+        onClick={onContinue}
+        isLoading={isLoading}
+      >
         {title}
       </Button>
     </ModalFooter>

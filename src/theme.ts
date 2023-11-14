@@ -316,17 +316,17 @@ export const themeOverrides = {
           fontSize: "lg",
           color: "textColor",
         },
-        footer: {
-          position: "relative",
-        },
         closeModalButton: {},
         backButton: {
-          position: "absolute",
-          left: "2rem",
-          top: "0",
-          bottom: "0",
+          gridColumn: "1",
+          gridRow: "1",
+          justifySelf: "start",
         },
-        continueButton: {},
+        continueButton: {
+          gridColumn: "1 / 3",
+          gridRow: "1",
+          justifySelf: "center",
+        },
       },
       variants: {
         rsi: {
@@ -348,7 +348,12 @@ export const themeOverrides = {
           footer: {
             bg: "secondaryBackground",
             py: "1.5rem",
+            px: "2rem",
             justifyContent: "center",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr",
+            gap: "1rem",
           },
           dialog: {
             outline: "unset",
