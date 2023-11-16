@@ -1,7 +1,7 @@
 import { chakra, useStyleConfig, Flex } from "@chakra-ui/react"
 import { dataAttr } from "@chakra-ui/utils"
 import { motion } from "framer-motion"
-import { CgAdd, CgCheck } from "react-icons/cg"
+import { CgCheck } from "react-icons/cg"
 
 const MotionFlex = motion(Flex)
 
@@ -15,12 +15,10 @@ const animationConfig = {
 }
 type MatchIconProps = {
   isChecked: boolean
-  isCustom?: boolean
 }
 
 export const MatchIcon = (props: MatchIconProps) => {
   const style = useStyleConfig("MatchIcon", props)
-  const Icon = props.isCustom ? CgAdd : CgCheck
 
   return (
     <chakra.div
@@ -36,7 +34,7 @@ export const MatchIcon = (props: MatchIconProps) => {
     >
       {props.isChecked && (
         <MotionFlex {...animationConfig}>
-          <Icon size="1.5rem" />
+          <CgCheck size="1.5rem" />
         </MotionFlex>
       )}
     </chakra.div>

@@ -44,7 +44,6 @@ export const TemplateColumn = <T extends string>({
   const styles = useStyleConfig("MatchColumnsStep") as Styles
   const customFields = selectColumnCustomFields(column, headerCustomFieldsMap)
   const fields = [...originalFields, ...customFields] as Fields<T>
-  const isCustom = "value" in column && customFields.some((e) => e.key === column.value)
   const isIgnored = column.type === ColumnType.ignored
   const isChecked =
     column.type === ColumnType.matched ||
@@ -73,7 +72,7 @@ export const TemplateColumn = <T extends string>({
                 name={column.header}
               />
             </Box>
-            <MatchIcon isChecked={isChecked} isCustom={isCustom} />
+            <MatchIcon isChecked={isChecked} />
           </Flex>
           {isSelect && (
             <Flex width="100%">

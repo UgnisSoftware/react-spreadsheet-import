@@ -109,7 +109,8 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
         fieldType: {
           type: "input",
         },
-        alternateMatches: c.header === "custom_f_F2" ? ["custom_f_F2"] : undefined,
+        // ability to automatically map custom fields
+        alternateMatches: c.header.includes("custom") ? [c.header] : undefined,
       },
     ]
   },
