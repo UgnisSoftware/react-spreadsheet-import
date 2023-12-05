@@ -21,8 +21,8 @@ export type RsiProps<T extends string> = {
   rowHook?: RowHook<T>
   // Runs after column matching and on entry change
   tableHook?: TableHook<T>
-  // Function called after user finishes the flow
-  onSubmit: (data: Result<T>, file: File) => void
+  // Function called after user finishes the flow. You can return a promise that will be awaited.
+  onSubmit: (data: Result<T>, file: File) => void | Promise<any>
   // Allows submitting with errors. Default: true
   allowInvalidSubmit?: boolean
   // Enable navigation in stepper component and show back button. Default: false

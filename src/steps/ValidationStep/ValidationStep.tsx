@@ -28,6 +28,7 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
   const [showSubmitAlert, setShowSubmitAlert] = useState(false)
+  const [isSubmitting, setSubmitting] = useState(false)
 
   const updateData = useCallback(
     async (rows: typeof data, indexes?: number[]) => {
@@ -96,9 +97,16 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
       },
       { validData: [] as Data<T>[], invalidData: [] as Data<T>[], all: data },
     )
-    onSubmit(calculatedData, file)
     setShowSubmitAlert(false)
-    onClose()
+    setSubmitting(true)
+    onSubmit(calculatedData, file)
+      ?.then(() => {
+        onClose()
+      })
+      ?.catch(() => {})
+      ?.finally(() => {
+        setSubmitting(false)
+      })
   }
   const onContinue = () => {
     const invalidData = data.find((value) => {
@@ -153,6 +161,7 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
         />
       </ModalBody>
       <ContinueButton
+        isLoading={isSubmitting}
         onContinue={onContinue}
         onBack={onBack}
         title={translations.validationStep.nextButtonTitle}
