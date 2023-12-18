@@ -55,7 +55,7 @@ import { ReactSpreadsheetImport } from "react-spreadsheet-import";
   isOpen: Boolean
   // Called when flow is closed without reaching submit.
   onClose: () => void
-  // Called after user completes the flow. Provides data array, where data keys matches your field keys. You can return a promise that will be awaited.
+  // Called after user completes the flow. Provides data array, where data keys matches your field keys. 
   onSubmit: (data, file) => void | Promise<any>
 ```
 

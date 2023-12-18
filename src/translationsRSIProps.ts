@@ -61,6 +61,10 @@ export const translations = {
       cancelButtonTitle: "Cancel",
       finishButtonTitle: "Submit",
     },
+    submitError: {
+      title: "Error",
+      defaultMessage: "An error occurred while submitting data",
+    },
     unmatchedRequiredFields: {
       headerTitle: "Not all columns matched",
       bodyText: "There are required columns that are not matched or ignored. Do you want to continue?",
