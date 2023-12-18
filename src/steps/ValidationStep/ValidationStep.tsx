@@ -100,23 +100,28 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
     )
     setShowSubmitAlert(false)
     setSubmitting(true)
-    onSubmit(calculatedData, file)
-      ?.then(() => {
-        onClose()
-      })
-      .catch((err: Error) => {
-        toast({
-          status: "error",
-          variant: "left-accent",
-          position: "bottom-left",
-          title: `${translations.alerts.submitError.title}`,
-          description: err?.message || `${translations.alerts.submitError.defaultMessage}`,
-          isClosable: true,
+    const response = onSubmit(calculatedData, file)
+    if (response?.then) {
+      response
+        .then(() => {
+          onClose()
         })
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+        .catch((err: Error) => {
+          toast({
+            status: "error",
+            variant: "left-accent",
+            position: "bottom-left",
+            title: `${translations.alerts.submitError.title}`,
+            description: err?.message || `${translations.alerts.submitError.defaultMessage}`,
+            isClosable: true,
+          })
+        })
+        .finally(() => {
+          setSubmitting(false)
+        })
+    } else {
+      onClose()
+    }
   }
   const onContinue = () => {
     const invalidData = data.find((value) => {

@@ -48,6 +48,35 @@ describe("Validation step tests", () => {
     })
   })
 
+  test("Submit data without returning promise", async () => {
+    const onSuccess = jest.fn()
+    const onSubmit = jest.fn(() => {
+      onSuccess()
+    })
+    const onClose = jest.fn()
+    render(
+      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <ValidationStep initialData={[]} file={file} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    const finishButton = screen.getByRole("button", {
+      name: "Confirm",
+    })
+
+    await userEvent.click(finishButton)
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalledWith({ all: [], invalidData: [], validData: [] }, file)
+    })
+    await waitFor(() => {
+      expect(onSuccess).toBeCalled()
+      expect(onClose).toBeCalled()
+    })
+  })
+
   test("Submit data with a successful async return", async () => {
     const onSuccess = jest.fn()
     const onSubmit = jest.fn(async (): Promise<void> => {
