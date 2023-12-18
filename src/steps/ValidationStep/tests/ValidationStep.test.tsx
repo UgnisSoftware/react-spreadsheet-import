@@ -48,6 +48,70 @@ describe("Validation step tests", () => {
     })
   })
 
+  test("Submit data with a successful async return", async () => {
+    const onSuccess = jest.fn()
+    const onSubmit = jest.fn(async (): Promise<void> => {
+      onSuccess()
+      return Promise.resolve()
+    })
+    const onClose = jest.fn()
+    render(
+      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <ValidationStep initialData={[]} file={file} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    const finishButton = screen.getByRole("button", {
+      name: "Confirm",
+    })
+
+    await userEvent.click(finishButton)
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalledWith({ all: [], invalidData: [], validData: [] }, file)
+    })
+    await waitFor(() => {
+      expect(onSuccess).toBeCalled()
+      expect(onClose).toBeCalled()
+    })
+  })
+
+  test("Submit data with a unsuccessful async return", async () => {
+    const ERROR_MESSAGE = "ERROR has occurred"
+    const onReject = jest.fn()
+    const onSubmit = jest.fn(async (): Promise<void> => {
+      onReject()
+      throw new Error(ERROR_MESSAGE)
+    })
+    const onClose = jest.fn()
+
+    render(
+      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+        <ModalWrapper isOpen={true} onClose={() => {}}>
+          <ValidationStep initialData={[]} file={file} />
+        </ModalWrapper>
+      </Providers>,
+    )
+
+    const finishButton = screen.getByRole("button", {
+      name: "Confirm",
+    })
+
+    await userEvent.click(finishButton)
+
+    await waitFor(() => {
+      expect(onSubmit).toBeCalledWith({ all: [], invalidData: [], validData: [] }, file)
+    })
+
+    const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+
+    expect(onReject).toBeCalled()
+    expect(errorToast?.[0]).toBeInTheDocument()
+    expect(onClose).not.toBeCalled()
+  })
+
   test("Filters rows with required errors", async () => {
     const UNIQUE_NAME = "very unique name"
     const fields = [

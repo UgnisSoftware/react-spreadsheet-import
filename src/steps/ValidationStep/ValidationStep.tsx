@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react"
-import { Box, Button, Heading, ModalBody, Switch, useStyleConfig } from "@chakra-ui/react"
+import { Box, Button, Heading, ModalBody, Switch, useStyleConfig, useToast } from "@chakra-ui/react"
 import { ContinueButton } from "../../components/ContinueButton"
 import { useRsi } from "../../hooks/useRsi"
 import type { Meta } from "./types"
@@ -22,12 +22,14 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
   const styles = useStyleConfig(
     "ValidationStep",
   ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
+  const toast = useToast()
 
   const [data, setData] = useState<(Data<T> & Meta)[]>(initialData)
 
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number | string>>(new Set())
   const [filterByErrors, setFilterByErrors] = useState(false)
   const [showSubmitAlert, setShowSubmitAlert] = useState(false)
+  const [isSubmitting, setSubmitting] = useState(false)
 
   const updateData = useCallback(
     async (rows: typeof data, indexes?: number[]) => {
@@ -96,9 +98,25 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
       },
       { validData: [] as Data<T>[], invalidData: [] as Data<T>[], all: data },
     )
-    onSubmit(calculatedData, file)
     setShowSubmitAlert(false)
-    onClose()
+    setSubmitting(true)
+    onSubmit(calculatedData, file)
+      ?.then(() => {
+        onClose()
+      })
+      .catch((err: Error) => {
+        toast({
+          status: "error",
+          variant: "left-accent",
+          position: "bottom-left",
+          title: `${translations.alerts.submitError.title}`,
+          description: err?.message || `${translations.alerts.submitError.defaultMessage}`,
+          isClosable: true,
+        })
+      })
+      .finally(() => {
+        setSubmitting(false)
+      })
   }
   const onContinue = () => {
     const invalidData = data.find((value) => {
@@ -153,6 +171,7 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
         />
       </ModalBody>
       <ContinueButton
+        isLoading={isSubmitting}
         onContinue={onContinue}
         onBack={onBack}
         title={translations.validationStep.nextButtonTitle}
