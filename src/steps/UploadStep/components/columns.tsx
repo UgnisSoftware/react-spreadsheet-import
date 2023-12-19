@@ -17,7 +17,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>) =>
           {column.description && (
             <Tooltip placement="top" hasArrow label={column.description}>
               <Box flex={"0 0 auto"}>
-                <CgInfo size="1rem" />
+                <CgInfo size="16px" />
               </Box>
             </Tooltip>
           )}

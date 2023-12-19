@@ -7,7 +7,7 @@ import { useRsi } from "../hooks/useRsi"
 import { useRef, useState } from "react"
 import { steps, stepTypeToStepIndex, stepIndexToStepType } from "../utils/steps"
 
-const CheckIcon = ({ color }: { color: string }) => <CgCheck size="2.25rem" color={color} />
+const CheckIcon = ({ color }: { color: string }) => <CgCheck size="36px" color={color} />
 
 export const Steps = () => {
   const { initialStepState, translations, isNavigationEnabled } = useRsi()

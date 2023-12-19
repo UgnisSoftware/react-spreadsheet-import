@@ -34,7 +34,7 @@ export const MatchIcon = (props: MatchIconProps) => {
     >
       {props.isChecked && (
         <MotionFlex {...animationConfig}>
-          <CgCheck size="1.5rem" />
+          <CgCheck size="24px" />
         </MotionFlex>
       )}
     </chakra.div>
