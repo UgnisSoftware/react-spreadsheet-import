@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/UgnisSoftware/react-spreadsheet-import/Node.js%20CI)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/UgnisSoftware/react-spreadsheet-import/test.yaml)
 ![GitHub](https://img.shields.io/github/license/UgnisSoftware/react-spreadsheet-import) [![npm](https://img.shields.io/npm/v/react-spreadsheet-import)](https://www.npmjs.com/package/react-spreadsheet-import)
   
 </div>
