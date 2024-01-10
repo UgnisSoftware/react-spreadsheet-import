@@ -224,6 +224,7 @@ export const themeOverrides = {
           control: (provided) => ({
             ...provided,
             borderColor: "border",
+            maxWidth: "216px",
             _hover: {
               borderColor: "border",
             },
