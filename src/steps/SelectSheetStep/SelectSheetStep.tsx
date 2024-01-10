@@ -29,7 +29,7 @@ export const SelectSheetStep = ({ sheetNames, onContinue, onBack }: SelectSheetP
   return (
     <>
       <ModalBody alignItems="center" p={8} flex={1}>
-        <Heading {...styles.heading}>{translations.uploadStep.selectSheet.title}test</Heading>
+        <Heading {...styles.heading}>{translations.uploadStep.selectSheet.title}</Heading>
         <RadioGroup onChange={(value) => setValue(value)} value={value}>
           <Stack spacing={8}>
             {sheetNames.map((sheetName) => (
