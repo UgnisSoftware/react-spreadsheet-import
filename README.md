@@ -90,6 +90,40 @@ const fields = [
       },
     ],
   },
+  {
+    // Visible in table header and when matching columns.
+    label: "Age",
+    // This is the key used for this field when we call onSubmit.
+    key: "age",
+    // Allows for better automatic column matching. Optional.
+    alternateMatches: ["years old"],
+    // Used when editing and validating information.
+    fieldType: {
+      // There are 3 types - "input" / "checkbox" / "select".
+      type: "input",
+    },
+    // Used in the first step to provide an example of what data is expected in this field. Optional.
+    example: "23",
+    // Can have multiple validations that are visible in Validation Step table.
+    validations: [
+      {
+        // Can be "required" / "unique" / "regex"
+        rule: "regex",
+        value: "^[0-9]*$",
+        errorMessage: "Age should be a number",
+        // There can be "info" / "warning" / "error" levels. Optional. Default "error".
+        level: "warning",
+      },
+      {
+        // Can be "required" / "unique" / "regex"
+        rule: "required",
+        errorMessage: "Age is required",
+        // There can be "info" / "warning" / "error" levels. Optional. Default "error".
+        level: "error",
+      },
+      
+    ],
+  },
 ] as const
 ```
 
