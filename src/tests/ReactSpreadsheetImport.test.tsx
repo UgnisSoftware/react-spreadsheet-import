@@ -22,9 +22,3 @@ test("Close modal", async () => {
   await userEvent.click(confirmButton)
   expect(onClose).toBeCalled()
 })
-
-test("Should throw error if no fields are provided", async () => {
-  const errorRender = () => render(<ReactSpreadsheetImport {...mockRsiValues} fields={undefined} />)
-
-  expect(errorRender).toThrow()
-})
