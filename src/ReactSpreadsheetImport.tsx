@@ -24,7 +24,7 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
 } as const
 
 export const ReactSpreadsheetImport = <T extends string>(propsWithoutDefaults: RsiProps<T>) => {
-  const props = merge(defaultRSIProps, propsWithoutDefaults)
+  const props = merge({}, defaultRSIProps, propsWithoutDefaults)
   const mergedTranslations =
     props.translations !== translations ? merge(translations, props.translations) : translations
   const mergedThemes = props.rtl
