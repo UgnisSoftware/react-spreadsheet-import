@@ -14,7 +14,7 @@ export const findMatch = <T extends string>(
   const smallestValue = fields.reduce<AutoMatchAccumulator<T>>((acc, field) => {
     const distance = Math.min(
       ...[
-        lavenstein(field.key, header),
+        lavenstein(field.label, header),
         ...(field.alternateMatches?.map((alternate) => lavenstein(alternate, header)) || []),
       ],
     )
