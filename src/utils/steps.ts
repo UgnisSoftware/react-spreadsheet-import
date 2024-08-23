@@ -22,5 +22,5 @@ export const stepIndexToStepType = (stepIndex: number) => {
 
 export const stepTypeToStepIndex = (type?: StepType) => {
   const step = StepTypeToStepRecord[type || StepType.upload]
-  return Math.min(0, steps.indexOf(step))
+  return Math.max(0, steps.indexOf(step))
 }
