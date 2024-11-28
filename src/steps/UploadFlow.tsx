@@ -57,6 +57,7 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
     fields,
     rowHook,
     tableHook,
+    runTableHookThreshold,
   } = useRsi()
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const toast = useToast()
@@ -150,7 +151,7 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
           onContinue={async (values, rawData, columns) => {
             try {
               const data = await matchColumnsStepHook(values, rawData, columns)
-              const dataWithMeta = await addErrorsAndRunHooks(data, fields, rowHook, tableHook)
+              const dataWithMeta = await addErrorsAndRunHooks(data, fields, rowHook, tableHook, runTableHookThreshold)
               onNext({
                 type: StepType.validateData,
                 data: dataWithMeta,

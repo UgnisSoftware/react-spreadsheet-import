@@ -18,7 +18,7 @@ type Props<T extends string> = {
 }
 
 export const ValidationStep = <T extends string>({ initialData, file, onBack }: Props<T>) => {
-  const { translations, fields, onClose, onSubmit, rowHook, tableHook } = useRsi<T>()
+  const { translations, fields, onClose, onSubmit, rowHook, tableHook, runTableHookThreshold } = useRsi<T>()
   const styles = useStyleConfig(
     "ValidationStep",
   ) as (typeof themeOverrides)["components"]["ValidationStep"]["baseStyle"]
@@ -37,7 +37,7 @@ export const ValidationStep = <T extends string>({ initialData, file, onBack }: 
       if (rowHook?.constructor.name === "AsyncFunction" || tableHook?.constructor.name === "AsyncFunction") {
         setData(rows)
       }
-      addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, indexes).then((data) => setData(data))
+      addErrorsAndRunHooks<T>(rows, fields, rowHook, tableHook, runTableHookThreshold, indexes).then((data) => setData(data))
     },
     [rowHook, tableHook, fields],
   )

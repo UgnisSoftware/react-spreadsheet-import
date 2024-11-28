@@ -3,11 +3,32 @@ import type { Meta, Error, Errors } from "../types"
 import { v4 } from "uuid"
 import { ErrorSources } from "../../../types"
 
+type HookScheme = 'none' | 'row' | 'table';
+
+const decideHookScheme = (
+  rowHookIsDefined: boolean,
+  tableHookIsDefined: boolean,
+  runTableHookThreshold: number,
+  changedRowIndexes?: number[],
+) => {
+  let hookScheme : HookScheme = 'none';
+
+  if (tableHookIsDefined && !rowHookIsDefined) {
+    hookScheme = 'table';
+  } else if (rowHookIsDefined && !tableHookIsDefined) {
+    hookScheme = 'row';
+  } else if (tableHookIsDefined && rowHookIsDefined) {
+    hookScheme = (changedRowIndexes === undefined || changedRowIndexes?.length > runTableHookThreshold) ? 'table' : 'row';
+  }
+  return hookScheme
+}
+
 export const addErrorsAndRunHooks = async <T extends string>(
   data: (Data<T> & Partial<Meta>)[],
   fields: Fields<T>,
   rowHook?: RowHook<T>,
   tableHook?: TableHook<T>,
+  runTableHookThreshold?: number,
   changedRowIndexes?: number[],
 ): Promise<(Data<T> & Meta)[]> => {
   const errors: Errors = {}
@@ -19,11 +40,14 @@ export const addErrorsAndRunHooks = async <T extends string>(
     }
   }
 
-  if (tableHook) {
-    data = await tableHook(data, (...props) => addError(ErrorSources.Table, ...props))
+  if (runTableHookThreshold === undefined) {
+    runTableHookThreshold = 0;
   }
+  const hookScheme: HookScheme = decideHookScheme(!(rowHook === undefined), !(tableHook === undefined), runTableHookThreshold, changedRowIndexes);
 
-  if (rowHook) {
+  if (hookScheme === 'table' && tableHook) {
+    data = await tableHook(data, (...props) => addError(ErrorSources.Table, ...props))
+  } else if (hookScheme === 'row' && rowHook) {
     if (changedRowIndexes) {
       for (const index of changedRowIndexes) {
         data[index] = await rowHook(data[index], (...props) => addError(ErrorSources.Row, index, ...props), data)

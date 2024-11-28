@@ -953,4 +953,79 @@ describe("Validation step tests", () => {
 
     await expect(await screen.findAllByRole("row")).toHaveLength(2)
   })
+  test("Only the table hook is run when enough rows are changed", async () => {
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+    let rowHookCalled = false, tableHookCalled = false
+    const rowHook: RowHook<fieldKeys<typeof fields>> = (data, setError) => {
+      rowHookCalled = true
+      return data
+    }
+    const tableHook: TableHook<fieldKeys<typeof fields>> = (data, setError) => {
+      tableHookCalled = true
+      return data
+    }
+    const runTableHookThreshold = 1
+    addErrorsAndRunHooks(
+      [
+        {
+          name: "First",
+        },
+        {
+          name: "Second",
+        },
+      ],
+      fields,
+      rowHook,
+      tableHook,
+      runTableHookThreshold,
+    )
+    expect(rowHookCalled).toBeFalsy()
+    expect(tableHookCalled).toBeTruthy()
+  })
+  test("Only the row hook is run when too few rows are changed", async () => {
+    const fields = [
+      {
+        label: "Name",
+        key: "name",
+        fieldType: {
+          type: "input",
+        },
+      },
+    ] as const
+    let rowHookCalled = false, tableHookCalled = false
+    const rowHook: RowHook<fieldKeys<typeof fields>> = (data, setError) => {
+      rowHookCalled = true
+      return data
+    }
+    const tableHook: TableHook<fieldKeys<typeof fields>> = (data, setError) => {
+      tableHookCalled = true
+      return data
+    }
+    const runTableHookThreshold = 10
+    addErrorsAndRunHooks(
+      [
+        {
+          name: "First",
+        },
+        {
+          name: "Second",
+        },
+      ],
+      fields,
+      rowHook,
+      tableHook,
+      runTableHookThreshold,
+      [0, 1]
+    )
+    expect(rowHookCalled).toBeTruthy()
+    expect(tableHookCalled).toBeFalsy()
+  })
 })
