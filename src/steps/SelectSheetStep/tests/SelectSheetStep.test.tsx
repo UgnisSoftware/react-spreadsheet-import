@@ -116,3 +116,35 @@ test("Should show error toast if error is thrown in uploadStepHook", async () =>
   const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
   expect(errorToast?.[0]).toBeInTheDocument()
 })
+
+test("Should show error toast if error is thrown in fileSelectedHook", async () => {
+  const fileSelectedHook = jest.fn(async () => {
+    throw new Error(ERROR_MESSAGE)
+    return undefined as any
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} fileSelectedHook={fileSelectedHook} />)
+  const uploader = screen.getByTestId("rsi-dropzone")
+  const data = readFileSync(__dirname + "/../../../../static/Workbook1.xlsx")
+  fireEvent.drop(uploader, {
+    target: {
+      files: [
+        new File([data], "testFile.xlsx", {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        }),
+      ],
+    },
+  })
+
+  const nextButton = await screen.findByRole(
+    "button",
+    {
+      name: "Next",
+    },
+    { timeout: 5000 },
+  )
+
+  await userEvent.click(nextButton)
+
+  const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+  expect(errorToast?.[0]).toBeInTheDocument()
+})

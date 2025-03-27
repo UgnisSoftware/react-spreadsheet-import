@@ -11,6 +11,8 @@ export type RsiProps<T extends string> = {
   onClose: () => void
   // Field description for requested data
   fields: Fields<T>
+  // Runs after file selected for upload, receives the file data
+  fileSelectedHook?: (file: File) => Promise<void>
   // Runs after file upload step, receives and returns raw sheet data
   uploadStepHook?: (data: RawData[]) => Promise<RawData[]>
   // Runs after header selection step, receives and returns raw sheet data
