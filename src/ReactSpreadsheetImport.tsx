@@ -16,6 +16,7 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   autoMapDistance: 2,
   isNavigationEnabled: false,
   translations: translations,
+  fileSelectedHook: async (file) => {},
   uploadStepHook: async (value) => value,
   selectHeaderStepHook: async (headerValues, data) => ({ headerValues, data }),
   matchColumnsStepHook: async (table) => table,

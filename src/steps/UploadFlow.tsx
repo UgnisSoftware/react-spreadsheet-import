@@ -51,6 +51,7 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
   const {
     maxRecords,
     translations,
+    fileSelectedHook,
     uploadStepHook,
     selectHeaderStepHook,
     matchColumnsStepHook,
@@ -87,6 +88,7 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
                 return
               }
               try {
+                await fileSelectedHook(file)
                 const mappedWorkbook = await uploadStepHook(mapWorkbook(workbook))
                 onNext({
                   type: StepType.selectHeader,
@@ -111,6 +113,10 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
               return
             }
             try {
+              if (uploadedFile) {
+                await fileSelectedHook(uploadedFile)
+              }
+
               const mappedWorkbook = await uploadStepHook(mapWorkbook(state.workbook, sheetName))
               onNext({
                 type: StepType.selectHeader,

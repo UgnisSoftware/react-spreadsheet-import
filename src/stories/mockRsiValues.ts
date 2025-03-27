@@ -92,6 +92,14 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
   },
   isOpen: true,
   onClose: () => {},
+  // fileSelectedHook: async (file) => {
+  //   await new Promise((resolve) => {
+  //     setTimeout(() => {
+  //        console.log(file);
+  //        resolve();
+  //     }, 4000)
+  //   })
+  // },
   // uploadStepHook: async (data) => {
   //   await new Promise((resolve) => {
   //     setTimeout(() => resolve(data), 4000)

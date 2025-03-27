@@ -99,6 +99,7 @@ const fields = [
 
 You can transform and validate data with custom hooks. There are hooks after each step:
 
+- **fileSelectedHook** - runs only once after the file has been selected.
 - **uploadStepHook** - runs only once after uploading the file.
 - **selectHeaderStepHook** - runs only once after selecting the header row in spreadsheet.
 - **matchColumnsStepHook** - runs only once after column matching. Operations on data that are expensive should be done here.

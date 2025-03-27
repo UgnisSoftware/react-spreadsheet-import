@@ -84,3 +84,37 @@ test("Should show error toast if error is thrown in uploadStepHook", async () =>
   const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
   expect(errorToast?.[0]).toBeInTheDocument()
 })
+
+test("Should call fileSelectedHook on file selection", async () => {
+  const file = new File(["Hello, Hello, Hello, Hello"], "test.csv", { type: "text/csv" })
+  const fileSelectedHook = jest.fn(async (file) => {})
+  render(<ReactSpreadsheetImport {...mockRsiValues} fileSelectedHook={fileSelectedHook} />)
+  const uploader = screen.getByTestId("rsi-dropzone")
+  fireEvent.drop(uploader, {
+    target: { files: [file] },
+  })
+
+  await waitFor(
+    () => {
+      expect(fileSelectedHook).toBeCalled()
+    },
+    { timeout: 5000 },
+  )
+})
+
+test("Should show error toast if error is thrown in fileSelectedHook", async () => {
+  const file = new File(["Hello, Hello, Hello, Hello"], "test.csv", { type: "text/csv" })
+  const fileSelectedHook = jest.fn(async () => {
+    throw new Error(ERROR_MESSAGE)
+    return undefined as any
+  })
+  render(<ReactSpreadsheetImport {...mockRsiValues} fileSelectedHook={fileSelectedHook} />)
+
+  const uploader = screen.getByTestId("rsi-dropzone")
+  fireEvent.drop(uploader, {
+    target: { files: [file] },
+  })
+
+  const errorToast = await screen.findAllByText(ERROR_MESSAGE, undefined, { timeout: 5000 })
+  expect(errorToast?.[0]).toBeInTheDocument()
+})
