@@ -1,174 +1,42 @@
 {
   "name": "react-spreadsheet-import",
-  "version": "4.7.1",
-  "description": "React spreadsheet import for xlsx and csv files with column matching and validation",
-  "main": "./dist-commonjs/index.js",
-  "module": "./dist/index.js",
-  "types": "./types/index.d.ts",
-  "files": [
-    "dist-commonjs",
-    "dist",
-    "types"
-  ],
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "storybook dev -p 6006",
-    "test:unit": "jest",
-    "test:e2e": "npx playwright test",
-    "test:chromatic": "npx chromatic ",
-    "ts": "tsc",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "prebuild": "npm run clean",
-    "build": "rollup -c rollup.config.ts",
-    "build-storybook": "storybook build -o docs-build",
-    "release:patch": "git checkout master && git pull && npm run test:unit && npm run ts && npm run build && npm version patch && git add -A && git push && git push --tags && npm publish",
-    "release:minor": "git checkout master && git pull && npm run test:unit && npm run ts && npm run build && npm version minor && git add -A && git push && git push --tags && npm publish",
-    "release:major": "git checkout master && git pull && npm run test:unit && npm run ts && npm run build && npm version major && git add -A && git push && git push --tags && npm publish",
-    "clean": "rimraf dist dist-commonjs types"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UgnisSoftware/react-spreadsheet-import.git"
-  },
-  "keywords": [
-    "React",
-    "spreadsheet",
-    "import",
-    "upload",
-    "csv",
-    "xlsx",
-    "validate",
-    "automatic",
-    "match"
-  ],
-  "author": {
-    "name": "Ugnis"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/UgnisSoftware/react-spreadsheet-import/issues"
-  },
-  "homepage": "https://github.com/UgnisSoftware/react-spreadsheet-import#readme",
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.8.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "chakra-react-select": "^4.7.5",
-    "chakra-ui-steps": "2.0.4",
-    "framer-motion": "^10.16.4",
-    "js-levenshtein": "1.1.6",
-    "lodash": "4.17.21",
-    "react-data-grid": "7.0.0-beta.13",
-    "react-dropzone": "14.2.3",
-    "react-icons": "4.11.0",
-    "uuid": "^9.0.1",
-    "xlsx-ugnis": "0.20.3"
+    "@radix-ui/react-dialog": "^1.1.13",
+    "@radix-ui/react-slot": "^1.2.2",
+    "@tailwindcss/vite": "^4.1.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.510.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.0",
+    "tailwindcss": "^4.1.6",
+    "ts-essentials": "^10.0.4"
   },
   "devDependencies": {
-    "@babel/core": "7.23.2",
-    "@babel/preset-env": "7.23.2",
-    "@babel/preset-react": "7.22.15",
-    "@babel/preset-typescript": "7.23.2",
-    "@emotion/jest": "11.11.0",
-    "@jest/types": "27.5.1",
-    "@playwright/test": "^1.39.0",
-    "@storybook/addon-essentials": "7.5.1",
-    "@storybook/addon-interactions": "7.5.1",
-    "@storybook/addon-links": "7.5.1",
-    "@storybook/blocks": "7.5.1",
-    "@storybook/cli": "7.5.1",
-    "@storybook/react": "7.5.1",
-    "@storybook/react-webpack5": "7.5.1",
-    "@storybook/testing-library": "^0.0.14-next.2",
-    "@testing-library/dom": "9.3.0",
-    "@testing-library/jest-dom": "5.16.5",
-    "@testing-library/react": "14.0.0",
-    "@testing-library/user-event": "14.4.3",
-    "@types/jest": "27.4.1",
-    "@types/js-levenshtein": "1.1.1",
-    "@types/node": "^20.8.7",
-    "@types/react": "18.2.6",
-    "@types/react-dom": "18.2.4",
-    "@types/styled-system": "5.1.16",
-    "@types/uuid": "9.0.1",
-    "@typescript-eslint/eslint-plugin": "5.59.7",
-    "@typescript-eslint/parser": "5.59.7",
-    "babel-loader": "9.1.3",
-    "chromatic": "^7.4.0",
-    "eslint": "8.41.0",
-    "eslint-config-prettier": "8.8.0",
-    "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.32.2",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "jest": "27.5.1",
-    "jest-watch-typeahead": "1.0.0",
-    "lint-staged": "13.2.2",
-    "prettier": "2.8.8",
-    "prop-types": "15.8.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-select-event": "5.5.1",
-    "rollup": "2.70.1",
-    "rollup-plugin-typescript2": "0.31.2",
-    "storybook": "7.5.1",
-    "ts-essentials": "9.3.2",
-    "ts-jest": "27.1.4",
-    "ttypescript": "1.5.15",
-    "typescript": "4.9.5",
-    "typescript-transform-paths": "3.4.6"
-  },
-  "overrides": {
-    "semver": "^7.5.3"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": "eslint",
-    "*.{js,ts,tsx,md,html,css,json}": "prettier --write"
-  },
-  "prettier": {
-    "tabWidth": 2,
-    "trailingComma": "all",
-    "semi": false,
-    "printWidth": 120
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "mjs"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)?$": "ts-jest/dist",
-      "^.+\\.mjs$": "ts-jest/dist"
-    },
-    "moduleNameMapper": {
-      "~/(.*)": "<rootDir>/src/$1"
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/e2e/"
-    ],
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
-    ],
-    "setupFiles": [
-      "./src/tests/setup.ts"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "tsconfig.json"
-      }
-    },
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ]
-  },
-  "readme": "ERROR: No README data found!"
+    "@eslint/js": "^9.25.0",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.15.17",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "tw-animate-css": "^1.2.9",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5"
+  }
 }
