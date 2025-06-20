@@ -5,49 +5,112 @@ import type { Columns } from "./steps/MatchColumnsStep/MatchColumnsStep"
 import type { StepState } from "./steps/UploadFlow"
 
 export type RsiProps<T extends string> = {
-  // Is modal visible.
+  /**
+   * Is modal visible.
+   */
   isOpen: boolean
-  // callback when RSI is closed before final submit
+  /**
+   * callback when RSI is closed before final submit.
+   */
   onClose: () => void
-  // Field description for requested data
+  /**
+   * Field description for requested data.
+   */
   fields: Fields<T>
-  // Runs after file upload step, receives and returns raw sheet data
+  /**
+   * Runs after file upload step, receives and returns raw sheet data.
+   * @param data Raw data from the uploaded file.
+   * @returns Modified raw data or Promise.
+   */
   uploadStepHook?: (data: RawData[]) => Promise<RawData[]>
-  // Runs after header selection step, receives and returns raw sheet data
+  /**
+   * Runs after header selection step, receives and returns raw sheet data.
+   * @param headerValues Header values selected by user.
+   * @param data Raw data from the uploaded file.
+   * @returns Modified header values and data or Promise.
+   */
   selectHeaderStepHook?: (headerValues: RawData, data: RawData[]) => Promise<{ headerValues: RawData; data: RawData[] }>
-  // Runs once before validation step, used for data mutations and if you want to change how columns were matched
+  /**
+   * Runs once before validation step, used for data mutations and if you want to change how columns were matched.
+   * @param table All rows in the current table.
+   * @param rawData Raw data from the uploaded file.
+   * @param columns Columns that were matched in the previous step.
+   * @returns Modified table data or Promise.
+   */
   matchColumnsStepHook?: (table: Data<T>[], rawData: RawData[], columns: Columns<T>) => Promise<Data<T>[]>
-  // Runs after column matching and on entry change
+  /**
+   * Runs after column matching and on entry change.
+   * @param row The current row being processed.
+   * @param addError Function to add validation errors to specific fields. Has to be called with field key and error object.
+   * @param table All rows in the current table.
+   * @returns Modified row data or Promise.
+   */
   rowHook?: RowHook<T>
-  // Runs after column matching and on entry change
+  /**
+   * Runs after column matching and on entry change.
+   * @param table All rows in the current table.
+   * @param addError Function to add validation errors to specific fields. Has to be called with row index, field key and error object.
+   * @returns Modified table data or Promise.
+   */
   tableHook?: TableHook<T>
-  // Function called after user finishes the flow. You can return a promise that will be awaited.
+  /**
+   * Function called after user finishes the flow. You can return a promise that will be awaited.
+   * @param data Validated and processed data from the flow.
+   * @param file The file that was uploaded by the user.
+   * @returns void or Promise.
+   */
   onSubmit: (data: Result<T>, file: File) => void | Promise<any>
-  // Allows submitting with errors. Default: true
+  /**
+   * Allows submitting with errors. Default: true.
+   */
   allowInvalidSubmit?: boolean
-  // Enable navigation in stepper component and show back button. Default: false
+  /**
+   * Enable navigation in stepper component and show back button. Default: false.
+   */
   isNavigationEnabled?: boolean
-  // Translations for each text
+  /**
+   * Translations for each text.
+   */
   translations?: TranslationsRSIProps
-  // Theme configuration passed to underlying Chakra-UI
+  /**
+   * Theme configuration passed to underlying Chakra-UI.
+   */
   customTheme?: object
-  // Specifies maximum number of rows for a single import
+  /**
+   * Specifies maximum number of rows for a single import.
+   */
   maxRecords?: number
-  // Maximum upload filesize (in bytes)
+  /**
+   * Maximum upload filesize (in bytes).
+   */
   maxFileSize?: number
-  // Automatically map imported headers to specified fields if possible. Default: true
+  /**
+   * Automatically map imported headers to specified fields if possible. Default: true.
+   */
   autoMapHeaders?: boolean
-  // When field type is "select", automatically match values if possible. Default: false
+  /**
+   * When field type is "select", automatically match values if possible. Default: false.
+   */
   autoMapSelectValues?: boolean
-  // Headers matching accuracy: 1 for strict and up for more flexible matching
+  /**
+   * Headers matching accuracy: 1 for strict and up for more flexible matching.
+   */
   autoMapDistance?: number
-  // Initial Step state to be rendered on load
+  /**
+   * Initial Step state to be rendered on load.
+   */
   initialStepState?: StepState
-  // Sets SheetJS dateNF option. If date parsing is applied, date will be formatted e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
+  /**
+   * Sets SheetJS dateNF option. If date parsing is applied, date will be formatted e.g. "yyyy-mm-dd hh:mm:ss", "m/d/yy h:mm", 'mmm-yy', etc.
+   */
   dateFormat?: string
-  // Sets SheetJS "raw" option. If true, parsing will only be applied to xlsx date fields.
+  /**
+   * Sets SheetJS "raw" option. If true, parsing will only be applied to xlsx date fields.
+   */
   parseRaw?: boolean
-  // Use for right-to-left (RTL) support
+  /**
+   * Use for right-to-left (RTL) support.
+   */
   rtl?: boolean
 }
 
@@ -55,42 +118,66 @@ export type RawData = Array<string | undefined>
 
 export type Data<T extends string> = { [key in T]: string | boolean | undefined }
 
-// Data model RSI uses for spreadsheet imports
+/*
+ *Data model RSI uses for spreadsheet imports
+ */
 export type Fields<T extends string> = DeepReadonly<Field<T>[]>
 
 export type Field<T extends string> = {
-  // UI-facing field label
+  /**
+   * UI-facing field label.
+   */
   label: string
-  // Field's unique identifier
+  /**
+   * Field's unique identifier.
+   */
   key: T
-  // UI-facing additional information displayed via tooltip and ? icon
+  /**
+   * UI-facing additional information displayed via tooltip and ? icon.
+   */
   description?: string
-  // Alternate labels used for fields' auto-matching, e.g. "fname" -> "firstName"
+  /**
+   * Alternate labels used for fields' auto-matching, e.g. "fname" -> "firstName".
+   */
   alternateMatches?: string[]
-  // Validations used for field entries
+  /**
+   * Validations used for field entries.
+   */
   validations?: Validation[]
-  // Field entry component, default: Input
+  /**
+   * Field entry component, default: Input.
+   */
   fieldType: Checkbox | Select | Input
-  // UI-facing values shown to user as field examples pre-upload phase
+  /**
+   * UI-facing values shown to user as field examples pre-upload phase.
+   */
   example?: string
 }
 
 export type Checkbox = {
   type: "checkbox"
-  // Alternate values to be treated as booleans, e.g. {yes: true, no: false}
+  /**
+   * Alternate values to be treated as booleans, e.g. {yes: true, no: false}.
+   */
   booleanMatches?: { [key: string]: boolean }
 }
 
 export type Select = {
   type: "select"
-  // Options displayed in Select component
+  /**
+   * Options displayed in Select component.
+   */
   options: SelectOption[]
 }
 
 export type SelectOption = {
-  // UI-facing option label
+  /**
+   * UI-facing option label.
+   */
   label: string
-  // Field entry matching criteria as well as select output
+  /**
+   * Field entry matching criteria as well as select output.
+   */
   value: string
 }
 
