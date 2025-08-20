@@ -1,10 +1,12 @@
-import { Column, useRowSelection } from "react-data-grid"
-import { Box, Checkbox, Input, Switch, Tooltip } from "@chakra-ui/react"
-import type { Data, Fields } from "../../../types"
-import type { ChangeEvent } from "react"
-import type { Meta } from "../types"
+import { Column } from "react-data-grid"
+import { Box, Flex, Input } from "@chakra-ui/react"
+import type { Data, Fields, SelectOption } from "@/types"
+import type { Meta } from "@/steps/types"
 import { CgInfo } from "react-icons/cg"
-import { TableSelect } from "../../../components/Selects/TableSelect"
+import { Switch } from "@/components/ui/Switch"
+import { TableSelect } from "@/components/Selects/TableSelect"
+import { Tooltip } from "@/components/ui/Tooltip"
+import { TableCheckmark } from "@/steps/ValidationStep/components/TableCheckmark"
 
 const SELECT_COLUMN_KEY = "select-row"
 
@@ -24,24 +26,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
     sortable: false,
     frozen: true,
     cellClass: "rdg-checkbox",
-    formatter: (props) => {
-      // eslint-disable-next-line  react-hooks/rules-of-hooks
-      const [isRowSelected, onRowSelectionChange] = useRowSelection()
-      return (
-        <Checkbox
-          bg="white"
-          aria-label="Select"
-          isChecked={isRowSelected}
-          onChange={(event) => {
-            onRowSelectionChange({
-              row: props.row,
-              checked: Boolean(event.target.checked),
-              isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,
-            })
-          }}
-        />
-      )
-    },
+    renderCell: (props) => <TableCheckmark {...props} />,
   },
   ...fields.map(
     (column): Column<Data<T> & Meta> => ({
@@ -49,13 +34,13 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
       name: column.label,
       minWidth: 150,
       resizable: true,
-      headerRenderer: () => (
+      renderHeaderCell: () => (
         <Box display="flex" gap={1} alignItems="center" position="relative">
           <Box flex={1} overflow="hidden" textOverflow="ellipsis">
             {column.label}
           </Box>
           {column.description && (
-            <Tooltip placement="top" hasArrow label={column.description}>
+            <Tooltip positioning={{ placement: "top" }} showArrow content={column.description}>
               <Box flex={"0 0 auto"}>
                 <CgInfo size="16px" />
               </Box>
@@ -64,52 +49,49 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
         </Box>
       ),
       editable: column.fieldType.type !== "checkbox",
-      editor: ({ row, onRowChange, onClose }) => {
+      renderEditCell: ({ row, onRowChange, onClose }) => {
         let component
+
+        const cell = row[column.key] as string
 
         switch (column.fieldType.type) {
           case "select":
             component = (
               <TableSelect
-                value={column.fieldType.options.find((option) => option.value === (row[column.key] as string))}
+                value={column.fieldType.options.find((option) => option.value === cell)}
                 onChange={(value) => {
                   onRowChange({ ...row, [column.key]: value?.value }, true)
                 }}
-                options={column.fieldType.options}
+                options={column.fieldType.options as SelectOption[]}
               />
             )
             break
           default:
             component = (
-              <Box paddingInlineStart="0.5rem">
-                <Input
-                  ref={autoFocusAndSelect}
-                  variant="unstyled"
-                  autoFocus
-                  size="small"
-                  value={row[column.key] as string}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    onRowChange({ ...row, [column.key]: event.target.value })
-                  }}
-                  onBlur={() => onClose(true)}
-                />
-              </Box>
+              <Input
+                ref={autoFocusAndSelect}
+                autoFocus
+                size="sm"
+                unstyled
+                outline="none"
+                border="none"
+                bgColor="transparent"
+                value={cell}
+                onChange={(event) => onRowChange({ ...row, [column.key]: event.target.value })}
+                onBlur={() => onClose(true)}
+              />
             )
         }
 
         return component
       },
-      editorOptions: {
-        editOnClick: true,
-      },
-      formatter: ({ row, onRowChange }) => {
+      renderCell: ({ row, onRowChange }) => {
         let component
 
         switch (column.fieldType.type) {
           case "checkbox":
             component = (
-              <Box
-                display="flex"
+              <Flex
                 alignItems="center"
                 height="100%"
                 onClick={(event) => {
@@ -117,32 +99,35 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
                 }}
               >
                 <Switch
-                  isChecked={row[column.key] as boolean}
+                  checked={row[column.key] as boolean}
                   onChange={() => {
-                    onRowChange({ ...row, [column.key]: !row[column.key as T] })
+                    onRowChange({
+                      ...row,
+                      [column.key]: !row[column.key as T],
+                    })
                   }}
                 />
-              </Box>
+              </Flex>
             )
             break
           case "select":
             component = (
-              <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+              <Flex alignItems="center" height="100%">
                 {column.fieldType.options.find((option) => option.value === row[column.key as T])?.label || null}
-              </Box>
+              </Flex>
             )
             break
           default:
             component = (
-              <Box minWidth="100%" minHeight="100%" overflow="hidden" textOverflow="ellipsis">
+              <Flex alignItems="center" height="100%">
                 {row[column.key as T]}
-              </Box>
+              </Flex>
             )
         }
 
         if (row.__errors?.[column.key]) {
           return (
-            <Tooltip placement="top" hasArrow label={row.__errors?.[column.key]?.message}>
+            <Tooltip positioning={{ placement: "top" }} showArrow content={row.__errors?.[column.key]?.message}>
               {component}
             </Tooltip>
           )
@@ -150,6 +135,7 @@ export const generateColumns = <T extends string>(fields: Fields<T>): Column<Dat
 
         return component
       },
+
       cellClass: (row: Meta) => {
         switch (row.__errors?.[column.key]?.level) {
           case "error":

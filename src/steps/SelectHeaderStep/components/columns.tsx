@@ -1,29 +1,16 @@
-import { Column, FormatterProps, useRowSelection } from "react-data-grid"
-import { Radio } from "@chakra-ui/react"
-import type { RawData } from "../../../types"
+import { useRowSelection } from "react-data-grid"
+import type { RawData } from "@/types"
+import { Radiomark } from "@chakra-ui/react"
 
 const SELECT_COLUMN_KEY = "select-row"
 
-function SelectFormatter(props: FormatterProps<unknown>) {
-  const [isRowSelected, onRowSelectionChange] = useRowSelection()
+function SelectFormatter() {
+  const { isRowSelected } = useRowSelection()
 
-  return (
-    <Radio
-      bg="white"
-      aria-label="Select"
-      isChecked={isRowSelected}
-      onChange={(event) => {
-        onRowSelectionChange({
-          row: props.row,
-          checked: Boolean(event.target.checked),
-          isShiftClick: (event.nativeEvent as MouseEvent).shiftKey,
-        })
-      }}
-    />
-  )
+  return <Radiomark size="sm" cursor="pointer" aria-label="Select" role="radio" checked={isRowSelected} />
 }
 
-export const SelectColumn: Column<any, any> = {
+export const SelectColumn = {
   key: SELECT_COLUMN_KEY,
   name: "",
   width: 35,
@@ -33,7 +20,7 @@ export const SelectColumn: Column<any, any> = {
   sortable: false,
   frozen: true,
   cellClass: "rdg-radio",
-  formatter: SelectFormatter,
+  renderCell: SelectFormatter,
 }
 
 export const generateSelectionColumns = (data: RawData[]) => {

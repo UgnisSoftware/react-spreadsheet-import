@@ -1,5 +1,3 @@
-import type { DeepPartial } from "ts-essentials"
-
 export const translations = {
   uploadStep: {
     title: "Upload file",
@@ -37,6 +35,7 @@ export const translations = {
     unmatched: "Unmatched",
     duplicateColumnWarningTitle: "Another column unselected",
     duplicateColumnWarningDescription: "Columns cannot duplicate",
+    noItemsFound: "No items found",
   },
   validationStep: {
     title: "Validate data",
@@ -78,5 +77,4 @@ export const translations = {
   },
 }
 
-export type TranslationsRSIProps = DeepPartial<typeof translations>
 export type Translations = typeof translations

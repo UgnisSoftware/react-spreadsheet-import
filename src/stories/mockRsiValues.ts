@@ -1,5 +1,6 @@
-import type { RsiProps } from "../types"
-import { defaultRSIProps } from "../ReactSpreadsheetImport"
+import type { RsiProps } from "@/types"
+import { defaultRSIProps } from "@/ReactSpreadsheetImport"
+import { RSIContextContextValue } from "@/contexts/RSIContext"
 
 const fields = [
   {
@@ -82,7 +83,7 @@ const fields = [
   },
 ] as const
 
-const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props
+const mockComponentBehaviourForTypes = <T extends string>(props: RsiProps<T>) => props as RSIContextContextValue<T>
 
 export const mockRsiValues = mockComponentBehaviourForTypes({
   ...defaultRSIProps,
@@ -92,35 +93,6 @@ export const mockRsiValues = mockComponentBehaviourForTypes({
   },
   isOpen: true,
   onClose: () => {},
-  // uploadStepHook: async (data) => {
-  //   await new Promise((resolve) => {
-  //     setTimeout(() => resolve(data), 4000)
-  //   })
-  //   return data
-  // },
-  // selectHeaderStepHook: async (hData, data) => {
-  //   await new Promise((resolve) => {
-  //     setTimeout(
-  //       () =>
-  //         resolve({
-  //           headerValues: hData,
-  //           data,
-  //         }),
-  //       4000,
-  //     )
-  //   })
-  //   return {
-  //     headerValues: hData,
-  //     data,
-  //   }
-  // },
-  // // Runs after column matching and on entry change, more performant
-  // matchColumnsStepHook: async (data) => {
-  //   await new Promise((resolve) => {
-  //     setTimeout(() => resolve(data), 4000)
-  //   })
-  //   return data
-  // },
 })
 
 export const editableTableInitialData = [

@@ -1,5 +1,5 @@
 import lavenstein from "js-levenshtein"
-import type { Fields } from "../../../types"
+import type { Fields } from "@/types"
 
 type AutoMatchAccumulator<T> = {
   distance: number

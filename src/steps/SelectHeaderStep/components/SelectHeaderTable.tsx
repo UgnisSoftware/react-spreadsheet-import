@@ -1,7 +1,7 @@
 import { useMemo } from "react"
-import { Table } from "../../../components/Table"
-import { generateSelectionColumns } from "./columns"
-import type { RawData } from "../../../types"
+import { generateSelectionColumns } from "@/steps/SelectHeaderStep/components/columns"
+import type { RawData } from "@/types"
+import { Table } from "@/components/ui/Table"
 
 interface Props {
   data: RawData[]
@@ -27,9 +27,7 @@ export const SelectHeaderTable = ({ data, selectedRows, setSelectedRows }: Props
           }
         })
       }}
-      onRowClick={(row) => {
-        setSelectedRows(new Set([data.indexOf(row)]))
-      }}
+      onCellClick={({ row }) => setSelectedRows(new Set([data.indexOf(row)]))}
       headerRowHeight={0}
       className="rdg-static"
     />

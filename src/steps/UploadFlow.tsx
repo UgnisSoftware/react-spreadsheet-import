@@ -1,45 +1,15 @@
+import { useRSIContext } from "@/contexts/RSIContext"
+import { type StepState, StepType } from "./types"
 import { useCallback, useState } from "react"
-import { Progress, useToast } from "@chakra-ui/react"
-import type XLSX from "xlsx-ugnis"
-import { UploadStep } from "./UploadStep/UploadStep"
-import { SelectHeaderStep } from "./SelectHeaderStep/SelectHeaderStep"
-import { SelectSheetStep } from "./SelectSheetStep/SelectSheetStep"
-import { mapWorkbook } from "../utils/mapWorkbook"
-import { ValidationStep } from "./ValidationStep/ValidationStep"
-import { addErrorsAndRunHooks } from "./ValidationStep/utils/dataMutations"
-import { MatchColumnsStep } from "./MatchColumnsStep/MatchColumnsStep"
-import { exceedsMaxRecords } from "../utils/exceedsMaxRecords"
-import { useRsi } from "../hooks/useRsi"
-import type { RawData } from "../types"
-
-export enum StepType {
-  upload = "upload",
-  selectSheet = "selectSheet",
-  selectHeader = "selectHeader",
-  matchColumns = "matchColumns",
-  validateData = "validateData",
-}
-export type StepState =
-  | {
-      type: StepType.upload
-    }
-  | {
-      type: StepType.selectSheet
-      workbook: XLSX.WorkBook
-    }
-  | {
-      type: StepType.selectHeader
-      data: RawData[]
-    }
-  | {
-      type: StepType.matchColumns
-      data: RawData[]
-      headerValues: RawData
-    }
-  | {
-      type: StepType.validateData
-      data: any[]
-    }
+import { toaster } from "@/components/ui/toaster"
+import { UploadStep } from "@/steps/UploadStep/UploadStep"
+import { exceedsMaxRecords } from "@/utils/exceedsMaxRecords"
+import { mapWorkbook } from "@/utils/mapWorkbook"
+import { SelectSheetStep } from "@/steps/SelectSheetStep/SelectSheetStep"
+import { SelectHeaderStep } from "@/steps/SelectHeaderStep/SelectHeaderStep"
+import { MatchColumnsStep } from "@/steps/MatchColumnsStep/MatchColumnsStep"
+import { addErrorsAndRunHooks } from "@/steps/ValidationStep/utils/dataMutations"
+import { ValidationStep } from "@/steps/ValidationStep/ValidationStep"
 
 interface Props {
   state: StepState
@@ -57,21 +27,18 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
     fields,
     rowHook,
     tableHook,
-  } = useRsi()
+  } = useRSIContext()
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
-  const toast = useToast()
   const errorToast = useCallback(
     (description: string) => {
-      toast({
-        status: "error",
-        variant: "left-accent",
-        position: "bottom-left",
-        title: `${translations.alerts.toast.error}`,
+      toaster.create({
+        type: "error",
+        title: translations.alerts.toast.error,
         description,
-        isClosable: true,
+        closable: true,
       })
     },
-    [toast, translations],
+    [translations],
   )
 
   switch (state.type) {
@@ -164,7 +131,5 @@ export const UploadFlow = ({ state, onNext, onBack }: Props) => {
       )
     case StepType.validateData:
       return <ValidationStep initialData={state.data} file={uploadedFile!} onBack={onBack} />
-    default:
-      return <Progress isIndeterminate />
   }
 }

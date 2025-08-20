@@ -1,20 +1,24 @@
+import { useRSIContext } from "@/contexts/RSIContext"
+import { Dialog, Heading, Text, Box, useSlotRecipe } from "@chakra-ui/react"
 import type XLSX from "xlsx-ugnis"
-import { Box, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
-import { DropZone } from "./components/DropZone"
-import { useRsi } from "../../hooks/useRsi"
-import { ExampleTable } from "./components/ExampleTable"
+import { FadingOverlay } from "@/steps/UploadStep/components/FadingOverlay"
+import { DropZone } from "@/steps/UploadStep/components/DropZone"
 import { useCallback, useState } from "react"
-import { FadingOverlay } from "./components/FadingOverlay"
-import type { themeOverrides } from "../../theme"
+import { ExampleTable } from "@/steps/UploadStep/components/ExampleTable"
 
-type UploadProps = {
+type UploadStepProps = {
   onContinue: (data: XLSX.WorkBook, file: File) => Promise<void>
 }
 
-export const UploadStep = ({ onContinue }: UploadProps) => {
+export function UploadStep(props: UploadStepProps) {
+  const { onContinue } = props
+
   const [isLoading, setIsLoading] = useState(false)
-  const styles = useStyleConfig("UploadStep") as (typeof themeOverrides)["components"]["UploadStep"]["baseStyle"]
-  const { translations, fields } = useRsi()
+
+  const { fields, translations } = useRSIContext()
+  const recipe = useSlotRecipe({ key: "uploadStep" })
+  const styles = recipe()
+
   const handleOnContinue = useCallback(
     async (data: XLSX.WorkBook, file: File) => {
       setIsLoading(true)
@@ -23,16 +27,17 @@ export const UploadStep = ({ onContinue }: UploadProps) => {
     },
     [onContinue],
   )
+
   return (
-    <ModalBody>
-      <Heading sx={styles.heading}>{translations.uploadStep.title}</Heading>
-      <Text sx={styles.title}>{translations.uploadStep.manifestTitle}</Text>
-      <Text sx={styles.subtitle}>{translations.uploadStep.manifestDescription}</Text>
-      <Box sx={styles.tableWrapper}>
+    <Dialog.Body>
+      <Heading variant="rsi">{translations.uploadStep.title}</Heading>
+      <Text css={styles.title}>{translations.uploadStep.manifestTitle}</Text>
+      <Text css={styles.subtitle}>{translations.uploadStep.manifestDescription}</Text>
+      <Box css={styles.tableWrapper}>
         <ExampleTable fields={fields} />
         <FadingOverlay />
       </Box>
       <DropZone onContinue={handleOnContinue} isLoading={isLoading} />
-    </ModalBody>
+    </Dialog.Body>
   )
 }

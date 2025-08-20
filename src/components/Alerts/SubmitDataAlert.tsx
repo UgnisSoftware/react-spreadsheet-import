@@ -1,49 +1,55 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react"
+import { useRSIContext } from "@/contexts/RSIContext"
+import { Dialog, Button } from "@chakra-ui/react"
 import { useRef } from "react"
-import { useRsi } from "../../hooks/useRsi"
 
 interface Props {
-  isOpen: boolean
+  open: boolean
   onClose: () => void
   onConfirm: () => void
 }
 
-export const SubmitDataAlert = ({ isOpen, onClose, onConfirm }: Props) => {
-  const { allowInvalidSubmit, translations } = useRsi()
+export function SubmitDataAlert(props: Props) {
+  const { open, onClose, onConfirm } = props
+
+  const { allowInvalidSubmit, translations } = useRSIContext()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   return (
-    <AlertDialog isOpen={isOpen} onClose={onClose} leastDestructiveRef={cancelRef} isCentered id="rsi">
-      <AlertDialogOverlay>
-        <AlertDialogContent>
-          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            {translations.alerts.submitIncomplete.headerTitle}
-          </AlertDialogHeader>
-          <AlertDialogBody>
+    <Dialog.Root
+      open={open}
+      onOpenChange={({ open }) => {
+        if (!open) {
+          onClose()
+        }
+      }}
+      initialFocusEl={() => cancelRef.current}
+      placement="center"
+      role="alertdialog"
+    >
+      <Dialog.Backdrop />
+      <Dialog.Positioner>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>{translations.alerts.submitIncomplete.headerTitle}</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>
+            {" "}
             {allowInvalidSubmit
               ? translations.alerts.submitIncomplete.bodyText
               : translations.alerts.submitIncomplete.bodyTextSubmitForbidden}
-          </AlertDialogBody>
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose} variant="secondary">
+          </Dialog.Body>
+          <Dialog.Footer>
+            <Button ref={cancelRef} onClick={onClose} variant="outline">
               {translations.alerts.submitIncomplete.cancelButtonTitle}
             </Button>
             {allowInvalidSubmit && (
-              <Button onClick={onConfirm} ml={3}>
+              <Button colorPalette="red" onClick={onConfirm} ml={3}>
                 {translations.alerts.submitIncomplete.finishButtonTitle}
               </Button>
             )}
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialogOverlay>
-    </AlertDialog>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Positioner>
+    </Dialog.Root>
   )
 }

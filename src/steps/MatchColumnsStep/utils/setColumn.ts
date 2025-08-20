@@ -1,6 +1,7 @@
-import type { Field } from "../../../types"
-import { Column, ColumnType, MatchColumnsProps, MatchedOptions } from "../MatchColumnsStep"
-import { uniqueEntries } from "./uniqueEntries"
+import type { Field } from "@/types"
+import { Column, ColumnType, MatchedOptions } from "@/steps/types"
+import { uniqueEntries } from "@/steps/MatchColumnsStep/utils/uniqueEntries"
+import { MatchColumnsProps } from "@/steps/MatchColumnsStep/MatchColumnsStep"
 
 export const setColumn = <T extends string>(
   oldColumn: Column<T>,
@@ -9,7 +10,7 @@ export const setColumn = <T extends string>(
   autoMapSelectValues?: boolean,
 ): Column<T> => {
   switch (field?.fieldType.type) {
-    case "select":
+    case "select": {
       const fieldOptions = field.fieldType.options
       const uniqueData = uniqueEntries(data || [], oldColumn.index) as MatchedOptions<T>[]
       const matchedOptions = autoMapSelectValues
@@ -28,11 +29,26 @@ export const setColumn = <T extends string>(
         value: field.key,
         matchedOptions,
       }
+    }
     case "checkbox":
-      return { index: oldColumn.index, type: ColumnType.matchedCheckbox, value: field.key, header: oldColumn.header }
+      return {
+        index: oldColumn.index,
+        type: ColumnType.matchedCheckbox,
+        value: field.key,
+        header: oldColumn.header,
+      }
     case "input":
-      return { index: oldColumn.index, type: ColumnType.matched, value: field.key, header: oldColumn.header }
+      return {
+        index: oldColumn.index,
+        type: ColumnType.matched,
+        value: field.key,
+        header: oldColumn.header,
+      }
     default:
-      return { index: oldColumn.index, header: oldColumn.header, type: ColumnType.empty }
+      return {
+        index: oldColumn.index,
+        header: oldColumn.header,
+        type: ColumnType.empty,
+      }
   }
 }

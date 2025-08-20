@@ -1,16 +1,25 @@
-import "@testing-library/jest-dom"
-import { render, waitFor, screen } from "@testing-library/react"
-import { MatchColumnsStep } from "../MatchColumnsStep"
-import { defaultTheme, ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
-import { Providers } from "../../../components/Providers"
-import { ModalWrapper } from "../../../components/ModalWrapper"
+import {
+  render,
+  waitFor,
+  screen,
+  findByRole,
+  getAllByRole,
+  logRoles,
+  getByRole,
+  within,
+  queryByText,
+} from "@/tests/test-utils"
+import { MatchColumnsStep } from "@/steps/MatchColumnsStep/MatchColumnsStep"
+import { ReactSpreadsheetImport } from "@/ReactSpreadsheetImport"
+import { mockRsiValues } from "@/stories/mockRsiValues"
+import { ModalWrapper } from "@/components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
-import type { Fields } from "../../../types"
-import selectEvent from "react-select-event"
-import { translations } from "../../../translationsRSIProps"
-import { SELECT_DROPDOWN_ID } from "../../../components/Selects/MenuPortal"
-import { StepType } from "../../UploadFlow"
+import type { Fields } from "@/types"
+import { selectCombobox } from "@/tests/select-event"
+import { translations } from "@/translations"
+import { StepType } from "@/steps/types"
+import { chakraRender } from "@/tests/test-utils"
+import { Providers } from "@/components/ui/Providers"
 
 const fields: Fields<any> = [
   {
@@ -54,9 +63,9 @@ describe("Match Columns automatic matching", () => {
     // finds only names with automatic matching
     const result = [{ name: data[0][0] }, { name: data[1][0] }, { name: data[2][0] }]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -85,9 +94,9 @@ describe("Match Columns automatic matching", () => {
     // finds only names with automatic matching
     const result = [{}, {}, {}]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields, autoMapHeaders: false }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields, autoMapHeaders: false }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -116,9 +125,9 @@ describe("Match Columns automatic matching", () => {
     // finds only names with automatic matching
     const result = [{ name: data[0][0] }, { name: data[1][0] }, { name: data[2][0] }]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields, autoMapDistance: 1 }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields, autoMapDistance: 1 }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -159,9 +168,9 @@ describe("Match Columns automatic matching", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields: alternativeFields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: alternativeFields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -215,12 +224,9 @@ describe("Match Columns automatic matching", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}
-      >
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -275,12 +281,9 @@ describe("Match Columns automatic matching", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: false }}
-      >
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: false }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -335,22 +338,16 @@ describe("Match Columns automatic matching", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers
-        theme={defaultTheme}
-        rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}
-      >
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: alternativeFields, autoMapSelectValues: true }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
-          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
-    await selectEvent.select(screen.getByLabelText(header[0]), alternativeFields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(header[0]), alternativeFields[0].label)
 
     expect(screen.getByText(/1 Unmatched/)).toBeInTheDocument()
 
@@ -384,9 +381,9 @@ describe("Match Columns automatic matching", () => {
       { name: data[4][0], is_cool: false },
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -424,9 +421,9 @@ describe("Match Columns automatic matching", () => {
 
     const result = [{ is_cool: true }, { is_cool: false }, { is_cool: true }]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -455,9 +452,9 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -477,9 +474,9 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -506,21 +503,31 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
       </Providers>,
     )
 
-    const firstSelect = screen.getByLabelText(header[0])
+    const comboboxEl = screen.getByLabelText(header[0])
+    const comboboxRoot = comboboxEl.closest('[data-part="root"]')
+    if (!(comboboxRoot instanceof HTMLElement)) {
+      throw new Error("Combobox root not found")
+    }
 
-    await userEvent.click(firstSelect)
+    const combobox = within(comboboxRoot)
+
+    const clearTrigger = combobox.getByTestId("clear-trigger") || combobox.getByRole("button", { name: /clear/i })
+    await userEvent.click(clearTrigger)
+
+    const trigger = combobox.getByTestId("trigger") || combobox.getByRole("button")
+    await userEvent.click(trigger)
 
     fields.forEach((field) => {
-      expect(screen.queryByText(field.label)).toBeInTheDocument()
+      expect(combobox.queryByText(field.label)).toBeInTheDocument()
     })
   })
 
@@ -533,19 +540,16 @@ describe("Match Columns general tests", () => {
     ]
     const result = [{ name: data[0][0] }, { name: data[1][0] }, { name: data[2][0] }]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
-          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(header[0]), fields[0].label)
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
@@ -567,12 +571,11 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
-          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
@@ -581,9 +584,7 @@ describe("Match Columns general tests", () => {
     // kinda dumb way to check if it has checkmark or not
     expect(checkmark).toBeEmptyDOMElement()
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(header[0]), fields[0].label)
 
     expect(checkmark).not.toBeEmptyDOMElement()
   })
@@ -623,33 +624,26 @@ describe("Match Columns general tests", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields: enumFields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: enumFields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
-          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
     expect(screen.queryByTestId("accordion-button")).not.toBeInTheDocument()
 
-    await selectEvent.select(screen.getByLabelText(header[0]), enumFields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(header[0]), enumFields[0].label)
 
     expect(screen.queryByTestId("accordion-button")).toBeInTheDocument()
 
     await userEvent.click(screen.getByTestId("accordion-button"))
 
-    await selectEvent.select(screen.getByLabelText(data[0][0]), options[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(data[0][0]), options[0].label)
 
-    await selectEvent.select(screen.getByLabelText(data[1][0]), options[1].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(data[1][0]), options[1].label)
 
     const nextButton = screen.getByRole("button", {
       name: "Next",
@@ -671,9 +665,9 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -714,9 +708,9 @@ describe("Match Columns general tests", () => {
       },
     ] as const
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields: requiredFields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields: requiredFields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
         </ModalWrapper>
@@ -751,30 +745,25 @@ describe("Match Columns general tests", () => {
       ["Kane", "534", "kane@linch.com"],
     ]
 
-    const onContinue = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockRsiValues, fields }}>
+    const onContinue = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockRsiValues, fields }}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <MatchColumnsStep headerValues={header} data={data} onContinue={onContinue} />
-          <div id={SELECT_DROPDOWN_ID} />
         </ModalWrapper>
       </Providers>,
     )
 
-    await selectEvent.select(screen.getByLabelText(header[0]), fields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
-    await selectEvent.select(screen.getByLabelText(header[1]), fields[0].label, {
-      container: document.getElementById(SELECT_DROPDOWN_ID)!,
-    })
+    await selectCombobox(screen.getByLabelText(header[0]), fields[0].label)
+    await selectCombobox(screen.getByLabelText(header[1]), fields[0].label)
 
-    const toasts = await screen.queryAllByText(translations.matchColumnsStep.duplicateColumnWarningDescription)
+    const toasts = screen.queryAllByText(translations.matchColumnsStep.duplicateColumnWarningDescription)
 
     expect(toasts?.[0]).toBeInTheDocument()
   })
 
   test("matchColumnsStepHook should be called after columns are matched", async () => {
-    const matchColumnsStepHook = jest.fn(async (values) => values)
+    const matchColumnsStepHook = vi.fn(async (values) => values)
     const mockValues = {
       ...mockRsiValues,
       fields: mockRsiValues.fields.filter((field) => field.key === "name" || field.key === "age"),
@@ -804,7 +793,7 @@ describe("Match Columns general tests", () => {
   })
 
   test("matchColumnsStepHook mutations to rawData should show up in ValidationStep", async () => {
-    const matchColumnsStepHook = jest.fn(async ([firstEntry, ...values]) => {
+    const matchColumnsStepHook = vi.fn(async ([firstEntry, ...values]) => {
       return [{ ...firstEntry, name: MUTATED_ENTRY }, ...values]
     })
     const mockValues = {
@@ -835,7 +824,7 @@ describe("Match Columns general tests", () => {
   })
 
   test("Should show error toast if error is thrown in matchColumnsStepHook", async () => {
-    const matchColumnsStepHook = jest.fn(async () => {
+    const matchColumnsStepHook = vi.fn(async () => {
       throw new Error(ERROR_MESSAGE)
       return undefined as any
     })

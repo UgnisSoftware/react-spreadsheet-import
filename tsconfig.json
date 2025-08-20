@@ -1,18 +1,20 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": ["DOM", "ES2021"],
+    "module": "ESNext",
     "jsx": "react-jsx",
     "baseUrl": "./",
     "sourceMap": true,
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   }
 }

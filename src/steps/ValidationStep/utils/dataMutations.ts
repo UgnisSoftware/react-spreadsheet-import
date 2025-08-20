@@ -1,7 +1,6 @@
-import type { Data, Fields, Info, RowHook, TableHook } from "../../../types"
-import type { Meta, Error, Errors } from "../types"
+import { type Data, type Fields, type Info, type RowHook, type TableHook, ErrorSources } from "@/types"
+import type { Meta, Error, Errors } from "@/steps/types"
 import { v4 } from "uuid"
-import { ErrorSources } from "../../../types"
 
 export const addErrorsAndRunHooks = async <T extends string>(
   data: (Data<T> & Partial<Meta>)[],

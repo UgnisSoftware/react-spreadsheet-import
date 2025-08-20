@@ -43,9 +43,9 @@ npm i react-spreadsheet-import
 Using the component: (it's up to you when the flow is open and what you do on submit with the imported data)
 
 ```tsx
-import { ReactSpreadsheetImport } from "react-spreadsheet-import";
+import { ReactSpreadsheetImport } from "react-spreadsheet-import"
 
-<ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} onSubmit={onSubmit} fields={fields} />
+return <ReactSpreadsheetImport isOpen={isOpen} onClose={onClose} onSubmit={onSubmit} fields={fields} />
 ```
 
 ## Required Props
@@ -55,7 +55,7 @@ import { ReactSpreadsheetImport } from "react-spreadsheet-import";
   isOpen: Boolean
   // Called when flow is closed without reaching submit.
   onClose: () => void
-  // Called after user completes the flow. Provides data array, where data keys matches your field keys. 
+  // Called after user completes the flow. Provides data array, where data keys matches your field keys.
   onSubmit: (data, file) => void | Promise<any>
 ```
 
@@ -128,11 +128,11 @@ Example:
 
 In rare case when you need to skip the beginning of the flow, you can start the flow from any of the steps.
 
-- **initialStepState** - initial state of component that will be rendered on load. 
+- **initialStepState** - initial state of component that will be rendered on load.
 
 ```tsx
   initialStepState?: StepState
-  
+
   type StepState =
     | {
         type: StepType.upload
@@ -163,19 +163,21 @@ In rare case when you need to skip the beginning of the flow, you can start the 
 Example:
 
 ```tsx
-import { ReactSpreadsheetImport, StepType } from "react-spreadsheet-import";
+import { ReactSpreadsheetImport, StepType } from "react-spreadsheet-import"
 
-<ReactSpreadsheetImport
-  initialStepState={{
-    type: StepType.matchColumns,
-    data: [
-      ["Josh", "2"],
-      ["Charlie", "3"],
-      ["Lena", "50"],
-    ],
-    headerValues: ["name", "age"],
-  }}
-/>
+return (
+  <ReactSpreadsheetImport
+    initialStepState={{
+      type: StepType.matchColumns,
+      data: [
+        ["Josh", "2"],
+        ["Charlie", "3"],
+        ["Lena", "50"],
+      ],
+      headerValues: ["name", "age"],
+    }}
+  />
+)
 ```
 
 ### Dates and time

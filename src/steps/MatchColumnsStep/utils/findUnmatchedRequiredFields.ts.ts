@@ -1,5 +1,5 @@
-import type { Fields } from "../../../types"
-import type { Columns } from "../MatchColumnsStep"
+import type { Fields } from "@/types"
+import { Columns } from "@/steps/types"
 
 export const findUnmatchedRequiredFields = <T extends string>(fields: Fields<T>, columns: Columns<T>) =>
   fields

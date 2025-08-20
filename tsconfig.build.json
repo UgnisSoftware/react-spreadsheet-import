@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/tests", "**/stories", "./dist", "./dist-commonjs"],
+  "compilerOptions": {
+    "declarationDir": "./types",
+    "declaration": true
+  }
+}

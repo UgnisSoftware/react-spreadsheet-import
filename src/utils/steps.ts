@@ -1,4 +1,4 @@
-import { StepType } from "../steps/UploadFlow"
+import { StepType } from "@/steps/types"
 
 export const steps = ["uploadStep", "selectHeaderStep", "matchColumnsStep", "validationStep"] as const
 const StepTypeToStepRecord: Record<StepType, (typeof steps)[number]> = {

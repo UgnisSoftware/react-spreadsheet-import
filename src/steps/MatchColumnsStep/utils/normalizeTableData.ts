@@ -1,7 +1,6 @@
-import type { Columns } from "../MatchColumnsStep"
-import { ColumnType } from "../MatchColumnsStep"
-import type { Data, Fields, RawData } from "../../../types"
-import { normalizeCheckboxValue } from "./normalizeCheckboxValue"
+import { ColumnType, type Columns } from "@/steps/types"
+import type { Data, Fields, RawData } from "@/types"
+import { normalizeCheckboxValue } from "@/steps/MatchColumnsStep/utils/normalizeCheckboxValue"
 
 export const normalizeTableData = <T extends string>(columns: Columns<T>, data: RawData[], fields: Fields<T>) =>
   data.map((row) =>
@@ -27,7 +26,7 @@ export const normalizeTableData = <T extends string>(columns: Columns<T>, data: 
         }
         case ColumnType.matchedSelect:
         case ColumnType.matchedSelectOptions: {
-          const matchedOption = column.matchedOptions.find(({ entry, value }) => entry === curr)
+          const matchedOption = column.matchedOptions.find(({ entry }) => entry === curr)
           acc[column.value] = matchedOption?.value || undefined
           return acc
         }

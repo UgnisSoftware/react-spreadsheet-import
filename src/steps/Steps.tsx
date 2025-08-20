@@ -1,24 +1,21 @@
-import { StepState, StepType, UploadFlow } from "./UploadFlow"
-import { ModalHeader } from "@chakra-ui/react"
-import { useSteps, Step, Steps as Stepper } from "chakra-ui-steps"
-import { CgCheck } from "react-icons/cg"
-
-import { useRsi } from "../hooks/useRsi"
 import { useRef, useState } from "react"
-import { steps, stepTypeToStepIndex, stepIndexToStepType } from "../utils/steps"
-
-const CheckIcon = ({ color }: { color: string }) => <CgCheck size="36px" color={color} />
+import { Steps as ChakraSteps, Dialog, useSteps } from "@chakra-ui/react"
+import { useRSIContext } from "@/contexts/RSIContext"
+import { stepIndexToStepType, stepTypeToStepIndex, steps } from "@/utils/steps"
+import { type StepState, StepType } from "./types"
+import { UploadFlow } from "@/steps/UploadFlow"
 
 export const Steps = () => {
-  const { initialStepState, translations, isNavigationEnabled } = useRsi()
+  const { initialStepState, translations, isNavigationEnabled } = useRSIContext()
 
-  const initialStep = stepTypeToStepIndex(initialStepState?.type)
-
-  const { nextStep, activeStep, setStep } = useSteps({
-    initialStep,
+  const stepsHook = useSteps({
+    defaultStep: stepTypeToStepIndex(initialStepState?.type),
+    count: steps.length,
   })
 
   const [state, setState] = useState<StepState>(initialStepState || { type: StepType.upload })
+
+  const activeStep = stepTypeToStepIndex(state.type)
 
   const history = useRef<StepState[]>([])
 
@@ -29,7 +26,6 @@ export const Steps = () => {
     const nextHistory = history.current.slice(0, historyIdx + 1)
     history.current = nextHistory
     setState(nextHistory[nextHistory.length - 1])
-    setStep(stepIndex)
   }
 
   const onBack = () => {
@@ -39,23 +35,28 @@ export const Steps = () => {
   const onNext = (v: StepState) => {
     history.current.push(state)
     setState(v)
-    v.type !== StepType.selectSheet && nextStep()
+    if (v.type !== StepType.selectSheet) {
+      stepsHook.goToNextStep()
+    }
   }
 
   return (
     <>
-      <ModalHeader display={["none", "none", "block"]}>
-        <Stepper
-          activeStep={activeStep}
-          checkIcon={CheckIcon}
-          onClickStep={isNavigationEnabled ? onClickStep : undefined}
-          responsive={false}
-        >
-          {steps.map((key) => (
-            <Step label={translations[key].title} key={key} />
-          ))}
-        </Stepper>
-      </ModalHeader>
+      <Dialog.Header display={["none", "none", "block"]}>
+        <ChakraSteps.Root step={activeStep} count={steps.length} variant="rsi">
+          <ChakraSteps.List>
+            {steps.map((step, index) => (
+              <ChakraSteps.Item key={step} index={index} title={translations[step].title}>
+                <ChakraSteps.Trigger disabled={!isNavigationEnabled}>
+                  <ChakraSteps.Indicator />
+                  <ChakraSteps.Title>{translations[step].title}</ChakraSteps.Title>
+                </ChakraSteps.Trigger>
+                <ChakraSteps.Separator />
+              </ChakraSteps.Item>
+            ))}
+          </ChakraSteps.List>
+        </ChakraSteps.Root>
+      </Dialog.Header>
       <UploadFlow state={state} onNext={onNext} onBack={isNavigationEnabled ? onBack : undefined} />
     </>
   )
