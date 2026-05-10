@@ -1,10 +1,7 @@
-import { Box, Flex, IconButton, Text, useStyleConfig } from "@chakra-ui/react"
+import { Box, Flex, IconButton, Text, useSlotRecipe } from "@chakra-ui/react"
 import { CgClose, CgUndo } from "react-icons/cg"
-import type { Column } from "../MatchColumnsStep"
-import { ColumnType } from "../MatchColumnsStep"
-import { dataAttr } from "@chakra-ui/utils"
-import type { Styles } from "./ColumnGrid"
-import type { RawData } from "../../../types"
+import type { RawData } from "@/types"
+import { Column, ColumnType } from "@/steps/types"
 
 type UserTableColumnProps<T extends string> = {
   column: Column<T>
@@ -14,7 +11,8 @@ type UserTableColumnProps<T extends string> = {
 }
 
 export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>) => {
-  const styles = useStyleConfig("MatchColumnsStep") as Styles
+  const recipe = useSlotRecipe({ key: "matchColumnsStep" })
+  const styles = recipe()
   const {
     column: { header, index, type },
     entries,
@@ -25,27 +23,33 @@ export const UserTableColumn = <T extends string>(props: UserTableColumnProps<T>
   return (
     <Box>
       <Flex px={6} justifyContent="space-between" alignItems="center" mb={4}>
-        <Text sx={styles.userTable.header} data-ignored={dataAttr(isIgnored)}>
+        <Text css={styles.userTableHeader} data-ignored={isIgnored ? "" : undefined}>
           {header}
         </Text>
         {type === ColumnType.ignored ? (
           <IconButton
-            aria-label="Ignore column"
-            icon={<CgUndo />}
+            aria-label="Restore column"
             onClick={() => onRevertIgnore(index)}
-            {...styles.userTable.ignoreButton}
-          />
+            css={styles.userTableIgnoreButton}
+            variant="subtle"
+            size="2xs"
+          >
+            <CgUndo />
+          </IconButton>
         ) : (
           <IconButton
             aria-label="Ignore column"
-            icon={<CgClose />}
             onClick={() => onIgnore(index)}
-            {...styles.userTable.ignoreButton}
-          />
+            css={styles.userTableIgnoreButton}
+            variant="subtle"
+            size="2xs"
+          >
+            <CgClose />
+          </IconButton>
         )}
       </Flex>
       {entries.map((entry, index) => (
-        <Text key={(entry || "") + index} sx={styles.userTable.cell} data-ignored={dataAttr(isIgnored)}>
+        <Text key={(entry || "") + index} css={styles.userTableCell} data-ignored={isIgnored ? "" : undefined}>
           {entry}
         </Text>
       ))}

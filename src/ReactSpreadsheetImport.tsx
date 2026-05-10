@@ -1,15 +1,26 @@
-import merge from "lodash/merge"
+import merge from "lodash.merge"
 
-import { Steps } from "./steps/Steps"
-import { rtlThemeSupport, themeOverrides } from "./theme"
-import { Providers } from "./components/Providers"
-import type { RsiProps } from "./types"
-import { ModalWrapper } from "./components/ModalWrapper"
-import { translations } from "./translationsRSIProps"
+import { ModalWrapper } from "@/components/ModalWrapper"
+import { Providers } from "@/components/ui/Providers"
+import { Steps } from "@/steps/Steps"
+import { translations } from "@/translations"
+import type { RsiProps } from "@/types"
+import { RSIContextContextValue } from "@/contexts/RSIContext"
 
-export const defaultTheme = themeOverrides
+type DefaultRSIProps =
+  | "autoMapHeaders"
+  | "autoMapSelectValues"
+  | "allowInvalidSubmit"
+  | "autoMapDistance"
+  | "isNavigationEnabled"
+  | "translations"
+  | "uploadStepHook"
+  | "selectHeaderStepHook"
+  | "matchColumnsStepHook"
+  | "dateFormat"
+  | "parseRaw"
 
-export const defaultRSIProps: Partial<RsiProps<any>> = {
+export const defaultRSIProps: Pick<RsiProps<string>, DefaultRSIProps> = {
   autoMapHeaders: true,
   autoMapSelectValues: false,
   allowInvalidSubmit: true,
@@ -23,16 +34,13 @@ export const defaultRSIProps: Partial<RsiProps<any>> = {
   parseRaw: true,
 } as const
 
-export const ReactSpreadsheetImport = <T extends string>(propsWithoutDefaults: RsiProps<T>) => {
+export function ReactSpreadsheetImport<T extends string>(propsWithoutDefaults: RsiProps<T>) {
   const props = merge({}, defaultRSIProps, propsWithoutDefaults)
   const mergedTranslations =
     props.translations !== translations ? merge(translations, props.translations) : translations
-  const mergedThemes = props.rtl
-    ? merge(defaultTheme, rtlThemeSupport, props.customTheme)
-    : merge(defaultTheme, props.customTheme)
 
   return (
-    <Providers theme={mergedThemes} rsiValues={{ ...props, translations: mergedTranslations }}>
+    <Providers rsiValues={{ ...props, translations: mergedTranslations } as RSIContextContextValue<T>}>
       <ModalWrapper isOpen={props.isOpen} onClose={props.onClose}>
         <Steps />
       </ModalWrapper>

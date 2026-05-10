@@ -1,4 +1,4 @@
-import type { Field, Fields } from "../../../types"
+import type { Field, Fields } from "@/types"
 
 const titleMap: Record<Field<string>["fieldType"]["type"], string> = {
   checkbox: "Boolean",

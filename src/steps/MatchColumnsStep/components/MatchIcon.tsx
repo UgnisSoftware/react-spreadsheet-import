@@ -1,42 +1,51 @@
-import { chakra, useStyleConfig, Flex } from "@chakra-ui/react"
-import { dataAttr } from "@chakra-ui/utils"
-import { motion } from "framer-motion"
+import { Box, Flex } from "@chakra-ui/react"
 import { CgCheck } from "react-icons/cg"
 
-const MotionFlex = motion(Flex)
-
-const animationConfig = {
-  transition: {
-    duration: 0.1,
-  },
-  exit: { scale: 0.5, opacity: 0 },
-  initial: { scale: 0.5, opacity: 0 },
-  animate: { scale: 1, opacity: 1 },
-}
 type MatchIconProps = {
   isChecked: boolean
 }
 
-export const MatchIcon = (props: MatchIconProps) => {
-  const style = useStyleConfig("MatchIcon", props)
-
+export function MatchIcon(props: MatchIconProps) {
   return (
-    <chakra.div
-      __css={style}
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="50%"
+      borderWidth="2px"
+      bg="background"
+      borderColor="yellow.500"
+      color="background"
+      transitionDuration="ultra-fast"
+      _highlighted={{
+        bg: "green.500",
+        borderColor: "green.500",
+      }}
       minW={6}
       minH={6}
       w={6}
       h={6}
-      ml="0.875rem"
+      ml={3.5}
       mr={3}
-      data-highlighted={dataAttr(props.isChecked)}
+      data-highlighted={props.isChecked ? "" : undefined}
       data-testid="column-checkmark"
     >
       {props.isChecked && (
-        <MotionFlex {...animationConfig}>
+        <Box
+          data-state="open"
+          _open={{
+            animationName: "matchIconScaleIn",
+            animationDuration: "0.1s",
+            animationTimingFunction: "ease-in-out",
+          }}
+          _closed={{
+            animationName: "matchIconScaleOut",
+            animationDuration: "0.1s",
+            animationTimingFunction: "ease-in-out",
+          }}
+        >
           <CgCheck size="24px" />
-        </MotionFlex>
+        </Box>
       )}
-    </chakra.div>
+    </Flex>
   )
 }

@@ -41,7 +41,6 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-
   chromatic-test:
     runs-on: ubuntu-latest
     steps:

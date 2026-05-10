@@ -1,8 +1,7 @@
-import { defaultTheme } from "../../../ReactSpreadsheetImport"
-import { MatchColumnsStep } from "../MatchColumnsStep"
-import { Providers } from "../../../components/Providers"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
-import { ModalWrapper } from "../../../components/ModalWrapper"
+import { ModalWrapper } from "@/components/ModalWrapper"
+import { Providers } from "@/components/ui/Providers"
+import { mockRsiValues } from "@/stories/mockRsiValues"
+import { MatchColumnsStep } from "@/steps/MatchColumnsStep/MatchColumnsStep"
 
 export default {
   title: "Match Columns Steps",
@@ -25,7 +24,7 @@ const mockData = [
 ]
 
 export const Basic = () => (
-  <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
+  <Providers rsiValues={mockRsiValues}>
     <ModalWrapper isOpen={true} onClose={() => {}}>
       <MatchColumnsStep headerValues={mockData[0] as string[]} data={mockData.slice(1)} onContinue={() => {}} />
     </ModalWrapper>

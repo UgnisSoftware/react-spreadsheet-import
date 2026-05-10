@@ -1,13 +1,11 @@
-import "@testing-library/jest-dom"
-import { render, waitFor, screen, fireEvent } from "@testing-library/react"
-import { SelectHeaderStep } from "../SelectHeaderStep"
-import { defaultTheme, ReactSpreadsheetImport } from "../../../ReactSpreadsheetImport"
-import { mockRsiValues } from "../../../stories/mockRsiValues"
-import { Providers } from "../../../components/Providers"
-import { ModalWrapper } from "../../../components/ModalWrapper"
+import { render, waitFor, screen, fireEvent, act } from "@/tests/test-utils"
+import { SelectHeaderStep } from "@/steps/SelectHeaderStep/SelectHeaderStep"
+import { ReactSpreadsheetImport } from "@/ReactSpreadsheetImport"
+import { mockRsiValues } from "@/stories/mockRsiValues"
+import { ModalWrapper } from "@/components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
 import { readFileSync } from "fs"
-import { StepType } from "../../UploadFlow"
+import { StepType } from "@/steps/types"
 
 const MUTATED_HEADER = "mutated header"
 const CONTINUE_BUTTON = "Next"
@@ -27,14 +25,12 @@ describe("Select header step tests", () => {
     ]
     const selectRowIndex = 2
 
-    const onContinue = jest.fn()
-    const onBack = jest.fn()
+    const onContinue = vi.fn()
+    const onBack = vi.fn()
     render(
-      <Providers theme={defaultTheme} rsiValues={mockRsiValues}>
-        <ModalWrapper isOpen={true} onClose={() => {}}>
-          <SelectHeaderStep data={data} onContinue={onContinue} onBack={onBack} />
-        </ModalWrapper>
-      </Providers>,
+      <ModalWrapper isOpen={true} onClose={() => {}}>
+        <SelectHeaderStep data={data} onContinue={onContinue} onBack={onBack} />
+      </ModalWrapper>,
     )
 
     const radioButtons = screen.getAllByRole("radio")
@@ -55,21 +51,17 @@ describe("Select header step tests", () => {
   })
 
   test("selectHeaderStepHook should be called after header is selected", async () => {
-    const selectHeaderStepHook = jest.fn(async (headerValues, data) => {
+    const selectHeaderStepHook = vi.fn(async (headerValues, data) => {
       return { headerValues, data }
     })
     render(<ReactSpreadsheetImport {...mockRsiValues} selectHeaderStepHook={selectHeaderStepHook} />)
     const uploader = screen.getByTestId("rsi-dropzone")
     const data = readFileSync(__dirname + "/../../../../static/Workbook2.xlsx")
-    fireEvent.drop(uploader, {
-      target: {
-        files: [
-          new File([data], "testFile.xlsx", {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          }),
-        ],
-      },
+    const file = new File([data], "testFile.xlsx", {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     })
+
+    await userEvent.upload(uploader, file)
     const continueButton = await screen.findByText(CONTINUE_BUTTON, undefined, { timeout: 10000 })
     fireEvent.click(continueButton)
     await waitFor(() => {
@@ -84,7 +76,7 @@ describe("Select header step tests", () => {
     })
   })
   test("selectHeaderStepHook should be able to modify raw data", async () => {
-    const selectHeaderStepHook = jest.fn(async ([val, ...headerValues], data) => {
+    const selectHeaderStepHook = vi.fn(async ([val, ...headerValues], data) => {
       return { headerValues: [MUTATED_HEADER, ...headerValues], data }
     })
     render(
@@ -112,9 +104,8 @@ describe("Select header step tests", () => {
   })
 
   test("Should show error toast if error is thrown in selectHeaderStepHook", async () => {
-    const selectHeaderStepHook = jest.fn(async () => {
+    const selectHeaderStepHook = vi.fn(async () => {
       throw new Error(ERROR_MESSAGE)
-      return undefined as any
     })
     render(
       <ReactSpreadsheetImport
@@ -145,9 +136,8 @@ describe("Select header step tests", () => {
     render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={true} />)
 
     const uploader = screen.getByTestId("rsi-dropzone")
-    fireEvent.drop(uploader, {
-      target: { files: [file] },
-    })
+
+    await userEvent.upload(uploader, file)
 
     const el = await screen.findByText(RAW_DATE, undefined, { timeout: 5000 })
     expect(el).toBeInTheDocument()
@@ -160,9 +150,7 @@ describe("Select header step tests", () => {
     render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" parseRaw={false} />)
 
     const uploader = screen.getByTestId("rsi-dropzone")
-    fireEvent.drop(uploader, {
-      target: { files: [file] },
-    })
+    await userEvent.upload(uploader, file)
 
     const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 5000 })
     expect(el).toBeInTheDocument()
@@ -172,46 +160,38 @@ describe("Select header step tests", () => {
     render(<ReactSpreadsheetImport {...mockRsiValues} dateFormat="yyyy/mm/dd" />)
     const uploader = screen.getByTestId("rsi-dropzone")
     const data = readFileSync(__dirname + "/../../../../static/Workbook2.xlsx")
-    fireEvent.drop(uploader, {
-      target: {
-        files: [
-          new File([data], "testFile.xlsx", {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          }),
-        ],
-      },
+    const file = new File([data], "testFile.xlsx", {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     })
+
+    await userEvent.upload(uploader, file)
     const el = await screen.findByText(FORMATTED_DATE, undefined, { timeout: 10000 })
     expect(el).toBeInTheDocument()
   })
 
-  test.skip(
+  test(
     "trailing (not under a header) cells should be rendered in SelectHeaderStep table, " +
       "but not in MatchColumnStep if a shorter row is selected as a header",
     async () => {
-      const selectHeaderStepHook = jest.fn(async (headerValues, data) => {
-        return { headerValues, data }
-      })
-      render(<ReactSpreadsheetImport {...mockRsiValues} selectHeaderStepHook={selectHeaderStepHook} />)
+      render(<ReactSpreadsheetImport {...mockRsiValues} />)
       const uploader = screen.getByTestId("rsi-dropzone")
       const data = readFileSync(__dirname + "/../../../../static/TrailingCellsWorkbook.xlsx")
-      fireEvent.drop(uploader, {
-        target: {
-          files: [
-            new File([data], "testFile.xlsx", {
-              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            }),
-          ],
-        },
+      const file = new File([data], "testFile.xlsx", {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       })
+      await userEvent.upload(uploader, file)
       const trailingCell = await screen.findByText(TRAILING_CELL, undefined, { timeout: 10000 })
       expect(trailingCell).toBeInTheDocument()
       const nextButton = screen.getByRole("button", {
         name: "Next",
       })
       await userEvent.click(nextButton)
-      const trailingCellNextPage = await screen.findByText(TRAILING_CELL, undefined, { timeout: 10000 })
-      expect(trailingCellNextPage).not.toBeInTheDocument()
+      await waitFor(
+        () => {
+          expect(screen.queryByText(TRAILING_CELL)).not.toBeInTheDocument()
+        },
+        { timeout: 10000 },
+      )
     },
   )
 })

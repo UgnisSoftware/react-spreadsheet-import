@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src", "rslib.config.ts", "vitest.config.ts", "vitest.setup.ts"]
+}

@@ -1,9 +1,9 @@
 import lavenstein from "js-levenshtein"
-import { findMatch } from "./findMatch"
-import type { Field, Fields } from "../../../types"
-import { setColumn } from "./setColumn"
-import type { Column, Columns } from "../MatchColumnsStep"
-import type { MatchColumnsProps } from "../MatchColumnsStep"
+import type { Field, Fields } from "@/types"
+import type { Column, Columns } from "@/steps/types"
+import { findMatch } from "@/steps/MatchColumnsStep/utils/findMatch"
+import { setColumn } from "@/steps/MatchColumnsStep/utils/setColumn"
+import { MatchColumnsProps } from "@/steps/MatchColumnsStep/MatchColumnsStep"
 
 export const getMatchedColumns = <T extends string>(
   columns: Columns<T>,

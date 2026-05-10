@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react"
-import { Heading, ModalBody, useStyleConfig, Box } from "@chakra-ui/react"
-import { SelectHeaderTable } from "./components/SelectHeaderTable"
-import { ContinueButton } from "../../components/ContinueButton"
-import { useRsi } from "../../hooks/useRsi"
-import type { themeOverrides } from "../../theme"
-import type { RawData } from "../../types"
+import { Heading, Dialog } from "@chakra-ui/react"
+import type { RawData } from "@/types"
+import { useRSIContext } from "@/contexts/RSIContext"
+import { SelectHeaderTable } from "@/steps/SelectHeaderStep/components/SelectHeaderTable"
+import { ContinueButton } from "@/components/ContinueButton"
 
 type SelectHeaderProps = {
   data: RawData[]
@@ -13,15 +12,12 @@ type SelectHeaderProps = {
 }
 
 export const SelectHeaderStep = ({ data, onContinue, onBack }: SelectHeaderProps) => {
-  const styles = useStyleConfig(
-    "SelectHeaderStep",
-  ) as (typeof themeOverrides)["components"]["SelectHeaderStep"]["baseStyle"]
-  const { translations } = useRsi()
+  const { translations } = useRSIContext()
   const [selectedRows, setSelectedRows] = useState<ReadonlySet<number>>(new Set([0]))
   const [isLoading, setIsLoading] = useState(false)
 
   const handleContinue = useCallback(async () => {
-    const [selectedRowIndex] = selectedRows
+    const [selectedRowIndex] = Array.from(selectedRows)
     // We consider data above header to be redundant
     const trimmedData = data.slice(selectedRowIndex + 1)
     setIsLoading(true)
@@ -31,10 +27,10 @@ export const SelectHeaderStep = ({ data, onContinue, onBack }: SelectHeaderProps
 
   return (
     <>
-      <ModalBody pb={0}>
-        <Heading {...styles.heading}>{translations.selectHeaderStep.title}</Heading>
+      <Dialog.Body pb={0}>
+        <Heading variant="rsi">{translations.selectHeaderStep.title}</Heading>
         <SelectHeaderTable data={data} selectedRows={selectedRows} setSelectedRows={setSelectedRows} />
-      </ModalBody>
+      </Dialog.Body>
       <ContinueButton
         onContinue={handleContinue}
         onBack={onBack}

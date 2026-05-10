@@ -1,5 +1,7 @@
-import uniqBy from "lodash/uniqBy"
-import type { MatchColumnsProps, MatchedOptions } from "../MatchColumnsStep"
+import uniqBy from "lodash.uniqby"
+
+import type { MatchedOptions } from "@/steps/types"
+import type { MatchColumnsProps } from "@/steps/MatchColumnsStep/MatchColumnsStep"
 
 export const uniqueEntries = <T extends string>(
   data: MatchColumnsProps<T>["data"],

@@ -1,10 +1,9 @@
 import type React from "react"
-import type { Column, Columns } from "../MatchColumnsStep"
-import { Box, Flex, Heading, ModalBody, Text, useStyleConfig } from "@chakra-ui/react"
-import { FadingWrapper } from "../../../components/FadingWrapper"
-import { ContinueButton } from "../../../components/ContinueButton"
-import { useRsi } from "../../../hooks/useRsi"
-import type { themeOverrides } from "../../../theme"
+import type { Column, Columns } from "@/steps/types"
+import { Box, Dialog, Flex, Heading, Text, useSlotRecipe } from "@chakra-ui/react"
+import { useRSIContext } from "@/contexts/RSIContext"
+import { ContinueButton } from "@/components/ContinueButton"
+import { FadingWrapper } from "@/components/FadingWrapper"
 
 type ColumnGridProps<T extends string> = {
   columns: Columns<T>
@@ -15,8 +14,6 @@ type ColumnGridProps<T extends string> = {
   isLoading: boolean
 }
 
-export type Styles = (typeof themeOverrides)["components"]["MatchColumnsStep"]["baseStyle"]
-
 export const ColumnGrid = <T extends string>({
   columns,
   userColumn,
@@ -25,13 +22,15 @@ export const ColumnGrid = <T extends string>({
   onBack,
   isLoading,
 }: ColumnGridProps<T>) => {
-  const { translations } = useRsi()
-  const styles = useStyleConfig("MatchColumnsStep") as Styles
+  const { translations } = useRSIContext()
+
+  const recipe = useSlotRecipe({ key: "matchColumnsStep" })
+  const styles = recipe()
 
   return (
     <>
-      <ModalBody flexDir="column" p={8} overflow="auto">
-        <Heading sx={styles.heading}>{translations.matchColumnsStep.title}</Heading>
+      <Dialog.Body flexDir="column" p={8} overflow="auto">
+        <Heading variant="rsi">{translations.matchColumnsStep.title}</Heading>
         <Flex
           flex={1}
           display="grid"
@@ -39,7 +38,7 @@ export const ColumnGrid = <T extends string>({
           gridTemplateColumns={`0.75rem repeat(${columns.length}, minmax(18rem, auto)) 0.75rem`}
         >
           <Box gridColumn={`1/${columns.length + 3}`}>
-            <Text sx={styles.title}>{translations.matchColumnsStep.userTableTitle}</Text>
+            <Text css={styles.title}>{translations.matchColumnsStep.userTableTitle}</Text>
           </Box>
           {columns.map((column, index) => (
             <Box gridRow="2/3" gridColumn={`${index + 2}/${index + 3}`} pt={3} key={column.header + index}>
@@ -48,7 +47,7 @@ export const ColumnGrid = <T extends string>({
           ))}
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="2/3" />
           <Box gridColumn={`1/${columns.length + 3}`} mt={7}>
-            <Text sx={styles.title}>{translations.matchColumnsStep.templateTitle}</Text>
+            <Text css={styles.title}>{translations.matchColumnsStep.templateTitle}</Text>
           </Box>
           <FadingWrapper gridColumn={`1/${columns.length + 3}`} gridRow="4/5" />
           {columns.map((column, index) => (
@@ -64,7 +63,7 @@ export const ColumnGrid = <T extends string>({
             </Box>
           ))}
         </Flex>
-      </ModalBody>
+      </Dialog.Body>
       <ContinueButton
         isLoading={isLoading}
         onContinue={onContinue}

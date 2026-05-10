@@ -1,13 +1,13 @@
-import "@testing-library/jest-dom"
-import { render, waitFor, screen, act } from "@testing-library/react"
+import { chakraRender, waitFor, screen, act } from "@/tests/test-utils"
 import { ValidationStep } from "../ValidationStep"
-import { defaultRSIProps, defaultTheme } from "../../../ReactSpreadsheetImport"
-import { Providers } from "../../../components/Providers"
-import { ModalWrapper } from "../../../components/ModalWrapper"
+import { defaultRSIProps } from "@/ReactSpreadsheetImport"
+import { ModalWrapper } from "@/components/ModalWrapper"
 import userEvent from "@testing-library/user-event"
-import { translations } from "../../../translationsRSIProps"
+import { translations } from "@/translations"
 import { addErrorsAndRunHooks } from "../utils/dataMutations"
-import { Fields, RowHook, TableHook } from "../../../types"
+import { Fields, RowHook, TableHook } from "@/types"
+import { Providers } from "@/components/ui/Providers"
+import { RSIContextContextValue } from "@/contexts/RSIContext"
 
 type fieldKeys<T extends Fields<string>> = T[number]["key"]
 
@@ -17,7 +17,7 @@ const mockValues = {
   onSubmit: () => {},
   isOpen: true,
   onClose: () => {},
-} as const
+}
 
 const getFilterSwitch = () =>
   screen.getByRole("checkbox", {
@@ -28,9 +28,9 @@ const file = new File([""], "file.csv")
 
 describe("Validation step tests", () => {
   test("Submit data", async () => {
-    const onSubmit = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit: onSubmit }}>
+    const onSubmit = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, onSubmit: onSubmit } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep initialData={[]} file={file} />
         </ModalWrapper>
@@ -49,13 +49,13 @@ describe("Validation step tests", () => {
   })
 
   test("Submit data without returning promise", async () => {
-    const onSuccess = jest.fn()
-    const onSubmit = jest.fn(() => {
+    const onSuccess = vi.fn()
+    const onSubmit = vi.fn(() => {
       onSuccess()
     })
-    const onClose = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+    const onClose = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, onSubmit, onClose } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep initialData={[]} file={file} />
         </ModalWrapper>
@@ -78,14 +78,14 @@ describe("Validation step tests", () => {
   })
 
   test("Submit data with a successful async return", async () => {
-    const onSuccess = jest.fn()
-    const onSubmit = jest.fn(async (): Promise<void> => {
+    const onSuccess = vi.fn()
+    const onSubmit = vi.fn(async (): Promise<void> => {
       onSuccess()
       return Promise.resolve()
     })
-    const onClose = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+    const onClose = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, onSubmit, onClose } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep initialData={[]} file={file} />
         </ModalWrapper>
@@ -109,15 +109,15 @@ describe("Validation step tests", () => {
 
   test("Submit data with a unsuccessful async return", async () => {
     const ERROR_MESSAGE = "ERROR has occurred"
-    const onReject = jest.fn()
-    const onSubmit = jest.fn(async (): Promise<void> => {
+    const onReject = vi.fn()
+    const onSubmit = vi.fn(async (): Promise<void> => {
       onReject()
       throw new Error(ERROR_MESSAGE)
     })
-    const onClose = jest.fn()
+    const onClose = vi.fn()
 
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, onSubmit, onClose }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, onSubmit, onClose } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep initialData={[]} file={file} />
         </ModalWrapper>
@@ -169,8 +169,8 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -225,9 +225,9 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    const onSubmit = jest.fn()
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields, onSubmit }}>
+    const onSubmit = vi.fn()
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields, onSubmit } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -303,8 +303,8 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -353,8 +353,8 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -400,8 +400,8 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -412,7 +412,7 @@ describe("Validation step tests", () => {
     expect(allRowsWithHeader).toHaveLength(4)
 
     const switchFilters = screen.getAllByRole("checkbox", {
-      name: "Select",
+      name: "Select row",
     })
 
     await userEvent.click(switchFilters[0])
@@ -460,8 +460,8 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
-      <Providers theme={defaultTheme} rsiValues={{ ...mockValues, fields }}>
+    chakraRender(
+      <Providers rsiValues={{ ...mockValues, fields } as RSIContextContextValue<string>}>
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
         </ModalWrapper>
@@ -472,7 +472,7 @@ describe("Validation step tests", () => {
     expect(allRowsWithHeader).toHaveLength(4)
 
     const switchFilters = screen.getAllByRole("checkbox", {
-      name: "Select",
+      name: "Select row",
     })
 
     await userEvent.click(switchFilters[0])
@@ -491,7 +491,7 @@ describe("Validation step tests", () => {
       name: THIRD,
     })
 
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
 
     screen.getByRole<HTMLInputElement>("textbox")
     await userEvent.keyboard(THIRD_CHANGED + "{enter}")
@@ -541,13 +541,14 @@ describe("Validation step tests", () => {
       ],
       fields,
     )
-    render(
+    chakraRender(
       <Providers
-        theme={defaultTheme}
-        rsiValues={{
-          ...mockValues,
-          fields,
-        }}
+        rsiValues={
+          {
+            ...mockValues,
+            fields,
+          } as RSIContextContextValue<string>
+        }
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -560,7 +561,7 @@ describe("Validation step tests", () => {
       name: NAME,
     })
 
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
 
     const input: HTMLInputElement | null = screen.getByRole<HTMLInputElement>("textbox")
 
@@ -581,9 +582,9 @@ describe("Validation step tests", () => {
     const lastNameCell = screen.getByRole("gridcell", {
       name: OPTIONS[0].label,
     })
-    await userEvent.click(lastNameCell)
+    await userEvent.dblClick(lastNameCell)
 
-    const newOption = screen.getByRole("button", {
+    const newOption = screen.getByRole("option", {
       name: OPTIONS[1].label,
     })
     await userEvent.click(newOption)
@@ -643,14 +644,15 @@ describe("Validation step tests", () => {
       rowHook,
     )
     await act(async () => {
-      render(
+      chakraRender(
         <Providers
-          theme={defaultTheme}
-          rsiValues={{
-            ...mockValues,
-            fields,
-            rowHook,
-          }}
+          rsiValues={
+            {
+              ...mockValues,
+              fields,
+              rowHook,
+            } as RSIContextContextValue<string>
+          }
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
             <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -669,7 +671,7 @@ describe("Validation step tests", () => {
     expect(lastNameCell).toBeInTheDocument()
 
     // activate input
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
 
     await userEvent.keyboard(NEW_NAME + " " + NEW_LASTNAME + "{enter}")
 
@@ -703,7 +705,7 @@ describe("Validation step tests", () => {
         },
       },
     ] as const
-    const mockedHook = jest.fn((a) => a)
+    const mockedHook = vi.fn((a) => a)
     const initialData = await addErrorsAndRunHooks(
       [
         {
@@ -719,14 +721,15 @@ describe("Validation step tests", () => {
       mockedHook,
     )
     await act(async () => {
-      render(
+      chakraRender(
         <Providers
-          theme={defaultTheme}
-          rsiValues={{
-            ...mockValues,
-            fields,
-            rowHook: mockedHook,
-          }}
+          rsiValues={
+            {
+              ...mockValues,
+              fields,
+              rowHook: mockedHook,
+            } as RSIContextContextValue<string>
+          }
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
             <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -744,7 +747,7 @@ describe("Validation step tests", () => {
     expect(nameCell).toBeInTheDocument()
 
     // activate input
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
 
     await userEvent.keyboard(NEW_NAME + "{enter}")
 
@@ -781,14 +784,15 @@ describe("Validation step tests", () => {
       rowHook,
     )
     await act(async () =>
-      render(
+      chakraRender(
         <Providers
-          theme={defaultTheme}
-          rsiValues={{
-            ...mockValues,
-            fields,
-            rowHook,
-          }}
+          rsiValues={
+            {
+              ...mockValues,
+              fields,
+              rowHook,
+            } as RSIContextContextValue<string>
+          }
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
             <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -799,23 +803,23 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(2)
+    expect(await screen.findAllByRole("row")).toHaveLength(2)
 
     await userEvent.click(switchFilter)
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(2)
+    expect(await screen.findAllByRole("row")).toHaveLength(2)
 
     const nameCell = screen.getByRole("gridcell", {
       name: WRONG_NAME,
     })
     expect(nameCell).toBeInTheDocument()
 
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
     screen.getByRole<HTMLInputElement>("textbox")
 
     await userEvent.keyboard(RIGHT_NAME + "{enter}")
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(1)
+    expect(await screen.findAllByRole("row")).toHaveLength(1)
   })
 
   test("Table hook transforms data", async () => {
@@ -850,14 +854,15 @@ describe("Validation step tests", () => {
       tableHook,
     )
     await act(async () => {
-      render(
+      chakraRender(
         <Providers
-          theme={defaultTheme}
-          rsiValues={{
-            ...mockValues,
-            fields,
-            tableHook,
-          }}
+          rsiValues={
+            {
+              ...mockValues,
+              fields,
+              tableHook,
+            } as RSIContextContextValue<string>
+          }
         >
           <ModalWrapper isOpen={true} onClose={() => {}}>
             <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -876,7 +881,7 @@ describe("Validation step tests", () => {
     expect(lastNameCell).toBeInTheDocument()
 
     // activate input
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
 
     await userEvent.keyboard(NEW_NAME + "{enter}")
 
@@ -919,14 +924,15 @@ describe("Validation step tests", () => {
       undefined,
       tableHook,
     )
-    render(
+    chakraRender(
       <Providers
-        theme={defaultTheme}
-        rsiValues={{
-          ...mockValues,
-          fields,
-          tableHook,
-        }}
+        rsiValues={
+          {
+            ...mockValues,
+            fields,
+            tableHook,
+          } as RSIContextContextValue<string>
+        }
       >
         <ModalWrapper isOpen={true} onClose={() => {}}>
           <ValidationStep<fieldKeys<typeof fields>> initialData={initialData} file={file} />
@@ -936,21 +942,21 @@ describe("Validation step tests", () => {
 
     const switchFilter = getFilterSwitch()
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(3)
+    expect(await screen.findAllByRole("row")).toHaveLength(3)
 
     await userEvent.click(switchFilter)
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(3)
+    expect(await screen.findAllByRole("row")).toHaveLength(3)
 
-    const nameCell = await screen.getAllByRole("gridcell", {
+    const nameCell = screen.getAllByRole("gridcell", {
       name: WRONG_NAME,
     })[0]
 
-    await userEvent.click(nameCell)
+    await userEvent.dblClick(nameCell)
     screen.getByRole<HTMLInputElement>("textbox")
 
     await userEvent.keyboard(RIGHT_NAME + "{enter}")
 
-    await expect(await screen.findAllByRole("row")).toHaveLength(2)
+    expect(await screen.findAllByRole("row")).toHaveLength(2)
   })
 })
